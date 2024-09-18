@@ -5,9 +5,9 @@
 #define ARRAY_SIZE 20
 
 
-int bubble_sort(int* array);
-int print_array(int* array);
-int randomize_array(int* array);
+int bubble_sort(int* array, int size);
+int print_array(int* array, int size);
+int randomize_array(int* array, int size);
 
 
 int main() {
@@ -18,30 +18,24 @@ int main() {
         return 1;
     }
 
-    randomize_array(arr);
+    randomize_array(arr, ARRAY_SIZE);
     printf("Normal: ");
-    print_array(arr);
-    bubble_sort(arr);
+    print_array(arr, ARRAY_SIZE);
+    bubble_sort(arr, ARRAY_SIZE);
     printf("Sorted: ");
-    print_array(arr);
+    print_array(arr, ARRAY_SIZE);
     free(arr);
     return 0;
 }
 
 
-int print_array(int* array) {
-    for (int i = 0; i < ARRAY_SIZE; ++i) {
-        printf("%d ", array[i]);
-    }
-    printf("\n");
-    return 0;
-}
 
 
-int bubble_sort(int* array) {
+
+int bubble_sort(int* array, int size) {
     int buf;
-    for (int i = 0; i < ARRAY_SIZE - 1; ++i) {
-        for (int j = i + 1; j < ARRAY_SIZE; j++) {
+    for (int i = 0; i < size - 1; ++i) {
+        for (int j = i + 1; j < size; j++) {
             if (array[i] > array[j]) {
                 buf = array[i];
                 array[i] = array[j];
@@ -53,9 +47,9 @@ int bubble_sort(int* array) {
 }
 
 
-int randomize_array(int* array) {
+int randomize_array(int* array, int size) {
     srand(time(NULL));
-        for (int i = 0; i < ARRAY_SIZE; ++i) {
+        for (int i = 0; i < size; ++i) {
         array[i] = rand() % 500 - 200;
     }
     return 0;

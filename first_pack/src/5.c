@@ -4,8 +4,8 @@
 
 #define ARRAY_SIZE 10
 
-int print_array(int* array);
-int randomize_array(int* array);
+int print_array(int* array, int size);
+int randomize_array(int* array, int size);
 int input_number(int* number);
 
 int comp(const void* a, const void* b);
@@ -22,12 +22,12 @@ int main() {
         return 1;
     }
 
-    randomize_array(arr);
+    randomize_array(arr, ARRAY_SIZE);
     printf("Unsorted array: ");
-    print_array(arr);
+    print_array(arr, ARRAY_SIZE);
     qsort(arr, ARRAY_SIZE, sizeof(int), comp);
     printf("Sorted array: ");
-    print_array(arr);
+    print_array(arr, ARRAY_SIZE);
     input_number(&search_number);
     int res = binary_search(arr, search_number);
     
@@ -42,8 +42,8 @@ int main() {
 }
 
 
-int print_array(int* array) {
-    for (int i = 0; i < ARRAY_SIZE; ++i) {
+int print_array(int* array, int size) {
+    for (int i = 0; i < size; ++i) {
         printf("%d ", array[i]);
     }
     printf("\n");
@@ -51,9 +51,9 @@ int print_array(int* array) {
 }
 
 
-int randomize_array(int* array) {
+int randomize_array(int* array, int size) {
     srand(time(NULL));
-        for (int i = 0; i < ARRAY_SIZE; ++i) {
+        for (int i = 0; i < size; ++i) {
         array[i] = rand() % 500 - 200;
     }
     return 0;
