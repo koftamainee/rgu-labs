@@ -23,17 +23,13 @@ int main() {
 }
 
 
-// Sorry 
+ 
 char* custom_strstr(char* main_str, char* str) {
-    char* c_ptr = main_str;
-    char* s_ptr = str;
-    in
-
-    int cnt = 0;
-
-    while (1) {
-        while (c_ptr != s_ptr) {
-            ++c_ptr;
-        if (strcmp(main_str, str))
-    }
+    char* ptr;
+    /*
+    //
+    // TODO: implement strstr
+    //
+    */    
+    return ptr;
 }
