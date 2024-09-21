@@ -3,9 +3,9 @@
 
 ### TODO:
 
-#### put often used functions to libs 
+#### put often used functions to libs -- Done
 
-## first-pack
+## 00 - Programming
 // Done
 - 4.c rewrite alghoritm to func -- Done
 - 16.c -- Invalid task
@@ -20,5 +20,5 @@
 //Not done
 20.c, 21.c
 
-## bit arithmetic 
-- create file structure
+## 01 - Bit_arithmetic 
+- create file structure -- Done
