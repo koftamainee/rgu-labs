@@ -3,6 +3,8 @@
 
 ### TODO:
 
+#### put often used functions to libs 
+
 ## first-pack
 // Done
 - 4.c rewrite alghoritm to func -- Done
