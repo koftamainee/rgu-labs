@@ -2,9 +2,16 @@
 
 
 ### TODO:
-- 10.c matrix multiplication
-- 12.c implement strstr
+// Done
 - 4.c rewrite alghoritm to func -- Done
-- 15.c
 - 16.c -- Invalid task
-- 18.c, 19.c, 6c matrix alghoritms
+
+// str
+- 12.c implement strstr
+- 15.c <ctype.h>
+
+// Matrix
+- 10.c, 18.c, 19.c, 6.c matrix alghoritms
+
+//Not done
+20.c, 21.c
