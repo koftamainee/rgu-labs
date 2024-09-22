@@ -33,7 +33,7 @@ int read_str(char** str) {
 
 int read_number(int* number) {
     while (1) {
-        printf("Input search value: ");
+        printf("Input int number: ");
         if (scanf("%d", number) != 1) {
             printf("Input Error. Try again \n");
             int c;

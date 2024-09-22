@@ -29,7 +29,7 @@ fi
 mkdir -p $BUILD_DIR
 
 # Compile the source file with arrays.c, matrix.c, and input.c, including the path to the headers
-clang -I"$LIBS_DIR" "$SRC_FILE" "$ARRAYS_FILE" "$MATRIX_FILE" "$INPUT_FILE" -o "$OUT_FILE"
+clang -I"$LIBS_DIR" "$SRC_FILE" "$ARRAYS_FILE" "$MATRIX_FILE" "$INPUT_FILE" -o "$OUT_FILE" -lm
 
 # Check if compilation was successful
 if [ $? -eq 0 ]; then
