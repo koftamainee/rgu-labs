@@ -19,8 +19,3 @@
 
 //Not done
 20.c, 21.c
-
-## 01 - Bit_arithmetic 
-- create file structure -- Done
-- 10.c
-- 11.c
