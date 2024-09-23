@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Check if an argument (e.g. "1" for "1.c") is passed
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <file_number>"
+    exit 1
+fi
+
+# Set variables
+SRC_DIR="src"
+BUILD_DIR="build"
+FILENAME="$1"
+SRC_FILE="$SRC_DIR/$FILENAME.c"
+OUT_FILE="$BUILD_DIR/$FILENAME.out"
+LIBS_DIR="../libs"  # Path to the directory containing .h and .c files
+
+# Additional source files from the libs directory
+ARRAYS_FILE="$LIBS_DIR/arrays.c"
+MATRIX_FILE="$LIBS_DIR/matrix.c"
+INPUT_FILE="$LIBS_DIR/input.c"
+
+# Check if source file exists
+if [ ! -f "$SRC_FILE" ]; then
+    echo "Error: Source file '$SRC_FILE' not found."
+    exit 1
+fi
+
+# Create build directory if it doesn't exist
+mkdir -p $BUILD_DIR
+
+# Compile the source file with arrays.c, matrix.c, and input.c, including the path to the headers
+clang -I"$LIBS_DIR" "$SRC_FILE" "$ARRAYS_FILE" "$MATRIX_FILE" "$INPUT_FILE" -o "$OUT_FILE" -lm
+
+# Check if compilation was successful
+if [ $? -eq 0 ]; then
+    echo "Compilation successful. Running '$OUT_FILE'..."
+    # Run the compiled binary
+    "$OUT_FILE"
+else
+    echo "Compilation failed."
+    exit 1
+fi
