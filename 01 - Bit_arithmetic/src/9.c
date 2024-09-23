@@ -6,8 +6,7 @@ int xor_all_digits(int n);
 
 int main() {
     int n;
-    printf("Input a number: ");
-    read_number(&n);
+    read_binary_number(&n);
 
     int ans = xor_all_digits(n);
     printf("XOR all digits result: %d\n", ans);

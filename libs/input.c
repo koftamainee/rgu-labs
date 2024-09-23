@@ -45,6 +45,20 @@ int read_number(int* number) {
     return 0;
 }
 
+int read_binary_number(int* number) {
+    while (1) {
+        printf("Input binary number: ");
+        if (scanf("%b", number) != 1) {
+            printf("Input Error. Try again \n");
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+            continue;
+        }
+        break;
+    }
+    return 0;
+}
+
 
 int read_array_from_file(FILE* fptr, int* array) {
     int i = 0;
