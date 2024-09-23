@@ -6,6 +6,7 @@
 int main() {
     int n;
     read_number(&n);
-    printf("least significant bit of a number %d is %d\n", n, n % 2);
+    printf("ans: %d\n", n);
+    
     return 0;
 }

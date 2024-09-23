@@ -8,7 +8,7 @@ int find_max_div(int n, int div);
 
 
 int main() {
-    int n, i, j;
+    int n;
     printf("Input a number: ");
     read_number(&n);
 
