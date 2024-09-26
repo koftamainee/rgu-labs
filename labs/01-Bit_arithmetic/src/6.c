@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "../libs/input.h"
-#include "../libs/bits.h"
+#include "../../../libs/input.h"
+#include "../../../libs/bits.h"
 
 
 int program_01_6() {

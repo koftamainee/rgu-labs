@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "../libs/matrix.h"
+#include "../../../libs/matrix.h"
 
 #define MATRIX_SIZE 5
 #define MIN -10000

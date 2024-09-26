@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "../libs/input.h"
+#include "../../../libs/input.h"
 
 
 size_t custom_strlen(char* str);

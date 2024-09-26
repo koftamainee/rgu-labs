@@ -1,5 +1,5 @@
 #include "labs.h"
 
 int main() {
-    program_01_1();
+    program_00_1();
 }

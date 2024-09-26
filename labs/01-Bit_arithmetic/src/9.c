@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "../libs/input.h"
+#include "../../../libs/input.h"
 
 int xor_all_digits(int n);
 
