@@ -1,1 +1,3 @@
-/* Create 3 sub arrays for digits, letter and others through ASCII codes */
+int program_00_15() {
+    return 0;
+}

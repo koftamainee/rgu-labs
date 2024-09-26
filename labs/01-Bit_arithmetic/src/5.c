@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "../libs/input.h"
+#include "../../../libs/input.h"
 
 
 int swap_bits(int n, int i, int j);

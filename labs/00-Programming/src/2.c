@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../libs/input.h"
+#include "../../../libs/input.h"
 
 
 int reverse(char* str);

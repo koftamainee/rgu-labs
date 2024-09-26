@@ -12,6 +12,7 @@ int read_str(char** str) {
     while (1) {
         printf("Input str len: ");
         if (scanf("%d", &length) != 1) {
+            printf("\e[1;1H\e[2J");
             printf("Input Error. Try again \n");
             while ((c = getchar()) != '\n' && c != EOF);
             continue;
@@ -35,6 +36,7 @@ int read_number(int* number) {
     while (1) {
         printf("Input int number: ");
         if (scanf("%d", number) != 1) {
+            printf("\e[1;1H\e[2J");
             printf("Input Error. Try again \n");
             while ((c = getchar()) != '\n' && c != EOF);
             continue;
@@ -49,6 +51,7 @@ int read_binary_number(int* number) {
     while (1) {
         printf("Input binary number: ");
         if (scanf("%b", number) != 1) {
+            printf("\e[1;1H\e[2J");
             printf("Input Error. Try again \n");
             while ((c = getchar()) != '\n' && c != EOF);
             continue;

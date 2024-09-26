@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "../libs/input.h"
+#include "../../../libs/input.h"
 
 #define slide_left(num, k) (num << k)
 #define slide_right(num, k) (num >> k)

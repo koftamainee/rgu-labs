@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "../libs/input.h"
+#include "../../../libs/input.h"
 
 
 int get_bit(int n, int k);

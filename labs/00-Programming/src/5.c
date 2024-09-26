@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "../libs/arrays.h"
-#include "../libs/input.h"
+#include "../../../libs/arrays.h"
+#include "../../../libs/input.h"
 
 #define ARRAY_SIZE 10
 

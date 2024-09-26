@@ -13,6 +13,7 @@ extern int program_00_12();
 extern int program_00_13();
 extern int program_00_14();
 extern int program_00_15();
+extern int program_00_16();
 extern int program_00_17();
 extern int program_00_18();
 extern int program_00_18();
