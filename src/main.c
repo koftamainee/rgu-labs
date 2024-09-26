@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 #include "labs.h"
-#include "../libs/input.h"
 
 
 void lab_00();
