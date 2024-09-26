@@ -1,5 +1,5 @@
 
-# Build Guide for [Your Project Name]
+# Build Guide
 
 ## Table of Contents
 1. [Prerequisites](#prerequisites)
