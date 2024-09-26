@@ -5,8 +5,9 @@
 
 
 int randomize_array(int *array, int size) {
+    int i;
     srand(time(NULL));
-        for (int i = 0; i < size; ++i) {
+        for (i = 0; i < size; ++i) {
         array[i] = rand() % 500 - 200;
     }
     return 0;
@@ -14,7 +15,8 @@ int randomize_array(int *array, int size) {
 
 
 int print_array(int* array, int size) {
-    for (int i = 0; i < size; ++i) {
+    int i;
+    for (i = 0; i < size; ++i) {
         printf("%d ", array[i]);
     }
     printf("\n");

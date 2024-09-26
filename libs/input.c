@@ -8,12 +8,11 @@
 #include <stdlib.h>
 
 int read_str(char** str) {
-    int length;
+    int length, c;
     while (1) {
         printf("Input str len: ");
         if (scanf("%d", &length) != 1) {
             printf("Input Error. Try again \n");
-            int c;
             while ((c = getchar()) != '\n' && c != EOF);
             continue;
         }
@@ -32,11 +31,11 @@ int read_str(char** str) {
 
 
 int read_number(int* number) {
+    int c;
     while (1) {
         printf("Input int number: ");
         if (scanf("%d", number) != 1) {
             printf("Input Error. Try again \n");
-            int c;
             while ((c = getchar()) != '\n' && c != EOF);
             continue;
         }
@@ -46,11 +45,11 @@ int read_number(int* number) {
 }
 
 int read_binary_number(int* number) {
+    int c;
     while (1) {
         printf("Input binary number: ");
         if (scanf("%b", number) != 1) {
             printf("Input Error. Try again \n");
-            int c;
             while ((c = getchar()) != '\n' && c != EOF);
             continue;
         }
