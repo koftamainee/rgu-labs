@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../libs/input.h"
-#include "../../libs/arrays.h"
+#include "../libs/input.h"
+#include "../libs/arrays.h"
 
 #define ARRAY_SIZE 10000
 

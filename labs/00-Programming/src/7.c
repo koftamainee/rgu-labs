@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "../../libs/arrays.h"
+#include "../libs/arrays.h"
 
 #define ARRAY_SIZE 20
 

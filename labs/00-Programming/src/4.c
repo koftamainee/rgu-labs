@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "../../libs/arrays.h"
+#include "../libs/arrays.h"
 
 #define ARRAY_SIZE 10
 #define MIN -10000

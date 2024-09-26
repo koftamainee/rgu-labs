@@ -1,17 +1,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../../libs/matrix.h"
+#include "../libs/matrix.h"
 
 #define MATRIX_SIZE 5
 #define MIN -10000
 #define MAX 10000
 
 
-int inverse_matrix(int** matrix, int height, int width);
+int transpose_matrix(int** matrix, int height, int width);
 
 
-int program_00_19() {
+int program_00_18() {
     int** matrix = random_matrix_generate(MATRIX_SIZE, MATRIX_SIZE);
 
     if (matrix == NULL) {
@@ -29,8 +29,8 @@ int program_00_19() {
     printf("Old matrix:\n");
     matrix_print(matrix, MATRIX_SIZE, MATRIX_SIZE);
 
-    inverse_matrix(matrix, MATRIX_SIZE, MATRIX_SIZE);
-    
+    transpose_matrix(matrix, MATRIX_SIZE, MATRIX_SIZE);
+
     printf("New matrix:\n");
     matrix_print(matrix, MATRIX_SIZE, MATRIX_SIZE);
 
@@ -39,6 +39,6 @@ int program_00_19() {
 }
 
 
-int inverse_matrix(int** matrix, int height, int width) {
+int transpose_matrix(int** matrix, int height, int width) {
     return 0;
 }

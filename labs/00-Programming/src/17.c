@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../../libs/input.h"
+#include "../libs/input.h"
 
 
 char* custom_strcat(char* str1, char* str2);
