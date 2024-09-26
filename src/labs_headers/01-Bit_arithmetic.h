@@ -1,0 +1,13 @@
+extern int program_01_1();
+extern int program_01_2();
+extern int program_01_3();
+extern int program_01_4();
+extern int program_01_5();
+extern int program_01_6();
+extern int program_01_7();
+extern int program_01_8();
+extern int program_01_9();
+extern int program_01_10();
+extern int program_01_11_a();
+extern int program_01_11_b();
+extern int program_01_12();

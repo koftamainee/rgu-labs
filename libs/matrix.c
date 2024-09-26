@@ -7,21 +7,22 @@
 
 
 int** random_matrix_generate(int height, int width) {
-    srand(time(NULL));
+    int i, j;
     int** matrix = (int**)malloc(sizeof(int*) * height);
-    for (int i = 0; i < height; ++i) {
+    srand(time(NULL));
+    for (i = 0; i < height; ++i) {
         matrix[i] = (int*)malloc(sizeof(int) * width);
-        for (int j = 0; j < width; ++j) {
+        for (j = 0; j < width; ++j) {
             matrix[i][j] = (rand() % (10000 - (-10000) + 1)) + (-10000);
         }
     }
-
     return matrix;
 }
 
 
 int matrix_free(int** matrix, int height, int width) {
-    for (int i = 0; i < height; ++i) {
+    int i;
+    for (i = 0; i < height; ++i) {
         free(matrix[i]);
     }
     free(matrix);
@@ -30,8 +31,9 @@ int matrix_free(int** matrix, int height, int width) {
 
 
 int matrix_print(int** matrix, int height, int width) {
-    for (int i = 0; i < height; ++i) {
-        for (int j = 0; j < width; ++j) {
+    int i, j;
+    for (i = 0; i < height; ++i) {
+        for (j = 0; j < width; ++j) {
             printf("%5d ", matrix[i][j]);
         }
         printf("\n");
