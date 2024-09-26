@@ -5,15 +5,12 @@
 1. [Prerequisites](#prerequisites)
 2. [Clone the Repository](#clone-the-repository)
 3. [Build the Project](#build-the-project)
-   - [Linux](#linux)
-   - [Windows](#windows)
-   - [macOS](#macos)
 4. [Run the Project](#run-the-project)
 5. [License](#license)
 
 ---
 
-## 2. Prerequisites
+## 1. Prerequisites
 
 Before you begin, ensure you have the following software installed:
 
@@ -23,7 +20,7 @@ Before you begin, ensure you have the following software installed:
 - **Git**
 
 
-## 3. Clone the Repository
+## 2. Clone the Repository
 
 To get started, clone the repository to your local machine:
 
@@ -32,34 +29,9 @@ git clone https://github.com/koftamainee/rgu-labs/
 cd rgu-labs
 ```
 
-## 4. Build the Project
-
-### Linux / MacOS
+## 3. Build the Project
 
 #### Create a Build Directory
-
-```bash
-mkdir -p build
-cd build
-```
-
-#### Run CMake with Ninja
-
-```bash
-cmake -G Ninja ..
-```
-
-#### Build the Project
-
-```bash
-ninja
-```
-
-### Windows
-
-#### Create a Build Directory
-
-Open Command Prompt or PowerShell and navigate to your project directory:
 
 ```bash
 mkdir build
@@ -78,7 +50,7 @@ cmake -G Ninja ..
 ninja
 ```
 
-## 5. Run the Project
+## 4. Run the Project
 
 Once the build is complete, you can run the executable:
 
@@ -87,6 +59,6 @@ Once the build is complete, you can run the executable:
 rgu-labs.exe # For Windows
 ```
 
-## 6. License
+## 5. License
 
 This project is licensed under the [MIT License](LICENSE).
