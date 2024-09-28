@@ -58,10 +58,12 @@ void clear_screen() {
 void lab_00() {
 
     int (*programs[])() = {
-        program_00_1, program_00_2, program_00_3, program_00_4, program_00_5, 
-        program_00_6, program_00_7, program_00_8, program_00_9,program_00_10, 
-        program_00_11, program_00_12, program_00_13, program_00_14, program_00_15, 
-        program_00_16, program_00_17, program_00_18, program_00_19, program_00_20, program_00_21
+        program_00_1, program_00_2, program_00_3, program_00_4,
+        program_00_5, program_00_6, program_00_7, program_00_8,
+        program_00_9,program_00_10, program_00_11, program_00_12,
+        program_00_13, program_00_14, program_00_15, program_00_16,
+        program_00_17, program_00_18, program_00_19, program_00_20,
+        program_00_21
     };
     char tasks[] = "1. Bubble sort array.\n2. Reverse a string.\n3. Swap two integers.\n4. Find max/min in array.\n5. Binary search array.\n6. Find matrix determinant.\n7. Copy odd-indexed elements.\n8. Copy even numbers.\n9. Remove duplicates from array.\n10. Multiply matrices.\n11. Count string length.\n12. Find substring in string.\n13. Uppercase odd-indexed chars.\n14. Read array from file, find max/min.\n15. Reorder string: digits, letters, symbols.\n16. Remove spaces from string.\n17. Concatenate strings.\n18. Transpose matrix.\n19. Find inverse matrix.\n20. Convert int to string (base 2-36).\n21. Convert string (base 2-36) to int.\n0. Back\n\nInput int number: ";
 
