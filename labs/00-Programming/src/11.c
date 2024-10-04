@@ -17,7 +17,7 @@ int program_00_11() {
 size_t custom_strlen(char* str) {
     char* c = str;
     int cnt = 0;
-    while (*c != '\0') {
+    while (*c) {
         ++c;
         ++cnt;
     }
