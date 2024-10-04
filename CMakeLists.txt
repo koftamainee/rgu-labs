@@ -23,7 +23,7 @@ set_target_properties(rgu-labs PROPERTIES RUNTIME_OUTPUT_DIRECTORY release)
 if(WIN32)
     message(STATUS "Compiling for Windows. Skipping Bash lab")
 else()
-    file(COPY labs/02-Bash_labs DESTINATION release/scripts)
+    file(COPY labs/02-Bash_lab DESTINATION release/scripts)
 endif()
 
 target_link_libraries(rgu-labs m)
