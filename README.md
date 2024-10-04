@@ -43,6 +43,8 @@ Before compiling, edit the toolchain files to choose your compilers for Linux or
 Open `cmake/toolchain_linux.cmake` and choose your C compiler (clang, gcc, etc.):
 
 ```cmake
+# cmake/toolchain_linux.cmake
+
 set(CMAKE_SYSTEM_NAME Linux)
 
 # Choose your CC
@@ -55,6 +57,8 @@ set(CMAKE_C_COMPILER clang)
 Open `cmake/toolchain_windows.cmake` and choose your C/CXX compiler (mingw, msvc, etc.):
 
 ```cmake
+#cmake/toolchain_windows.cmake
+
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_SYSTEM_PROCESSOR x86_64)
 
