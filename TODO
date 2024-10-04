@@ -1,16 +1,5 @@
-# rgu-labs
-
-
 ### TODO:
-create dynamic menu numeration
-refactor all this sht
-
-#### put often used functions to libs -- Done
-
-## 00 - Programming
-// Done
-- 4.c rewrite alghoritm to func -- Done
-- 16.c -- Invalid task
+make clear_screen function in the input.c
 
 // str
 - 12.c implement strstr
