@@ -118,7 +118,7 @@ For Windows, you can use either MinGW or Visual Studio. Choose the appropriate i
 2. Run CMake with Visual Studio:
 
     ```bash
-    cmake -G "Visual Studio 16 2019" -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_windows.cmake ..
+    cmake -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_windows.cmake ..
     ```
 
    Replace "2019" with your version of Visual Studio if necessary.
