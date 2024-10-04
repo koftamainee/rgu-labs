@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "labs.h"
 
@@ -53,7 +54,11 @@ int choose_lab() {
 
 
 void clear_screen() {
-    printf("\e[1;1H\e[2J");
+    #ifdef WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
 }
 
 
@@ -182,3 +187,4 @@ void lab_02() {
         }
     }
 }
+
