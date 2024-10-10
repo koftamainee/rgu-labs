@@ -6,6 +6,7 @@
 
 void lab_00();
 void lab_01();
+void lab_03();
 
 void lab_02();
 
@@ -17,7 +18,7 @@ void clear_screen();
 int main() {
     clear_screen();
     void (*labs[])() = {
-        lab_00, lab_01, lab_02
+        lab_00, lab_01, lab_02, lab_03
     };
 
     int lab_number;
@@ -42,6 +43,7 @@ int choose_lab() {
 1. 00 - Programming\n\
 2. 01 - Bit arithmetic\n\
 3. 02 - Bash lab -- unaviable on Windows\n\
+4. 03 - Programming\n\
 0. Exit\n\n\
 Enter int number: ";
 
@@ -54,7 +56,7 @@ Enter int number: ";
         printf("Input error. Try again.\n");
         continue;
     }
-    if (lab > -1 && lab < 3 && lab != 3) {
+    if (lab > -1 && lab < 5 && lab != 3) {
         return lab;
     }
     clear_screen();
@@ -67,6 +69,7 @@ Enter int number: ";
 1. 00 - Programming\n\
 2. 01 - Bit arithmetic\n\
 3. 02 - Bash lab\n\
+4. 03 - Programming\n\
 0. Exit\n\n\
 Enter int number: ";
 
@@ -79,7 +82,7 @@ Enter int number: ";
         printf("Input error. Try again.\n");
         continue;
     }
-    if (lab > -1 && lab < 4) {
+    if (lab > -1 && lab < 5) {
         return lab;
     }
     clear_screen();
@@ -261,6 +264,50 @@ Input int number: ";
             snprintf(command, sizeof(command), "%s%d%s", "./scripts/02-Bash_lab/", task, ".sh");
             system(command);
             
+            printf("\nPress enter to continue...\n");
+            while ((c = getchar()) != '\n' && c != EOF);
+            c = getchar();
+            clear_screen();
+        } else if (task == 0) {
+            clear_screen();
+            break;
+        } else {
+            clear_screen();
+            printf("Invalid task number. Try again\n");
+        }
+    }
+}
+
+
+void lab_03() {
+
+    int (*programs[])() = {
+        program_03_1, program_03_2, program_03_3, program_03_4,
+        program_03_5, program_03_6, program_03_7, program_03_8,
+        program_03_9,program_03_10, program_03_11, program_03_12,
+        program_03_13, program_03_14, program_03_15, program_03_16,
+        program_03_17, program_03_18, program_03_19
+    };
+
+    char tasks[] = "TODO";
+
+    int task;
+    char c;
+    clear_screen();
+    while (1) {
+        printf("Choose task:\n");
+        printf("%s", tasks);
+
+        if (scanf("%d", &task) != 1) {
+        while ((c = getchar()) != '\n' && c != EOF);
+        clear_screen();
+        printf("Input error. Try again.\n");
+        continue;
+    }
+        
+        if (task < 20 && task > 0) {
+            clear_screen();
+            programs[task - 1]();
             printf("\nPress enter to continue...\n");
             while ((c = getchar()) != '\n' && c != EOF);
             c = getchar();

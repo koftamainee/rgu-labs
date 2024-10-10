@@ -12,6 +12,7 @@ file(GLOB_RECURSE SRC_FILES
     libs/*.c
     labs/00-Programming/src/*.c
     labs/01-Bit_arithmetic/src/*.c
+    labs/03-Programming/src/*.c
 )
 
 add_executable(rgu-labs ${SRC_FILES})
