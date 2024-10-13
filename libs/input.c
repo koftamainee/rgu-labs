@@ -19,14 +19,16 @@ int read_str(char** str) {
         }
         break;
     }
-    
-    *str = (char*)malloc(sizeof(char) * (length + 1));
+
+    *str = (char*)malloc(length + 1);
     if (*str == NULL) {
-        return 1;
+        printf("Memory allocation failed\n");
+        exit(1);
     }
-    
-    printf("Input %d symbol str: ", length);
+
+    printf("Enter the string: ");
     scanf("%s", *str);
+
     return 0;
 }
 
