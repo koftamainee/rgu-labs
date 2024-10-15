@@ -3,16 +3,11 @@
 
 #include "../../../libs/matrix.h"
 
-#define MATRIX_SIZE 5
-#define MIN -10000
-#define MAX 10000
-
-
-double** inverse_matrix(double** matrix, int height, int width);
-
+#define MATRIX_SIZE 3
 
 int program_00_19() {
-    double** matrix = random_matrix_generate(MATRIX_SIZE, MATRIX_SIZE, 100, -100);
+    double** answer;
+    double** matrix = random_matrix_generate(MATRIX_SIZE, MATRIX_SIZE, 9, 0);
 
     if (matrix == NULL) {
         printf("Memory alocation error. Exit code 1.");
@@ -26,20 +21,33 @@ int program_00_19() {
     
     }
 
+    answer = random_matrix_generate(MATRIX_SIZE, MATRIX_SIZE, 100, -100);
+
+    if (answer == NULL) {
+        printf("Memory alocation error. Exit code 1.");
+        return 1;
+    }
+    for (int i = 0; i < MATRIX_SIZE; ++i) {
+        if (answer[i] == NULL) {
+        printf("Memory alocation error. Exit code 1.");
+        return 1;
+    }
+    
+    }
+
     printf("Old matrix:\n");
     matrix_print(matrix, MATRIX_SIZE, MATRIX_SIZE);
 
-    inverse_matrix(matrix, MATRIX_SIZE, MATRIX_SIZE);
+    if ((inverse_matrix(matrix, answer, MATRIX_SIZE)) != 0) {
+        printf("Division by 0 error. Aborting.\n");
+        return 1;
+
+    }
     
     printf("New matrix:\n");
-    matrix_print(matrix, MATRIX_SIZE, MATRIX_SIZE);
+    matrix_print(answer, MATRIX_SIZE, MATRIX_SIZE);
 
     matrix_free(matrix, MATRIX_SIZE, MATRIX_SIZE);
+    matrix_free(answer, MATRIX_SIZE, MATRIX_SIZE);
     return 0;
-}
-
-
-double** inverse_matrix(double** matrix, int height, int width) {
-    /* Do some shit.... 0_o */
-    return NULL;
 }

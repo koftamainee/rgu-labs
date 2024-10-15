@@ -5,8 +5,6 @@
 #include "../../../libs/matrix.h"
 
 #define MATRIX_SIZE 3
-#define MIN -10000
-#define MAX 10000
 
 
 int program_00_6() {

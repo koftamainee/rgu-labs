@@ -12,4 +12,6 @@ double determinant(double** matrix, int size);
 
 void matrixcpy(double** dest, double** src, int rows, int cols);
 
+int inverse_matrix(double** matrix, double** inverse, int size);
+
 #endif

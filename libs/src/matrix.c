@@ -133,3 +133,53 @@ double** generate_identity_matrix(int size) {
     }
     return matrix;
 }
+
+int inverse_matrix(double **matrix, double **inverse, int size) {
+    int i, j, pivot;
+    double factor;
+    double** temp_matrix;
+    temp_matrix = generate_zero_matrix(size);
+    matrixcpy(temp_matrix, matrix, size, size);
+
+    // 0 step: initialize inverse matrix to identity
+    for (i = 0; i < size; ++i) {
+        for (j = 0; j < size; ++j) {
+            inverse[i][j] = (i == j) ? 1 : 0;
+        }
+    }
+
+    for (pivot = 0; pivot < size; ++pivot) {
+        if (temp_matrix[pivot][pivot] == 0) {
+            return 1; // Handle zero pivot
+        }
+
+        // 1 step: set pivot element to 1 (diagonal element)
+        factor = temp_matrix[pivot][pivot];
+        for (j = 0; j < size; ++j) {
+            temp_matrix[pivot][j] /= factor;
+            inverse[pivot][j] /= factor;
+        }
+
+        // 2 step: eliminate all entries below the pivot
+        for (i = pivot + 1; i < size; ++i) {
+            factor = temp_matrix[i][pivot];
+            for (j = 0; j < size; ++j) {
+                temp_matrix[i][j] -= factor * temp_matrix[pivot][j];
+                inverse[i][j] -= factor * inverse[pivot][j];
+            }
+        }
+    }
+
+    // 3 step: eliminate all entries above the pivot (like step 2, but reverse)
+    for (pivot = size - 1; pivot >= 0; --pivot) {
+        for (i = pivot - 1; i >= 0; --i) {
+            factor = temp_matrix[i][pivot];
+            for (j = 0; j < size; ++j) {
+                temp_matrix[i][j] -= factor * temp_matrix[pivot][j];
+                inverse[i][j] -= factor * inverse[pivot][j];
+            }
+        }
+    }
+
+    return 0;
+}
