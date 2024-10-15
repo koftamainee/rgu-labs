@@ -14,6 +14,7 @@ int program_00_2() {
         printf("Memory alocation error. Exit code 1.");
         return 1;
     }
+    puts(str);
     printf("normal: %s\n", str);
     reverse(str);
     printf("reverse: %s\n", str);

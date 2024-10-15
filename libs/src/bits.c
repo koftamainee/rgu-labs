@@ -1,4 +1,4 @@
-#include "bits.h"
+#include "../bits.h"
 #include <math.h>
 
 int null_bit(int n, int k) {

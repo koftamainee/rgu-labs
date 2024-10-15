@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "labs.h"
+#include "../libs/input.h"
 
 
 void lab_00();
@@ -13,7 +14,6 @@ void lab_02();
 
 
 int choose_lab();
-void clear_screen();
 
 int main() {
     clear_screen();
@@ -92,15 +92,6 @@ Enter int number: ";
 }
 
 
-void clear_screen() {
-    #ifdef WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
-}
-
-
 void lab_00() {
 
     int (*programs[])() = {
@@ -156,7 +147,7 @@ Input int number: ";
             programs[task - 1]();
             printf("\nPress enter to continue...\n");
             while ((c = getchar()) != '\n' && c != EOF);
-            c = getchar();
+            getchar();
             clear_screen();
         } else if (task == 0) {
             clear_screen();

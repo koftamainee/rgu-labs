@@ -3,10 +3,6 @@
 
 #include "../../../libs/input.h"
 
-#define STR_LENGTH 10
-#define STRSTR_length 4
-
-
 char* custom_strstr(char* main_str, char* str);
 
 
@@ -31,21 +27,22 @@ int program_00_12() {
 
  
 char* custom_strstr(char* main_str, char* str) {
+    char* i, n, i_temp;
     if (!*str) {
         return (char*)main_str; 
     }
 
-    for (const char* h = main_str; *h; ++h) {
-        const char* h_temp = h;
-        const char* n = str;
+    for (i = main_str; *i; ++i) {
+        char* i_temp = i;
+        char* n = str;
 
-        while (*h_temp && *n && *h_temp == *n) {
-            ++h_temp;
+        while (*i_temp && *n && *i_temp == *n) {
+            ++i_temp;
             ++n;
         }
 
         if (!*n) {
-            return (char*)h;
+            return (char*)i;
         }
     }
 

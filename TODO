@@ -5,10 +5,7 @@
 ## 00 - Programming
 
 // str
-- 15.c <ctype.h>
+- 15.c malloc: corrupted top size
 
 // Matrix
 - 10.c, 18.c, 19.c, 6.c matrix alghoritms
-
-//Not done
-20.c
