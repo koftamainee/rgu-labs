@@ -11,7 +11,7 @@
 
 int program_00_6() {
     int i, det;
-    int** matrix = random_matrix_generate(MATRIX_SIZE, MATRIX_SIZE);
+    int** matrix = random_matrix_generate(MATRIX_SIZE, MATRIX_SIZE, 10, -10);
 
     if (matrix == NULL) {
         printf("Memory alocation error. Exit code 1.");
@@ -27,7 +27,7 @@ int program_00_6() {
 
     matrix_print(matrix, MATRIX_SIZE, MATRIX_SIZE);
 
-    det = find_det(matrix, MATRIX_SIZE);
+    det = determinant(matrix, MATRIX_SIZE);
 
     printf("Determinant for matrix is: %d\n", det);
 
