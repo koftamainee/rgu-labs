@@ -8,11 +8,11 @@
 #define MAX 10000
 
 
-int inverse_matrix(int** matrix, int height, int width);
+double** inverse_matrix(double** matrix, int height, int width);
 
 
 int program_00_19() {
-    int** matrix = random_matrix_generate(MATRIX_SIZE, MATRIX_SIZE, 100, -100);
+    double** matrix = random_matrix_generate(MATRIX_SIZE, MATRIX_SIZE, 100, -100);
 
     if (matrix == NULL) {
         printf("Memory alocation error. Exit code 1.");
@@ -39,6 +39,7 @@ int program_00_19() {
 }
 
 
-int inverse_matrix(int** matrix, int height, int width) {
+double** inverse_matrix(double** matrix, int height, int width) {
     /* Do some shit.... 0_o */
+    return NULL;
 }

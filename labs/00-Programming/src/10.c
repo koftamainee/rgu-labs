@@ -8,14 +8,14 @@
 #define MATRIX_HEIGHT_2 10
 #define MATRIX_WIDTH_2 5
 
-int** multiplicate_matrix(int** matrix1, int** matrix2, int rows1, int cols1, int cols2);
+double** multiplicate_matrix(double** matrix1, double** matrix2, int rows1, int cols1, int cols2);
 
 int program_00_10() {
     printf("MATRIX 1:\n");
-    int** matrix1 = random_matrix_generate(MATRIX_HEIGHT_1, MATRIX_WIDTH_1, 100, -100);
+    double** matrix1 = random_matrix_generate(MATRIX_HEIGHT_1, MATRIX_WIDTH_1, 100, -100);
     matrix_print(matrix1, MATRIX_HEIGHT_1, MATRIX_WIDTH_1);
     printf("MATRIX 2:\n");
-    int** matrix2 = random_matrix_generate(MATRIX_HEIGHT_2, MATRIX_WIDTH_2, 100, -100);
+    double** matrix2 = random_matrix_generate(MATRIX_HEIGHT_2, MATRIX_WIDTH_2, 100, -100);
     matrix_print(matrix2, MATRIX_HEIGHT_2, MATRIX_WIDTH_2);
 
     if (MATRIX_WIDTH_1 != MATRIX_HEIGHT_2) {
@@ -23,7 +23,7 @@ int program_00_10() {
         return -1;
     }
 
-    int** new_matrix = multiplicate_matrix(matrix1, matrix2, MATRIX_HEIGHT_1, MATRIX_WIDTH_1, MATRIX_WIDTH_2);
+    double** new_matrix = multiplicate_matrix(matrix1, matrix2, MATRIX_HEIGHT_1, MATRIX_WIDTH_1, MATRIX_WIDTH_2);
     
     printf("MATRIX 1 @ MATRIX 2:\n");
     matrix_print(new_matrix, MATRIX_HEIGHT_1, MATRIX_WIDTH_2);
@@ -36,10 +36,10 @@ int program_00_10() {
 }
 
 
-int** multiplicate_matrix(int** matrix1, int** matrix2, int rows1, int cols1, int cols2) {
-    int** new_matrix = (int**)malloc(rows1 * sizeof(int*));
+double** multiplicate_matrix(double** matrix1, double** matrix2, int rows1, int cols1, int cols2) {
+    double** new_matrix = (double**)malloc(rows1 * sizeof(double*));
     for (int i = 0; i < rows1; i++) {
-        new_matrix[i] = (int*)malloc(cols2 * sizeof(int));
+        new_matrix[i] = (double*)malloc(cols2 * sizeof(double));
     }
 
     for (int i = 0; i < rows1; i++) {
