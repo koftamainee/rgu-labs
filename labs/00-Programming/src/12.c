@@ -3,23 +3,21 @@
 
 #include "../../../libs/input.h"
 
-#define STR_LENGTH 10
-#define STRSTR_length 4
-
-
 char* custom_strstr(char* main_str, char* str);
 
 
 int program_00_12() {
+    char c;
     char* str1;
     char* str2;
     printf("First string...\n");
     read_str(&str1);
     printf("Second string...\n");
+    while ((c = getchar()) != '\n' && c != EOF);
     read_str(&str2);
 
     char* p = custom_strstr(str1, str2);
-    printf("%s", p);
+    printf("strstr result: %s", p);
 
     free(str1);
     free(str2);
@@ -29,11 +27,24 @@ int program_00_12() {
 
  
 char* custom_strstr(char* main_str, char* str) {
-    char* ptr;
-    /*
-    //
-    // TODO: implement strstr
-    //
-    */    
-    return ptr;
+    char* i, n, i_temp;
+    if (!*str) {
+        return (char*)main_str; 
+    }
+
+    for (i = main_str; *i; ++i) {
+        char* i_temp = i;
+        char* n = str;
+
+        while (*i_temp && *n && *i_temp == *n) {
+            ++i_temp;
+            ++n;
+        }
+
+        if (!*n) {
+            return (char*)i;
+        }
+    }
+
+    return NULL;
 }

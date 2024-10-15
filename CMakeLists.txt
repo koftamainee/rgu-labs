@@ -9,9 +9,10 @@ include_directories(libs)
 # Adding all src files
 file(GLOB_RECURSE SRC_FILES
     src/*.c
-    libs/*.c
+    libs/src/*.c
     labs/00-Programming/src/*.c
     labs/01-Bit_arithmetic/src/*.c
+    labs/03-Programming/src/*.c
 )
 
 add_executable(rgu-labs ${SRC_FILES})
