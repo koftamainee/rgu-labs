@@ -12,15 +12,15 @@ typedef struct dynamic_array {
     int* data;
 } Vector;
 
-int __memory_allocate(Vector* vec);
+int __memory_allocate(Vector *vec);
 
-int cvector_init(Vector* vec);
-int cvector_push_back(Vector* vec, int elem);
-void cvector_free(Vector* vec);
+int cvector_init(Vector *vec);
+int cvector_push_back(Vector *vec, int elem);
+void cvector_free(Vector *vec);
 int cvector_pop(Vector *vec, int index);
-int cvector_pop_front(Vector* vec);
-int cvector_pop_back(Vector* vec);
-void cvector_print(Vector* vec);
+int cvector_pop_front(Vector *vec);
+int cvector_pop_back(Vector *vec);
+void cvector_print(Vector *vec);
 int cvector_insert(Vector *vec, size_t index, int value);
 
 #endif

@@ -5,10 +5,10 @@
 
 void clear_screen();
 
-int read_str(char** str);
-void read_number(int* number);
-int read_binary_number(int* number);
+int read_str(char **str);
+void read_number(int *number);
+int read_binary_number(int *number);
 
-int read_array_from_file(FILE* fptr, int* array);
+int read_array_from_file(FILE *fptr, int *array);
 
 #endif

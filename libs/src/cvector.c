@@ -16,7 +16,7 @@ int cvector_init(Vector *vec) {
     return 0;
 }
 
-int __memory_allocate(Vector* vec) {
+int __memory_allocate(Vector *vec) {
     int* for_realloc;
     for_realloc = (int*)realloc(vec->data, vec->capacity * sizeof(int));
     if (for_realloc == NULL) {
@@ -26,7 +26,7 @@ int __memory_allocate(Vector* vec) {
     return 0;
 }
 
-int cvector_push_back(Vector* vec, int elem) {
+int cvector_push_back(Vector *vec, int elem) {
     if (vec->size >= vec->capacity) {
         vec->capacity *= GROWTH_FACTOR;
         if (__memory_allocate(vec) == 1) {
@@ -57,12 +57,12 @@ int cvector_pop(Vector *vec, int index) {
     return 0;
 }
 
-void cvector_free(Vector* vec) {
+void cvector_free(Vector *vec) {
     free(vec->data);
     vec->data = NULL;
 }
 
-void cvector_print(Vector* vec) {
+void cvector_print(Vector *vec) {
     int i;
     for (i = 0; i < vec->size; ++i) {
         printf("%d ", vec->data[i]);
@@ -70,11 +70,11 @@ void cvector_print(Vector* vec) {
     printf("\n");
 }
 
-int cvector_pop_front(Vector* vec) {
+int cvector_pop_front(Vector *vec) {
     return cvector_pop(vec, 0);
 }
 
-int cvector_pop_back(Vector* vec) {
+int cvector_pop_back(Vector *vec) {
     return cvector_pop(vec, vec->size - 1);
 }
 

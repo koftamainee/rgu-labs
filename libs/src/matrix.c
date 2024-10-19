@@ -4,7 +4,7 @@
 #include <time.h>
 #include "../errors.h"
 
-int __matrix_memory_alocate(double*** matrix, int height, int width) {
+int __matrix_memory_alocate(double ***matrix, int height, int width) {
     int i, j;
     *matrix = (double**)malloc(sizeof(double*) * height);
     if (*matrix == NULL) {
@@ -23,7 +23,7 @@ int __matrix_memory_alocate(double*** matrix, int height, int width) {
     return 0;
 }
 
-int random_matrix_generate(double*** matrix, int height, int width, int min, int max) {
+int random_matrix_generate(double ***matrix, int height, int width, int min, int max) {
     int i, j;
     if (__matrix_memory_alocate(matrix, height, width) != 0) {
         return MEMORY_ALLOCATE_ERROR;
@@ -36,7 +36,7 @@ int random_matrix_generate(double*** matrix, int height, int width, int min, int
     return 0;
 }
 
-int matrix_free(double*** matrix, int height, int width) {
+int matrix_free(double ***matrix, int height, int width) {
     int i;
     for (i = 0; i < height; ++i) {
         free((*matrix)[i]);
@@ -45,7 +45,7 @@ int matrix_free(double*** matrix, int height, int width) {
     return 0;
 }
 
-int matrix_print(double*** matrix, int height, int width) {
+int matrix_print(double ***matrix, int height, int width) {
     int i, j;
     if (*matrix == NULL) {
         return DEREFERENCING_NULL_PTR;
@@ -62,7 +62,7 @@ int matrix_print(double*** matrix, int height, int width) {
     return 0;
 }
 
-int gaussian_elimination(double*** matrix, int size) {
+int gaussian_elimination(double ***matrix, int size) {
     int i, j, pivot;
     double factor;
 
@@ -88,7 +88,7 @@ int gaussian_elimination(double*** matrix, int size) {
     return 0;
 }
 
-int determinant(double*** matrix, int size, double* det) {
+int determinant(double ***matrix, int size, double* det) {
     int i;
     *det = 1;
 
@@ -110,7 +110,7 @@ int determinant(double*** matrix, int size, double* det) {
         return 0;
     }
     
-    double** new_matrix;
+    double **new_matrix;
     if (__matrix_memory_alocate(&new_matrix, size, size) == MEMORY_ALLOCATE_ERROR) {
         return MEMORY_ALLOCATE_ERROR;
     }
@@ -156,7 +156,7 @@ int generate_zero_matrix(double*** matrix, int size) {
     return 0;
 }
 
-int generate_identity_matrix(double*** matrix, int size) {
+int generate_identity_matrix(double ***matrix, int size) {
     int i, j;
 
     if (__matrix_memory_alocate(matrix, size, size) == MEMORY_ALLOCATE_ERROR) {

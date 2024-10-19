@@ -4,11 +4,11 @@
 #include "../../../libs/input.h"
 #include "../../../libs/custom_math.h"
 
-int gorner_2p(int src, char** dest, int base);
+int gorner_2p(int src, char **dest, int base);
 
-int program_03_1(int argc, char* argv[]) {
+int program_03_1(int argc, char *argv[]) {
     int num, base, r;
-    char* ans;
+    char *ans;
     printf("Input number: ");
     read_number(&num);
     printf("Input r: ");
@@ -32,7 +32,7 @@ int program_03_1(int argc, char* argv[]) {
 
 int gorner_2p(int src, char** dest, int r) {
     int len = 0, is_negative = 0;
-    char* ptr;
+    char *ptr;
     int base = 1 << r;
 
     if (base < 2 || base > 32) {

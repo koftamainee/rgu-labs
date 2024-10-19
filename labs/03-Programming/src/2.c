@@ -4,18 +4,18 @@
 #include <ctype.h>
 
 
-int cstrlen(const char* str, int* ans);
-int creverse(const char* str, char** ans);
-int ctoupper(const char* str, char** ans);
-int creorder_string(const char* str, char** ans);
-int cstrcat(const char** strings, char** ans, int seed);
+int cstrlen(const char *str, int *ans);
+int creverse(const char *str, char **ans);
+int ctoupper(const char *str, char **ans);
+int creorder_string(const char *str, char **ans);
+int cstrcat(const char **strings, char **ans, int seed);
 
-int program_03_2(int argc, char* argv[]) {
+int program_03_2(int argc, char *argv[]) {
     
     return 0;
 }
 
-int cstrlen(const char* str, int* ans) {
+int cstrlen(const char *str, int *ans) {
     if (str == NULL || ans == NULL) {
         return 1;
     }
@@ -31,7 +31,7 @@ int cstrlen(const char* str, int* ans) {
     return 0;
 }
 
-int creverse(const char* str, char** ans) {
+int creverse(const char *str, char **ans) {
     if (str == NULL || ans == NULL) {
         return 1;
     }
@@ -48,7 +48,7 @@ int creverse(const char* str, char** ans) {
     return 0;
 }
 
-int ctoupper(const char* str, char** ans) {
+int ctoupper(const char *str, char **ans) {
     if (str == NULL || ans == NULL) {
         return 1;
     }
@@ -70,7 +70,7 @@ int ctoupper(const char* str, char** ans) {
     return 0;
 }
 
-int creorder_string(const char* str, char** ans) {
+int creorder_string(const char *str, char **ans) {
     const char* ptr = str;
     char* digits;
     char* letters;
@@ -118,6 +118,6 @@ int creorder_string(const char* str, char** ans) {
     return 0;
 }
 
-int cstrcat(const char** strings, char** ans, int seed) {
+int cstrcat(const char **strings, char **ans, int seed) {
     return 0;
 }

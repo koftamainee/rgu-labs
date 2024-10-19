@@ -15,7 +15,7 @@ int randomize_array(int *array, int size) {
 }
 
 
-int print_array(int* array, int size) {
+int print_array(int *array, int size) {
     int i;
     for (i = 0; i < size; ++i) {
         printf("%d ", array[i]);
@@ -25,7 +25,7 @@ int print_array(int* array, int size) {
 }
 
 
-int find_max_and_min(int* array, int size, int* ans) {
+int find_max_and_min(int *array, int size, int *ans) {
     int max = -10000;
     int min = 10000;
     int max_index = -1;

@@ -13,7 +13,7 @@ void clear_screen() {
     #endif
 }
 
-int read_str(char** str) {
+int read_str(char **str) {
     char buf[BUFSIZ];
     int len;
     int c;
@@ -33,7 +33,7 @@ int read_str(char** str) {
 }
 
 
-void read_number(int* number) {
+void read_number(int *number) {
     int c;
     while (1) {
         printf("Input int number: ");
@@ -47,7 +47,7 @@ void read_number(int* number) {
     }
 }
 
-int read_binary_number(int* number) {
+int read_binary_number(int *number) {
     int c;
     while (1) {
         printf("Input binary number: ");
@@ -63,7 +63,7 @@ int read_binary_number(int* number) {
 }
 
 
-int read_array_from_file(FILE* fptr, int* array) {
+int read_array_from_file(FILE *fptr, int *array) {
     int i = 0;
     while (fscanf(fptr, "%d", &array[i]) != EOF) {
         ++i;
