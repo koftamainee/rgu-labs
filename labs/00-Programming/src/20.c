@@ -41,7 +41,7 @@ int num_to_str(int num, int base, char** ans) {
     }
 
     len = log_base(num, base) + 1 - is_negative;
-    *ans = malloc(len + 1);
+    *ans = malloc((len + 1) * sizeof(char));
     char* ptr = *ans;
 
     if (is_negative) {
