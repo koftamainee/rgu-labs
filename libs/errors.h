@@ -3,5 +3,6 @@
 
 #define MEMORY_ALLOCATE_ERROR 1
 #define DEREFERENCING_NULL_PTR 2
+#define INDEX_OUT_OF_BOUNDS 3
 
 #endif

@@ -1,6 +1,9 @@
 #include "../cvector.h"
+
 #include <stdlib.h>
 #include <stdio.h>
+
+#include "../errors.h"
 
 
 int cvector_init(Vector *vec) {
@@ -8,7 +11,7 @@ int cvector_init(Vector *vec) {
     vec->capacity = INITIAL_CAPACITY;
     vec->data = (int*)malloc(vec->capacity * sizeof(int));
     if (vec->data == NULL) {
-        return 1;
+        return MEMORY_ALLOCATE_ERROR;
     }
     return 0;
 }
@@ -17,7 +20,7 @@ int __memory_allocate(Vector* vec) {
     int* for_realloc;
     for_realloc = (int*)realloc(vec->data, vec->capacity * sizeof(int));
     if (for_realloc == NULL) {
-        return 1;
+        return MEMORY_ALLOCATE_ERROR;
     }
     vec->data = for_realloc;
     return 0;
@@ -27,7 +30,7 @@ int cvector_push_back(Vector* vec, int elem) {
     if (vec->size >= vec->capacity) {
         vec->capacity *= GROWTH_FACTOR;
         if (__memory_allocate(vec) == 1) {
-            return 1;
+            return MEMORY_ALLOCATE_ERROR;
         }
     }
     vec->data[vec->size] = elem;
@@ -37,7 +40,7 @@ int cvector_push_back(Vector* vec, int elem) {
 
 int cvector_pop(Vector *vec, int index) {
     if (index < 0 || index >= vec->size) {
-        return 1;
+        return INDEX_OUT_OF_BOUNDS;
     }
 
     for (int i = index; i < vec->size - 1; i++) {
@@ -77,14 +80,14 @@ int cvector_pop_back(Vector* vec) {
 
 int cvector_insert(Vector *vec, size_t index, int value) {
     if (index > vec->size) {
-        return 1;
+        return INDEX_OUT_OF_BOUNDS;
     }
 
     if (vec->size >= vec->capacity) {
         vec->capacity *= 2; 
         int *new_data = realloc(vec->data, vec->capacity * sizeof(int));
         if (new_data == NULL) {
-            return 1; 
+            return MEMORY_ALLOCATE_ERROR; 
         }
         vec->data = new_data;
     }
