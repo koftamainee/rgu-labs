@@ -1,0 +1,7 @@
+#ifndef ERRORS_H
+#define ERRORS_H
+
+#define MEMORY_ALLOCATE_ERROR 1
+#define DEREFERENCING_NULL_PTR 2
+
+#endif
