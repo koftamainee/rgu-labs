@@ -2,30 +2,41 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-int free_resources(const char* flags, ...);
+int free_resources(int flags, ...);
 
 int program_03_3() {
     char* str = (char*)malloc(23 * sizeof(char));
     int* arr = (int*)malloc(12 * sizeof(int));
     FILE* fptr = fopen("1.txt", "w");
-    free_resources("fcf", str, fptr, arr);
+
+    printf("resources for free: %p %p %p\n\n", str, fptr, arr);
+
+    free_resources('f', str, 'c', fptr, 'f', arr);
     return 0;
 }
 
-int free_resources(const char* flags, ...) {
-    const char* ptr = flags;
+int free_resources(int flag, ...) {
+    int c;
+    void *arg;
     va_list valist;
-    va_start(valist, flags);
-    while (*ptr) {
-        printf("%c", *ptr);
-        if (*ptr == 'f') {
-            free(va_arg(valist, void*));
-        } else if (*ptr == 'c') {
-            fclose(va_arg(valist, FILE*));
+    c = flag;
+    va_start(valist, flag);
+    while (1) {
+        arg = va_arg(valist, void*);
+        if (arg == NULL) {
+            return 0;
+        }
+        if (c == 'f') {
+            printf("freeing memory at %p\n", arg);
+            free(arg);
+        } else if (c == 'c') {
+            printf("closing file var at %p\n", arg);
+            fclose((FILE*)arg);
         } else {
             return 1;
         }
-        ptr++;
+
+        c = va_arg(valist, int);
     }
     va_end(valist);
     return 0;
