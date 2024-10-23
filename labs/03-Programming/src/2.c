@@ -11,7 +11,27 @@ int creorder_string(const char *str, char **ans);
 int cstrcat(const char **strings, char **ans, int seed);
 
 int program_03_2(int argc, char *argv[]) {
-    
+    int int_ans;
+    char* str_ans;
+    char flag = argv[1][1];
+    if (argc < 3) {
+        printf("Not enough arguments\n");
+        return 1;
+    } else if (argv[1][0] == '-') {
+        switch (flag) {
+            case 'l': cstrlen(argv[2], &int_ans);
+                printf("len of the string %d", int_ans);
+                break;
+            // case 'r':
+            // case 'u':
+            // case 'n':
+            // case 'c':
+            default: printf("Invalid flag\n");
+            return 2;
+        }
+    }
+
+
     return 0;
 }
 

@@ -2,20 +2,20 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-int free_resources(int flags, ...);
+int vilka(int flag, ...);
 
-int program_03_3() {
+int program_03_3(int argc, char *argv[]) {
     char* str = (char*)malloc(23 * sizeof(char));
     int* arr = (int*)malloc(12 * sizeof(int));
     FILE* fptr = fopen("1.txt", "w");
 
     printf("resources for free: %p %p %p\n\n", str, fptr, arr);
 
-    free_resources('f', str, 'c', fptr, 'f', arr);
+    vilka('f', str, (char*)'c', fptr, (char)'f', arr);
     return 0;
 }
 
-int free_resources(int flag, ...) {
+int vilka(int flag, ...) {
     int c;
     void *arg;
     va_list valist;
