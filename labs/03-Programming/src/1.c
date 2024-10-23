@@ -3,11 +3,16 @@
 
 #include "../../../libs/input.h"
 #include "../../../libs/custom_math.h"
+#include "../../../libs/errors.h"
+
+//custom errors
+#define INVALID_BASE -1
+
 
 int gorner_2p(int src, char **dest, int base);
 
 int program_03_1(int argc, char *argv[]) {
-    int num, base, r;
+    int num, base, r, err;
     char *ans;
     printf("Input number: ");
     read_number(&num);
@@ -15,16 +20,15 @@ int program_03_1(int argc, char *argv[]) {
     read_number(&r);
     base = 1 << r;
     printf("Base: %d\n", base);
-    
-    switch (gorner_2p(num, &ans, r)) {
+    err = gorner_2p(num, &ans, r);
+
+    switch (err) {
         case 0: printf("num %d in %d base is: %s\n", num, base, ans); 
         break;
-        case 1: printf("Invalid base.\n");
-        return 1;
-        case 2: printf("Memory allocation error.\n");
-        return 2;
-        defauls: printf("Undefined behaviour 0_o");
-        return -1;
+        case INVALID_BASE: printf("Invalid base.\n");
+        return err;
+        case MEMORY_ALLOCATE_ERROR: printf("Memory allocation error.\n");
+        return err;
     }
     free(ans);
     return 0;
@@ -36,7 +40,7 @@ int gorner_2p(int src, char** dest, int r) {
     int base = 1 << r;
 
     if (base < 2 || base > 32) {
-        return 1; 
+        return INVALID_BASE; 
     }
 
     len = log_base(abs(src), base) + 1; 
@@ -44,7 +48,7 @@ int gorner_2p(int src, char** dest, int r) {
     if (src == 0) {
         *dest = (char*)malloc(2 * sizeof(char));
         if (!*dest) {
-            return 2;
+            return MEMORY_ALLOCATE_ERROR;
         }
         (*dest)[0] = '0';
         (*dest)[1] = '\0';
@@ -59,7 +63,7 @@ int gorner_2p(int src, char** dest, int r) {
 
     *dest = (char*)malloc((len + 1) * sizeof(char));
     if (!*dest) {
-        return 2;
+        return MEMORY_ALLOCATE_ERROR;
     }
     ptr = *dest;
 
