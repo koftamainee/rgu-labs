@@ -20,14 +20,14 @@ void vilka(char const *restrict_format, ...) {
     return;
 }
 
-int rerealloc(void *src, void **dest, size_t size) {
+int rerealloc(void **ptr, size_t size) {
     void *for_realloc = NULL;
     int err;
 
-    for_realloc = realloc(src, size);
+    for_realloc = realloc(*ptr, size);
     if (for_realloc == NULL) {
         return 1;
     }
-    *dest = for_realloc;
+    *ptr = for_realloc;
     return 0;
 }

@@ -5,6 +5,6 @@
 #include <stdio.h>
 
 void vilka(char const *restrict_format, ...);
-int rerealloc(void *src, void **dest, size_t size);
+int rerealloc(void **ptr, size_t size);
 
 #endif
