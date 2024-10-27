@@ -14,7 +14,7 @@ int program_03_3(int argc, char *argv[]) {
 
     printf("resources for free: %p %p %p\n\n", str, fptr, arr);
 
-    err = c_vilka('f', str, 'c', fptr, 'w', arr, 'w', str, 'f', NULL);
+    err = c_vilka('f', str, 'c', fptr, 'f', arr, 'w', str, 'f', NULL);
 
     if (err != 0) {
         printf("vilka slomalas po vashei vine :-(\n");
