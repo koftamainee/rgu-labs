@@ -12,7 +12,7 @@ void remove_newline(char *buf);
 int program_03_4() {
     int err, i;
     Vector vec;
-    char substr[] = "";
+    char substr[] = "a";
     err = fstrstr(substr, &vec, "files/1.txt", "files/2.txt", NULL);
     switch (err) {
         case DEREFERENCING_NULL_PTR: printf("Dereferencing NULL ptr\n"); break;
@@ -62,17 +62,6 @@ int _strstr_inner(char const *substr, char const *str, int *index) {
     return 0;
 }
 
-void remove_newline(char *buf) {
-    int i = 0;
-    while (buf[i] != '\0') {
-        if (buf[i] == '\n') {
-            buf[i] = '\0';
-            break;
-        }
-        i++;
-    }
-}
-
 int fstrstr(char const *str, ...) {
     Vector *vec;
     int index, err, string_number, file_index;
@@ -107,7 +96,7 @@ int fstrstr(char const *str, ...) {
 
         string_number = 1;
         while (fgets(buf, BUFSIZ, fptr)) {
-            remove_newline(buf);
+            // remove_newline(buf);
             int i = 0;
             while (buf[i] != '\0') {
                 err = _strstr_inner(str, buf + i, &index);
