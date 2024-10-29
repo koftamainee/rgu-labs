@@ -3,18 +3,17 @@
 #include <stdarg.h>
 
 void vilka(char const *restrict_format, ...) {
-    char flag;
     void *arg;
     va_list valist;
     va_start(valist, restrict_format);
     while (*restrict_format) {
-        flag = *restrict_format;
         arg = va_arg(valist, void*);
-        if (flag == 'f') {
+        if (*restrict_format == 'f') {
             free(arg);
-        } else if (flag == 'c') {
+        } else if (*restrict_format == 'c') {
             fclose((FILE*)arg);
         }
+        restrict_format++;
     }
     va_end(valist);
     return;
