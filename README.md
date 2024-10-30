@@ -82,7 +82,7 @@ cd build
 #### Run CMake with Ninja
 
 ```bash
-cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_linux.cmake ..
+cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_linux.cmake -DCMAKE_BUILD_TYPE=Release ..
 ```
 
 #### Build the Project
@@ -102,7 +102,7 @@ For Windows, you can use either MinGW or Visual Studio. Choose the appropriate i
 2. Run CMake with Ninja:
 
     ```bash
-    cmake -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_windows.cmake ..
+    cmake -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_windows.cmake -DCMAKE_BUILD_TYPE=Release ..
     ```
 
 3. Build the project:
@@ -118,10 +118,10 @@ For Windows, you can use either MinGW or Visual Studio. Choose the appropriate i
 2. Run CMake with Visual Studio:
 
     ```bash
-    cmake -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_windows.cmake ..
+    cmake -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_windows.cmake -DCMAKE_BUILD_TYPE=Release ..
     ```
 
-   Replace "2019" with your version of Visual Studio if necessary.
+   Replace "2022" with your version of Visual Studio if necessary.
 
 3. Build the project:
 
