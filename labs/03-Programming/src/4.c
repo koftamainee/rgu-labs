@@ -5,8 +5,8 @@
 #include "../../../libs/cvector.h"
 #include "../../../libs/errors.h"
 
-int fstrstr(char const *str, ...);
-int _strstr_inner(char const *substr, char const *str, int *index);
+int fstrstr(const char *str, ...);
+int _strstr_inner(const char *substr, char const *str, int *index);
 void remove_newline(char *buf);
 
 int program_03_4() {

@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#define INITIAL_CAPACITY 1
+#define INITIAL_CAPACITY 16
 #define GROWTH_FACTOR 2
 
 typedef struct dynamic_array {
