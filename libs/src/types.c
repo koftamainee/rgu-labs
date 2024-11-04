@@ -59,6 +59,50 @@ int citoa(int num, int base, char **ans) {
     return OK;
 }
 
+int cutoa(unsigned int num, int base, char **ans) {
+    unsigned int digit, len;
+
+    if (ans == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+
+    if (base < 2 || base > 36) {
+        return INVALID_NUMERIC_BASE;
+    }
+
+    if (num == 0) {
+        *ans = malloc(2 * sizeof(char));
+        if (*ans == NULL) {
+            return MEMORY_ALLOCATE_ERROR;
+        }
+        (*ans)[0] = '0';
+        (*ans)[1] = '\0';
+        return OK;
+    }
+
+    len = log_base(num, base) + 1;
+    *ans = malloc((len + 1) * sizeof(char));
+    if (*ans == NULL) {
+        return MEMORY_ALLOCATE_ERROR;
+    }
+
+    char* ptr = *ans + len;
+    *ptr-- = '\0';
+
+    while (num) {
+        digit = num % base;
+        num /= base;
+        if (digit > 9) {
+            *ptr = digit + 'A' - 10;
+        } else {
+            *ptr = digit + '0';
+        }
+        ptr--;
+    }
+
+    return OK;
+}
+
 int catoi(char const *str, int base, int *ans) {
     int num = 0;
     int digit = 0;
