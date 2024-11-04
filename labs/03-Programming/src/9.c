@@ -13,23 +13,26 @@ int oversprintf(char *restrict s, char *restrict _format, ...);
 
 int dec_float_to_str(float num, char **ans);
 int dec_double_to_str(double num, char **ans);
+int find_zykendorffs_representation(unsigned int num, unsigned int const *row, size_t numbers_in_row_count, unsigned int **ans, size_t *numbers_in_ans_count);
 
 int program_03_9() {
     printf("Standart flags:\n");
     printf("printf:     ");
     printf("standart flags: hi %d %u %f %lf %c %s %o %x %X %b\n", 123, -52, 12.23, 52.52, 'a', "abcdefg", 123, 88, 14, 65);
     printf("overprintf: ");
-    overprintf("standart flags: hi %d %u %f %lf %c %s %o %x %X %b | custom flags: %Ro %Zr || %Cv %CV %to %TO || %mi | %mu | %mf | %md\n",
-    123, -52, 12.23, 52.52, 'a', "abcdefg", 123, 88, 14, 65,144, 98, 2731, 16, 2731, 16, "-aab", 16, "-AAB", 16, 55, -3, 82.23, 987.15);
+    overprintf("standart flags: hi %d %u %f %lf %c %s %o %x %X %b | custom flags: %Ro || %Zr || %Cv %CV || %to %TO || %mi | %mu | %mf | %md\n",
+    123, -52, 12.23, 52.52, 'a', "abcdefg", 123, 88, 14, 65, 144, 6566, 2731, 16, 2731, 16, "-aab", 16, "-AAB", 16, 55, -3, 82.23, 987.15);
     return 0;
 }
 
 int overprintf(char *restrict _format, ...) {
+    size_t nums_in_row, nums_in_ans;
     float float_num;
     double double_num;
     unsigned int unum;
     int err, base, num;
     int i_ans, i;
+    unsigned int *u_ptr = NULL, *u_ans_ptr = NULL;
     char *s_ans = NULL, *s_ans_cpy = NULL, *str_num = NULL;
     unsigned char *uc_ptr;
     va_list valist;
@@ -215,7 +218,22 @@ int overprintf(char *restrict _format, ...) {
                 
                 case 'Z':
                     if (*(_format + 2) == 'r') {
-                        va_arg(valist, int); //TODO
+                        unum = va_arg(valist, unsigned int);
+                        err = generate_fibonacci_row(unum, &u_ptr, &nums_in_row);
+                        if (err) {
+                            free(u_ptr);
+                            return err;
+                        }
+                        for (i = 0; i < nums_in_row; ++i) {
+                        }
+                        err = find_zykendorffs_representation(unum, u_ptr, nums_in_row, &u_ans_ptr, &nums_in_ans);
+                        if (err) {
+                            vilka("ff", u_ptr, u_ans_ptr);
+                            return err;
+                        }
+                        for(i = 0; i < nums_in_ans; ++i) {
+                            overprintf("%d ", u_ans_ptr[i]);
+                        }
                         _format += 3;
                     } else {
                         putc('%', stdout);
@@ -514,3 +532,30 @@ int dec_double_to_str(double num, char **ans) {
     return OK;
 }
 
+int find_zykendorffs_representation(unsigned int num, unsigned int const *row, size_t numbers_in_row_count, unsigned int **ans, size_t *numbers_in_ans_count) {
+    int i, err;
+
+    if (row == NULL || ans == NULL || numbers_in_ans_count == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+
+    *ans = (unsigned int*)malloc(numbers_in_row_count * sizeof(unsigned int));
+    if (*ans == NULL) {
+        return MEMORY_ALLOCATE_ERROR;
+    }
+
+    *numbers_in_ans_count = 0;
+    for (i = numbers_in_row_count - 1; i >= 0 && num > 0; --i) {
+        if (row[i] <= num) {
+            num -= row[i];
+            (*ans)[(*numbers_in_ans_count)++] = row[i]; 
+            i--;
+        }
+    }
+    err = rerealloc((void**)ans, *numbers_in_ans_count);
+    if (err) {
+        return err;
+    }
+
+    return OK;
+}
