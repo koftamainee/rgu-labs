@@ -1,11 +1,17 @@
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdio.h>
 
 #include "../errors.h"
 #include "../custom_math.h"
 
 int citoa(int num, int base, char **ans) {
     int digit, len, is_negative = 0;
+
+    if (ans == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+    
     if (base < 2 || base > 36) {
         return INVALID_NUMERIC_BASE;
     }
@@ -53,10 +59,14 @@ int citoa(int num, int base, char **ans) {
     return OK;
 }
 
-int catoi(char* str, int base, int *ans) {
+int catoi(char const *str, int base, int *ans) {
     int num = 0;
     int digit = 0;
     int minus = 0;
+
+    if (str == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
 
     if (*str == '-') {
         minus = 1;
