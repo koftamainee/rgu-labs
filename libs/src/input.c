@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../errors.h"
 
 void clear_screen() {
     #ifdef WIN32
@@ -12,7 +13,7 @@ void clear_screen() {
     #endif
 }
 
-int read_str(char** str) {
+int read_str(char **str) {
     char buf[BUFSIZ];
     int len;
     int c;
@@ -23,7 +24,7 @@ int read_str(char** str) {
     len = strlen(buf);
     *str = (char*)malloc((len + 1) * sizeof(char));
     if (!*str) {
-        return 1;
+        return MEMORY_ALLOCATE_ERROR;
     }
 
 
@@ -32,7 +33,7 @@ int read_str(char** str) {
 }
 
 
-int read_number(int* number) {
+void read_number(int *number) {
     int c;
     while (1) {
         printf("Input int number: ");
@@ -44,10 +45,9 @@ int read_number(int* number) {
         }
         break;
     }
-    return 0;
 }
 
-int read_binary_number(int* number) {
+int read_binary_number(int *number) {
     int c;
     while (1) {
         printf("Input binary number: ");
@@ -63,7 +63,7 @@ int read_binary_number(int* number) {
 }
 
 
-int read_array_from_file(FILE* fptr, int* array) {
+int read_array_from_file(FILE *fptr, int *array) {
     int i = 0;
     while (fscanf(fptr, "%d", &array[i]) != EOF) {
         ++i;

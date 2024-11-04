@@ -12,7 +12,8 @@ int transpose_matrix(double** matrix, int height);
 
 
 int program_00_18() {
-    double** matrix = random_matrix_generate(MATRIX_SIZE, MATRIX_SIZE, 100, -100);
+    double** matrix;
+    random_matrix_generate(&matrix, MATRIX_SIZE, MATRIX_SIZE, 100, -100);
 
     if (matrix == NULL) {
         printf("Memory alocation error. Exit code 1.");
@@ -27,14 +28,14 @@ int program_00_18() {
     }
 
     printf("Old matrix:\n");
-    matrix_print(matrix, MATRIX_SIZE, MATRIX_SIZE);
+    matrix_print(&matrix, MATRIX_SIZE, MATRIX_SIZE);
 
     transpose_matrix(matrix, MATRIX_SIZE);
 
     printf("New matrix:\n");
-    matrix_print(matrix, MATRIX_SIZE, MATRIX_SIZE);
+    matrix_print(&matrix, MATRIX_SIZE, MATRIX_SIZE);
 
-    matrix_free(matrix, MATRIX_SIZE, MATRIX_SIZE);
+    matrix_free(&matrix, MATRIX_SIZE, MATRIX_SIZE);
     return 0;
 }
 
