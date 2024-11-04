@@ -90,3 +90,32 @@ int catoi(char const *str, int base, int *ans) {
 
     return OK;
 }
+
+int char_to_int(int *ans, char c) {
+    if (!isalnum(c)) {
+        return INVALID_CHAR_TO_NUM_CONVERSION;
+    }
+
+    if (isdigit(c)) {
+        *ans = c - '0';
+    } else {
+        *ans = toupper(c) - 'A' + 10;
+    }
+
+    return OK;
+}
+
+int int_to_char(char *ans, int num) {
+    if (num < 0 || num > 35) {
+        printf("%d", num);
+        return INVALID_NUM_TO_CHAR_CONVERSION;
+    }
+
+    if (num < 10) {
+        *ans = '0' + num;
+    } else {
+        *ans = 'A' + num - 10;
+    }
+
+    return OK;
+}

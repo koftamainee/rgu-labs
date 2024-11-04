@@ -38,6 +38,9 @@ int program_03_7() {
         case MEMORY_ALLOCATE_ERROR:
             printf("Memory allocation error\n");
             break;
+        case INVALID_NUMERIC_BASE:
+            printf("Invalid numeric base\n");
+            break;
         default:
             printf("Undefined behavior 0_o. Exit code %d", err);
             break;
@@ -54,6 +57,9 @@ int find_kaprekar_numbers(Vector *ans, int *answers_count, int numbers_count, in
 
     if (ans == NULL || answers_count == NULL) {
         return DEREFERENCING_NULL_PTR;
+    }
+     if (base < 2 || base > 36) {
+        return INVALID_NUMERIC_BASE;
     }
 
     err = cvector_init(ans);
@@ -92,6 +98,9 @@ int is_kaprekar(int *ans, char const *number, int base) {
     
     if (ans == NULL || number == NULL) {
         return DEREFERENCING_NULL_PTR;
+    }
+    if (base < 2 || base > 36) {
+        return INVALID_NUMERIC_BASE;
     }
 
     err = catoi(number, base, &int_number);
