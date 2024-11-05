@@ -1,11 +1,14 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 
 #include "../../../libs/errors.h"
 #include "../../../libs/types.h"
 #include "../../../libs/custom_math.h"
 #include "../../../libs/memory.h"
+
+int overvfprintf(FILE *restrict stream, char *restrict _format, va_list valist);
 
 int overprintf(char *restrict _format, ...);
 int overfprintf(FILE *restrict stream, char *restrict _format, ...);
@@ -14,19 +17,33 @@ int oversprintf(char *restrict s, char *restrict _format, ...);
 int dec_float_to_str(float num, char **ans);
 int dec_double_to_str(double num, char **ans);
 int find_zykendorffs_representation(unsigned int num, unsigned int const *row, size_t numbers_in_row_count, unsigned int **ans, size_t *numbers_in_ans_count);
+int int_to_roman(int num, char **ans);
 
 int program_03_9() {
+    FILE *fptr = NULL;
+
+    
+
     printf("Standart flags:\n");
     printf("printf:     ");
     printf("standart flags: hi %d %u %f %lf %c %s %o %x %X %b\n", 123, -52, 12.23, 52.52, 'a', "abcdefg", 123, 88, 14, 65);
-    printf("overprintf: ");
     overprintf("standart flags: hi %d %u %f %lf %c %s %o %x %X %b | custom flags: %Ro || %Zr || %Cv %CV || %to %TO || %mi | %mu | %mf | %md\n",
     123, -52, 12.23, 52.52, 'a', "abcdefg", 123, 88, 14, 65, 144, 6566, 2731, 16, 2731, 16, "-aab", 16, "-AAB", 16, 55, -3, 82.23, 987.15);
-    return 0;
+    
+    // Testing overfprintf
+    fptr = fopen("1.txt", "w");
+    if (fptr == NULL) {
+        return OPENING_THE_FILE_ERROR;
+    }
+    overfprintf(fptr, "standart flags: hi %d %u %f %lf %c %s %o %x %X %b | custom flags: %Ro || %Zr || %Cv %CV || %to %TO || %mi | %mu | %mf | %md\n",
+    123, -52, 12.23, 52.52, 'a', "abcdefg", 123, 88, 14, 65, 144, 6566, 2731, 16, 2731, 16, "-aab", 16, "-AAB", 16, 55, -3, 82.23, 987.15);
+    fclose(fptr);
+
+    return OK;
 }
 
-int overprintf(char *restrict _format, ...) {
-    size_t nums_in_row, nums_in_ans;
+int overfvprintf(FILE *restrict stream, char *restrict _format, va_list valist) {
+    size_t nums_in_row, nums_in_ans, format_len, current_format_index = 0;
     float float_num;
     double double_num;
     unsigned int unum;
@@ -35,10 +52,9 @@ int overprintf(char *restrict _format, ...) {
     unsigned int *u_ptr = NULL, *u_ans_ptr = NULL;
     char *s_ans = NULL, *s_ans_cpy = NULL, *str_num = NULL;
     unsigned char *uc_ptr;
-    va_list valist;
-    va_start(valist, _format);
+    format_len = strlen(_format) - 1;
 
-    while (*_format) {
+    while (current_format_index <= format_len) {
         if (*_format == '%') {
             switch (*(_format + 1)) {
 
@@ -53,11 +69,12 @@ int overprintf(char *restrict _format, ...) {
                     }
                     s_ans_cpy = s_ans;
                     while (*s_ans_cpy) {
-                        putc(*s_ans_cpy++, stdout);
+                        fputc(*s_ans_cpy++, stream);
                     }
                     free(s_ans);
                         s_ans = NULL;
                         s_ans_cpy = NULL;
+                    current_format_index += 2;
                     _format += 2;
                     break;
 
@@ -71,11 +88,12 @@ int overprintf(char *restrict _format, ...) {
                     }
                     s_ans_cpy = s_ans;
                     while (*s_ans_cpy) {
-                        putc(*s_ans_cpy++, stdout);
+                        fputc(*s_ans_cpy++, stream);
                     }
                     free(s_ans);
                         s_ans = NULL;
                         s_ans_cpy = NULL;
+                    current_format_index += 2;
                     _format += 2;
                     break;
 
@@ -89,11 +107,12 @@ int overprintf(char *restrict _format, ...) {
                     }
                     s_ans_cpy = s_ans;
                     while (*s_ans_cpy) {
-                        putc(*s_ans_cpy++, stdout);
+                        fputc(*s_ans_cpy++, stream);
                     }
                     free(s_ans);
                         s_ans = NULL;
                         s_ans_cpy = NULL;
+                    current_format_index += 2;
                     _format += 2;
                     break;
 
@@ -108,30 +127,39 @@ int overprintf(char *restrict _format, ...) {
                         }
                         s_ans_cpy = s_ans;
                         while (*s_ans_cpy) {
-                            putc(*s_ans_cpy++, stdout);
+                            fputc(*s_ans_cpy++, stream);
                         }
                         free(s_ans);
                         s_ans = NULL;
                         s_ans_cpy = NULL;
+                        current_format_index += 3;
                         _format += 3;
 
                     } else {
-                        putc('%', stdout);
+                        fputc('%', stream);
+                        current_format_index += 1;
                         _format++;
                     }
                     break;
 
                 case 'c':
-                putc(va_arg(valist, int), stdout);
-                _format += 2;
-                break;
+                    fputc(va_arg(valist, int), stream);
+                    current_format_index += 2;
+                    _format += 2;
+                    break;
+
                 case 's':
-                s_ans = va_arg(valist, char*);
-                while (*s_ans) {
-                    putc(*s_ans++, stdout);
-                }
-                _format += 2;
-                break;
+                        s_ans = va_arg(valist, char*);
+                        s_ans_cpy = s_ans;
+                        while (*s_ans_cpy) {
+                            fputc(*s_ans_cpy++, stream);
+                        }
+                        s_ans = NULL;
+                        s_ans_cpy = NULL;
+                    current_format_index += 2;
+                    _format += 2;
+                    break;
+
 
                 case 'o': 
                     err = citoa(va_arg(valist, int), 8, &s_ans);
@@ -143,11 +171,12 @@ int overprintf(char *restrict _format, ...) {
                     }
                     s_ans_cpy = s_ans;
                     while (*s_ans_cpy) {
-                        putc(*s_ans_cpy++, stdout);
+                        fputc(*s_ans_cpy++, stream);
                     }
                     free(s_ans);
                         s_ans = NULL;
                         s_ans_cpy = NULL;
+                    current_format_index += 2;
                     _format += 2;
                     break;
 
@@ -161,11 +190,12 @@ int overprintf(char *restrict _format, ...) {
                     }
                     s_ans_cpy = s_ans;
                     while (*s_ans_cpy) {
-                        putc(tolower(*s_ans_cpy++), stdout);
+                        fputc(tolower(*s_ans_cpy++), stream);
                     }
                     free(s_ans);
                         s_ans = NULL;
                         s_ans_cpy = NULL;
+                    current_format_index += 2;
                     _format += 2;
                     break;
                 
@@ -179,11 +209,12 @@ int overprintf(char *restrict _format, ...) {
                     }
                     s_ans_cpy = s_ans;
                     while (*s_ans_cpy) {
-                        putc(*s_ans_cpy++, stdout);
+                        fputc(*s_ans_cpy++, stream);
                     }
                     free(s_ans);
                         s_ans = NULL;
                         s_ans_cpy = NULL;
+                    current_format_index += 2;
                     _format += 2;
                     break;
 
@@ -197,21 +228,31 @@ int overprintf(char *restrict _format, ...) {
                     }
                     s_ans_cpy = s_ans;
                     while (*s_ans_cpy) {
-                        putc(*s_ans_cpy++, stdout);
+                        fputc(*s_ans_cpy++, stream);
                     }
                     free(s_ans);
                         s_ans = NULL;
                         s_ans_cpy = NULL;
+                    current_format_index += 2;
                     _format += 2;
                     break;
 
                 // custom flags
                 case 'R':
                     if (*(_format + 2) == 'o') {
-                        va_arg(valist, int); //TODO
+                        num = va_arg(valist, int);
+                        err = int_to_roman(num, &s_ans);
+                        if (err) {
+                            free(s_ans);
+                            return err;
+                        }
+                        fputs(s_ans, stream);
+                        free(s_ans);
+                        current_format_index += 3;
                         _format += 3;
                     } else {
-                        putc('%', stdout);
+                        fputc('%', stream);
+                        current_format_index += 1;
                         _format++;
                     }
                     break;
@@ -232,11 +273,28 @@ int overprintf(char *restrict _format, ...) {
                             return err;
                         }
                         for(i = 0; i < nums_in_ans; ++i) {
-                            overprintf("%d ", u_ans_ptr[i]);
+                            
+                            err = cutoa(u_ans_ptr[i], 10, &s_ans);
+                            if (err) {
+                                free(s_ans);
+                                s_ans = NULL;
+                                s_ans_cpy = NULL;
+                                return err;
+                            }
+                            s_ans_cpy = s_ans;
+                            while (*s_ans_cpy) {
+                                fputc(*s_ans_cpy++, stream);
+                            }
+                            free(s_ans);
+                                s_ans = NULL;
+                                s_ans_cpy = NULL;
+
                         }
+                        current_format_index += 3;
                         _format += 3;
                     } else {
-                        putc('%', stdout);
+                        fputc('%', stream);
+                        current_format_index += 1;
                         _format++;
                     }
                     break;
@@ -257,11 +315,12 @@ int overprintf(char *restrict _format, ...) {
                         }
                         s_ans_cpy = s_ans;
                         while (*s_ans_cpy) {
-                            putc(tolower(*s_ans_cpy++), stdout);
+                            fputc(tolower(*s_ans_cpy++), stream);
                         }
                         free(s_ans);
                             s_ans = NULL;
                             s_ans_cpy = NULL;
+                            current_format_index += 3;
                             _format += 3;
                     } else if (*(_format + 2) == 'V') {
                          num = va_arg(valist, int);
@@ -278,14 +337,16 @@ int overprintf(char *restrict _format, ...) {
                         }
                         s_ans_cpy = s_ans;
                         while (*s_ans_cpy) {
-                            putc(*s_ans_cpy++, stdout);
+                            fputc(*s_ans_cpy++, stream);
                         }
                         free(s_ans);
                             s_ans = NULL;
                             s_ans_cpy = NULL;
+                            current_format_index += 3;
                             _format += 3;
                     } else {
-                        putc('%', stdout);
+                        fputc('%', stream);
+                        current_format_index += 1;
                         _format++;
                     }
                     break;
@@ -307,15 +368,16 @@ int overprintf(char *restrict _format, ...) {
                         }
                         s_ans_cpy = s_ans;
                         while (*s_ans_cpy) {
-                            putc(*s_ans_cpy++, stdout);
+                            fputc(*s_ans_cpy++, stream);
                         }
                         free(s_ans);
                             s_ans = NULL;
                             s_ans_cpy = NULL;
-
+                        current_format_index += 3;
                         _format += 3;
                     } else {
-                        putc('%', stdout);
+                        fputc('%', stream);
+                        current_format_index += 1;
                         _format++;
                     }
                     break;
@@ -337,15 +399,16 @@ int overprintf(char *restrict _format, ...) {
                         }
                         s_ans_cpy = s_ans;
                         while (*s_ans_cpy) {
-                            putc(*s_ans_cpy++, stdout);
+                            fputc(*s_ans_cpy++, stream);
                         }
                         free(s_ans);
                             s_ans = NULL;
                             s_ans_cpy = NULL;
-
+                        current_format_index += 3;
                         _format += 3;
                     } else {
-                        putc('%', stdout);
+                        fputc('%', stream);
+                        current_format_index += 1;
                         _format++;
                     }
                     break;
@@ -365,14 +428,15 @@ int overprintf(char *restrict _format, ...) {
                                 }
                                 s_ans_cpy = s_ans;
                                 while (*s_ans_cpy) {
-                                    putc(*s_ans_cpy++, stdout);
+                                    fputc(*s_ans_cpy++, stream);
                                 }
                                 free(s_ans);
                                     s_ans = NULL;
                                     s_ans_cpy = NULL;
-                                putc(' ', stdout);
+                                fputc(' ', stream);
                                     }
                                     uc_ptr = NULL;
+                                    current_format_index += 3;
                                     _format += 3;
                             break;
                     
@@ -389,14 +453,15 @@ int overprintf(char *restrict _format, ...) {
                                 }
                                 s_ans_cpy = s_ans;
                                 while (*s_ans_cpy) {
-                                    putc(*s_ans_cpy++, stdout);
+                                    fputc(*s_ans_cpy++, stream);
                                 }
                                 free(s_ans);
                                     s_ans = NULL;
                                     s_ans_cpy = NULL;
-                                putc(' ', stdout);
+                                fputc(' ', stream);
                         }
                         uc_ptr = NULL;
+                        current_format_index += 3;
                         _format += 3;
                         break;
                     
@@ -413,14 +478,15 @@ int overprintf(char *restrict _format, ...) {
                                 }
                                 s_ans_cpy = s_ans;
                                 while (*s_ans_cpy) {
-                                    putc(*s_ans_cpy++, stdout);
+                                    fputc(*s_ans_cpy++, stream);
                                 }
                                 free(s_ans);
                                     s_ans = NULL;
                                     s_ans_cpy = NULL;
-                                putc(' ', stdout);
+                                fputc(' ', stream);
                         }
                         uc_ptr = NULL;
+                        current_format_index += 3;
                         _format += 3;
                         break;
                     
@@ -437,20 +503,22 @@ int overprintf(char *restrict _format, ...) {
                                 }
                                 s_ans_cpy = s_ans;
                                 while (*s_ans_cpy) {
-                                    putc(*s_ans_cpy++, stdout);
+                                    fputc(*s_ans_cpy++, stream);
                                 }
                                 free(s_ans);
                                     s_ans = NULL;
                                     s_ans_cpy = NULL;
-                                putc(' ', stdout);
+                                fputc(' ', stream);
                             }
                         uc_ptr = NULL;
+                        current_format_index += 3;
                         _format += 3;
                         break;
 
                             
                         default:
-                            putc('%', stdout);
+                            fputc('%', stream);
+                            current_format_index += 1;
                             _format++;
                     }
                     break;
@@ -458,10 +526,37 @@ int overprintf(char *restrict _format, ...) {
             }
         }
 
-        putc(*_format, stdout);
-        _format++;
+        if (*_format != '%') {
+            fputc(*_format, stream);
+            current_format_index += 1;
+            _format++;
+        }
     }
     return OK;
+}
+
+int overprintf(char *restrict _format, ...) {
+    int err;
+    va_list valist;
+    va_start(valist, _format);
+    err = overvfprintf(stdout, _format, valist);
+    if (err) {
+        return err;
+    }
+    va_end(valist);
+    return err;
+}
+
+int overfprintf(FILE *restrict stream, char *restrict _format, ...) {
+    int err;
+    va_list valist;
+    va_start(valist, _format);
+    err = overvfprintf(stream, _format, valist);
+    if (err) {
+        return err;
+    }
+    va_end(valist);
+    return err;
 }
 
 int dec_float_to_str(float num, char **ans) {
@@ -557,5 +652,46 @@ int find_zykendorffs_representation(unsigned int num, unsigned int const *row, s
         return err;
     }
 
+    return OK;
+}
+
+int int_to_roman(int num, char **ans) {
+    int err;
+    size_t len = 0;
+    char *temp = NULL;
+    int i = 0;
+    struct {
+        int value;
+        const char *symbol;
+    } roman_numerals[] = {
+        {1000, "M"}, {900, "CM"}, {500, "D"}, {400, "CD"},
+        {100, "C"}, {90, "XC"}, {50, "L"}, {40, "XL"},
+        {10, "X"}, {9, "IX"}, {5, "V"}, {4, "IV"},
+        {1, "I"}
+    };
+
+    if (ans == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+    
+    while (num > 0) {
+        while (num >= roman_numerals[i].value) {
+            err = rerealloc((void**)&temp, (len + strlen(roman_numerals[i].symbol)) * sizeof(char));
+            if (err) {
+                return err;
+            }
+            memcpy(temp + len, roman_numerals[i].symbol, strlen(roman_numerals[i].symbol));
+            len += strlen(roman_numerals[i].symbol);
+            num -= roman_numerals[i].value;
+        }
+        err = rerealloc((void**)&temp, (len + 1) * sizeof(char));
+            if (err) {
+                return err;
+            }
+        temp[len] = 0;
+        i++;
+
+    }
+    *ans = temp;
     return OK;
 }
