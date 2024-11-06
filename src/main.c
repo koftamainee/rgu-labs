@@ -280,7 +280,28 @@ void lab_03() {
         program_03_17, program_03_18, program_03_19
     };
 
-    char tasks[] = "TODO";
+    char tasks[] = "1. Gorner scheme with 2^r base.\
+1. Gorner scheme with 2^r base.\n\
+2. Transform string with argc and argv.\n\
+3. Vilka prototype.\n\
+4. Strstr in files.\n\
+5. Is polygon convex.\n\
+6. Value of polynomal in x.\n\
+7. Find Kaprekar numbers.\n\
+8. Sum numbers in base (v stolbik ._.).\n\
+9. Custom printf-like functions implementation.\n\
+10. Custom scanf-like functions implementation.\n\
+11. Select lexemes in a string by predicate.\n\
+12. Find strstr in several strings.\n\
+13. Find all possible unique decompositions of natural number.\n\
+14. Find longest sawtooth subsequence.\n\
+15. Find all saddle points in matrix.\n\
+16. Find all possible permutations of array.\n\
+17. Find the set of all unique subsets for elements of array.\n\
+18. Find all possible unique combinations of k elements for elements of array.\n\
+19. Find all possible configurations of cube towers.\n\
+0. Back\n\n\
+Input int number: ";
 
     int task;
     char c;
