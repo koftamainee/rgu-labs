@@ -1,28 +1,33 @@
 # Introduction
 
-Welcome to the **RGU Labs Project**! This guide will help you set up, build, and run the RGU Labs software from source. The project is designed for developers and students interested in learning the fundamentals of C development, Docker-based builds, and cross-platform compilation. With clear instructions for both Linux and Windows environments, this guide provides flexibility in building the project locally or within a Docker container.
+Welcome to the **RGU Labs Project**! This guide will help you set up, build, and run the RGU Labs from source. 
 
-Let’s get started with the prerequisites and dive into building and running your project!
+# Labs state
+
+| № | Path | Преподаватель | Статус |
+| :---: | --- | --- | --- |
+| 0 | labs/00-Programming | Ирбитский И.С. | **ready** |
+| 1 | labs/01-Bit_arithmetic | Мокряков А.В. | **ready**  |
+| 2 | labs/02-Bash_lab | Мокряков А.В. | 2/12  |
+| 3 | labs/03-Programming | Ирбитский И.С. | 10/19 |
+
+All other useful function are in **libs/** dir, main code with menu stored in **src/** dir
 
 # Build Guide
 
-## Table of Contents
+# Build via Docker (recommended)
 
-1. [Prerequisites](#prerequisites)
-2. [Clone the Repository](#clone-the-repository)
-3. [Build the Project](#build-the-project)
-   - [3.1 Build via Docker (recommended)](#31-build-via-docker-recommended)
-   - [3.2 Install Locally](#32-install-locally)
-     - [3.2.1 Linux Compilation](#321-linux-compilation)
-       - Build with `make` (recommended)
-       - Manual Build 
-     - [3.2.2 Windows Compilation](#322-windows-compilation)
-       - Using MinGW
-       - Using Visual Studio
-4. [Run the Project](#run-the-project)
-5. [License](#license)
+Build project with Docker
 
----
+```bash
+docker build -t rgu-labs .
+```
+Run the application in a container:
+```bash
+docker run -it --rm rgu-labs
+```
+
+# Build the project locally
 
 # 1. Prerequisites
 
@@ -42,20 +47,9 @@ To get started, clone the repository to your local machine:
 git clone https://github.com/koftamainee/rgu-labs/
 cd rgu-labs
 ```
-# 3. Build the project
 
-## 3.1. Build via Docker (recommended)
 
-Build project with Docker
-
-```bash
-docker build -t rgu-labs .
-```
-Run the application in a container:
-```bash
-docker run -it --rm rgu-labs
-```
-## 3.2. Install locally
+# 3. Build project
 
 Before compiling, edit the toolchain files to choose your compilers for Linux or Windows.
 
@@ -90,7 +84,7 @@ set(CMAKE_CXX_COMPILER x86_64-w64-mingw32-g++)
 ```
 
 
-## 3.2.1 Linux Compilation
+## 3.1. Linux Compilation
 
 ### Build with make (recommended)
 
@@ -119,7 +113,7 @@ cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_linux.cmake -DCMAKE_BUI
 ninja
 ```
 
-### 3.2.2 Windows Compilation
+### 3.2. Windows Compilation
 
 For Windows, you can use either MinGW or Visual Studio. Choose the appropriate instructions below:
 
