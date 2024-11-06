@@ -8,7 +8,7 @@
 #include "../../../libs/custom_math.h"
 #include "../../../libs/memory.h"
 
-int __format_string(char **formatted_string, char *restrict _format, va_list valist);
+int __overvprintf(char **formatted_string, char *restrict _format, va_list valist);
 
 int overprintf(char *restrict _format, ...);
 int overfprintf(FILE *restrict stream, char *restrict _format, ...);
@@ -48,7 +48,7 @@ int program_03_9() {
     return OK;
 }
 
-int __format_string(char **formatted_string, char *restrict _format, va_list valist) {
+int __overvprintf(char **formatted_string, char *restrict _format, va_list valist) {
     size_t nums_in_row, nums_in_ans, format_len, current_format_index = 0, capacity = BUFSIZ, current_ans_index = 0;
     float float_num;
     double double_num;
@@ -561,7 +561,7 @@ int overprintf(char *restrict _format, ...) {
     char *s_ans, *s_ans_cpy;
     va_list valist;
     va_start(valist, _format);
-    err = __format_string(&s_ans, _format, valist);
+    err = __overvprintf(&s_ans, _format, valist);
     if (err) {
         return err;
     }
@@ -581,7 +581,7 @@ int overfprintf(FILE *restrict stream, char *restrict _format, ...) {
     char *s_ans, *s_ans_cpy;
     va_list valist;
     va_start(valist, _format);
-    err = __format_string(&s_ans, _format, valist);
+    err = __overvprintf(&s_ans, _format, valist);
     if (err) {
         return err;
     }
@@ -601,7 +601,7 @@ int oversprintf(char *restrict s, char *restrict _format, ...) {
     char *s_ans;
     va_list valist;
     va_start(valist, _format);
-    err = __format_string(&s_ans, _format, valist);
+    err = __overvprintf(&s_ans, _format, valist);
     if (err) {
         return err;
     }
