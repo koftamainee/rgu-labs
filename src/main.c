@@ -252,7 +252,7 @@ Input int number: ";
         if (task < 13 && task > 0) {
             clear_screen();
 
-            snprintf(command, sizeof(command), "%s%d%s", "./scripts/02-Bash_lab/", task, ".sh");
+            snprintf(command, sizeof(command), "%s%d%s", "bash ./scripts/02-Bash_lab/", task, ".sh");
             system(command);
             
             printf("\nPress enter to continue...\n");
