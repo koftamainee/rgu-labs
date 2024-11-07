@@ -15,6 +15,10 @@ debug: BUILD_TYPE = Debug
 debug: build_linux
 	cd $(BUILD_DIR)/x86_64 && $(LLDB) $(TARGET)
 
+run: BUILD_TYPE = Debug
+run: build_linux
+	cd $(BUILD_DIR)/x86_64 && ./$(TARGET)
+
 build_linux:
 	mkdir -p $(BUILD_DIR)
 	cd $(BUILD_DIR) && cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_LINUX) -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ..

@@ -6,7 +6,7 @@
 // add vilka pls
 #include "../../../libs/memory.h"
 
-#define ITEMS_COUNT (11)
+#define ITEMS_COUNT (5)
 
 // Errors
 #define OK (0)
