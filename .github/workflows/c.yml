@@ -29,7 +29,3 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t rgu-labs .
-
-      - name: Run Docker container
-        run: |
-          docker run --rm rgu-labs
