@@ -32,5 +32,9 @@ build_windows:
 	cd $(BUILD_DIR) && cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_WINDOWS) -DCMAKE_BUILD_TYPE=Release ..
 	cd $(BUILD_DIR) && ninja
 
+docker: clean
+	docker build -t rgu-labs .
+	docker run -it --rm rgu-labs
+
 clean:
 	rm -rf $(BUILD_DIR)
