@@ -3,6 +3,7 @@
 #include <ctype.h>
 
 #include "../../../libs/input.h"
+#include "../../../libs/types.h"
 
 
 int str_to_num(char* str, int base);
@@ -18,35 +19,9 @@ int program_00_21() {
     
     printf("Input base: ");
     read_number(&base);
-    num = str_to_num(str_num, base);
+    catoi(str_num, base, &num);
     printf("Your number in %d numeral system is %d\n", base, num);
 
     free(str_num);
     return 0;   
-}
-
-int str_to_num(char* str, int base) {
-    int num = 0;
-    int digit = 0;
-    int minus = 0;
-
-    if (*str == '-') {
-        minus = 1;
-        str++;
-    }
-
-    while (*str) {
-        if (isalpha(*str)) {
-            digit = tolower(*str++) - 'a' + 10;
-        } else {
-            digit = *str++ - '0';
-        }
-        num = num * base + digit;
-    }
-
-    if (minus) {
-        num = -num;
-    }
-
-    return num;
 }

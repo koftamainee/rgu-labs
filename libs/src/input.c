@@ -20,7 +20,8 @@ int read_str(char **str) {
     
     while ((c = getchar()) != '\n' && c != EOF);
     printf("Input string: ");
-    fgets(buf, BUFSIZ, stdin);
+    //fgets(buf, BUFSIZ, stdin);
+    scanf("%s", buf);
     len = strlen(buf);
     *str = (char*)malloc((len + 1) * sizeof(char));
     if (!*str) {

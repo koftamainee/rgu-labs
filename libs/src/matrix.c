@@ -42,6 +42,7 @@ int matrix_free(double ***matrix, int height, int width) {
         free((*matrix)[i]);
     }
     free(*matrix);
+    
     return 0;
 }
 

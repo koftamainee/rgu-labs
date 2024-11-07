@@ -9,7 +9,7 @@
 
 int program_00_6() {
     int i;
-    double det;
+    double det, err;
     double** matrix;
     random_matrix_generate(&matrix, MATRIX_SIZE, MATRIX_SIZE, 100, -100);
 
@@ -27,7 +27,7 @@ int program_00_6() {
 
     matrix_print(&matrix, MATRIX_SIZE, MATRIX_SIZE);
 
-    det = determinant(&matrix, MATRIX_SIZE, &det);
+    err = determinant(&matrix, MATRIX_SIZE, &det);
 
     printf("Determinant for matrix is: %lf\n", det);
 
