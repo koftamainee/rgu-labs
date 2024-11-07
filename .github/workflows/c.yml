@@ -32,4 +32,4 @@ jobs:
 
       - name: Run Docker container
         run: |
-          docker run -it --rm my-app
+          docker run --rm rgu-labs
