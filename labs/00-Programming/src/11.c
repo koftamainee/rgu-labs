@@ -4,22 +4,25 @@
 #include "../../../libs/input.h"
 
 
-size_t custom_strlen(char* str);
+int custom_strlen(char* str, size_t *len);
 
 
 int program_00_11() {
+    size_t len = 0;
     char* str;
     read_str(&str);
-    printf("%zu\n", custom_strlen(str));
+    custom_strlen(str, &len);
+    printf("%zu\n", len);
     return 0;
 }
 
-size_t custom_strlen(char* str) {
+int custom_strlen(char* str, size_t *len) {
     char* c = str;
     int cnt = 0;
     while (*c) {
         ++c;
         ++cnt;
     }
-    return cnt;
+    *len = cnt - 1;
+    return 0;
 }

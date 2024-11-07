@@ -108,7 +108,7 @@ int catoi(char const *str, int base, int *ans) {
     int digit = 0;
     int minus = 0;
 
-    if (str == NULL) {
+    if (str == NULL || ans == NULL) {
         return DEREFERENCING_NULL_PTR;
     }
 
@@ -119,18 +119,15 @@ int catoi(char const *str, int base, int *ans) {
 
     while (*str) {
         if (isalpha(*str)) {
-            digit = tolower(*str++) - 'a' + 10;
-        } else {
-            digit = *str++ - '0';
+            digit = tolower(*str) - 'a' + 10;
+        } else if (isdigit(*str)) {
+            digit = *str - '0';
         }
         num = num * base + digit;
+        str++;
     }
 
-    if (minus) {
-        num = -num;
-    }
-
-    *ans = num;
+    *ans = minus ? -num : num;
 
     return OK;
 }

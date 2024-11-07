@@ -10,6 +10,7 @@ RUN make build_linux
 
 FROM debian:bookworm-slim
 
+
 WORKDIR /app
 
 COPY --from=builder /app/build/x86_64/ /app/
