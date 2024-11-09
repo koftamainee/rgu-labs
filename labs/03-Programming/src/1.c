@@ -46,7 +46,7 @@ int gorner_2p(int src, char** dest, int r) {
     len = log_base(abs(src), base) + 1; 
 
     if (src == 0) {
-        *dest = (char*)malloc(2 * sizeof(char));
+        *dest = (char*)malloc(2 * sizeof(char)); 
         if (!*dest) {
             return MEMORY_ALLOCATE_ERROR;
         }

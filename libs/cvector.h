@@ -7,9 +7,9 @@
 #define GROWTH_FACTOR 2
 
 typedef struct dynamic_array {
-    size_t size;
-    size_t capacity;
-    int* data;
+  size_t size;
+  size_t capacity;
+  int *data;
 } Vector;
 
 int __memory_allocate(Vector *vec);

@@ -2,7 +2,8 @@
 #define MATRIX_H
 
 int __matrix_memory_alocate(double ***matrix, int height, int width);
-int random_matrix_generate(double ***matrix, int height, int width, int max, int min);
+int random_matrix_generate(double ***matrix, int height, int width, int max,
+                           int min);
 int generate_zero_matrix(double ***matrix, int size);
 int generate_identity_matrix(double ***matrix, int size);
 int matrix_free(double ***matrix, int height, int width);
