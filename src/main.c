@@ -12,7 +12,7 @@ void lab_02();
 
 int choose_lab();
 
-int main() {
+int main(int argc, char *argv[]) {
   clear_screen();
   void (*labs[])() = {lab_00, lab_01, lab_02, lab_03};
 
@@ -23,7 +23,7 @@ int main() {
     if (lab_number == 0) {
       break;
     }
-    labs[lab_number - 1]();
+    labs[lab_number - 1](argc, argv);
   }
   printf("Have a good day.\n");
   return 0;

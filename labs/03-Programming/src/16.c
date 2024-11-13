@@ -243,7 +243,6 @@ int __permutations_inner(
                                result_permutations,
                                result_permutations_index_to_insert_permutation);
     if (err) {
-      printf("WTF");
       return err;
     }
 

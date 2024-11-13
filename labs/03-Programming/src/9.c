@@ -91,62 +91,42 @@ int __overvprintf(char **formatted_string, char *restrict _format,
     }
     if (*_format == '%') {
       switch (*(_format + 1)) {
-
-      // default flags
-      case 'd':
-        err = citoa(va_arg(valist, int), 10, &s_ans);
-        if (err) {
+        // default flags
+        case 'd':
+          err = citoa(va_arg(valist, int), 10, &s_ans);
+          if (err) {
+            free(s_ans);
+            s_ans = NULL;
+            s_ans_cpy = NULL;
+            return err;
+          }
+          memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+          current_ans_index += strlen(s_ans);
           free(s_ans);
           s_ans = NULL;
           s_ans_cpy = NULL;
-          return err;
-        }
-        memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-        current_ans_index += strlen(s_ans);
-        free(s_ans);
-        s_ans = NULL;
-        s_ans_cpy = NULL;
-        current_format_index += 2;
-        _format += 2;
-        break;
+          current_format_index += 2;
+          _format += 2;
+          break;
 
-      case 'u':
-        err = cutoa(va_arg(valist, unsigned int), 10, &s_ans);
-        if (err) {
+        case 'u':
+          err = cutoa(va_arg(valist, unsigned int), 10, &s_ans);
+          if (err) {
+            free(s_ans);
+            s_ans = NULL;
+            s_ans_cpy = NULL;
+            return err;
+          }
+          memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+          current_ans_index += strlen(s_ans);
           free(s_ans);
           s_ans = NULL;
           s_ans_cpy = NULL;
-          return err;
-        }
-        memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-        current_ans_index += strlen(s_ans);
-        free(s_ans);
-        s_ans = NULL;
-        s_ans_cpy = NULL;
-        current_format_index += 2;
-        _format += 2;
-        break;
+          current_format_index += 2;
+          _format += 2;
+          break;
 
-      case 'f':
-        err = dec_float_to_str(va_arg(valist, double), &s_ans);
-        if (err) {
-          free(s_ans);
-          s_ans = NULL;
-          s_ans_cpy = NULL;
-          return err;
-        }
-        memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-        current_ans_index += strlen(s_ans);
-        free(s_ans);
-        s_ans = NULL;
-        s_ans_cpy = NULL;
-
-        current_format_index += 2;
-        _format += 2;
-        break;
-
-      case 'l':
-        if (*(_format + 2) == 'f') {
+        case 'f':
           err = dec_float_to_str(va_arg(valist, double), &s_ans);
           if (err) {
             free(s_ans);
@@ -160,373 +140,13 @@ int __overvprintf(char **formatted_string, char *restrict _format,
           s_ans = NULL;
           s_ans_cpy = NULL;
 
-          current_format_index += 3;
-          _format += 3;
-
-        } else {
-          *(temp_ans + current_ans_index) = '%';
-          current_ans_index += 1;
-          current_format_index += 1;
-          _format++;
-        }
-        break;
-
-      case 'c':
-        temp_ans[current_ans_index] = va_arg(valist, int);
-        current_ans_index += 1;
-        current_format_index += 2;
-        _format += 2;
-        break;
-
-      case 's':
-        s_ans = va_arg(valist, char *);
-        memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-        current_ans_index += strlen(s_ans);
-        s_ans = NULL;
-        s_ans_cpy = NULL;
-
-        current_format_index += 2;
-        _format += 2;
-        break;
-
-      case 'o':
-        err = citoa(va_arg(valist, int), 8, &s_ans);
-        if (err) {
-          free(s_ans);
-          s_ans = NULL;
-          s_ans_cpy = NULL;
-          return err;
-        }
-        memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-        current_ans_index += strlen(s_ans);
-        free(s_ans);
-        s_ans = NULL;
-        s_ans_cpy = NULL;
-
-        current_format_index += 2;
-        _format += 2;
-        break;
-
-      case 'x':
-        err = citoa(va_arg(valist, int), 16, &s_ans);
-        if (err) {
-          free(s_ans);
-          s_ans = NULL;
-          s_ans_cpy = NULL;
-          return err;
-        }
-        s_ans_cpy = s_ans;
-        while (*s_ans_cpy) {
-          *s_ans_cpy = tolower(*s_ans_cpy);
-          s_ans_cpy++;
-        }
-        memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-        current_ans_index += strlen(s_ans);
-        free(s_ans);
-        s_ans = NULL;
-        s_ans_cpy = NULL;
-
-        current_format_index += 2;
-        _format += 2;
-        break;
-
-      case 'X':
-        err = citoa(va_arg(valist, int), 16, &s_ans);
-        if (err) {
-          free(s_ans);
-          s_ans = NULL;
-          s_ans_cpy = NULL;
-          return err;
-        }
-        memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-        current_ans_index += strlen(s_ans);
-        free(s_ans);
-        s_ans = NULL;
-        s_ans_cpy = NULL;
-
-        current_format_index += 2;
-        _format += 2;
-        break;
-
-      case 'b':
-        err = citoa(va_arg(valist, int), 2, &s_ans);
-        if (err) {
-          free(s_ans);
-          s_ans = NULL;
-          s_ans_cpy = NULL;
-          return err;
-        }
-        memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-        current_ans_index += strlen(s_ans);
-        free(s_ans);
-        s_ans = NULL;
-        s_ans_cpy = NULL;
-
-        current_format_index += 2;
-        _format += 2;
-        break;
-
-      // custom flags
-      case 'R':
-        if (*(_format + 2) == 'o') {
-          num = va_arg(valist, int);
-          err = int_to_roman(num, &s_ans);
-          if (err) {
-            free(s_ans);
-            return err;
-          }
-          memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-          current_ans_index += strlen(s_ans);
-          free(s_ans);
-          s_ans = NULL;
-          s_ans_cpy = NULL;
-
-          current_format_index += 3;
-          _format += 3;
-        } else {
-          temp_ans[current_ans_index] = '%';
-          current_ans_index += 1;
-          current_format_index += 1;
-          _format++;
-        }
-        break;
-
-      case 'Z':
-        if (*(_format + 2) == 'r') {
-          unum = va_arg(valist, unsigned int);
-          err = generate_fibonacci_row(unum, &u_ptr, &nums_in_row);
-          if (err) {
-            free(u_ptr);
-            return err;
-          }
-          for (i = 0; i < nums_in_row; ++i) {
-          }
-          err = find_zykendorffs_representation(unum, u_ptr, nums_in_row,
-                                                &u_ans_ptr, &nums_in_ans);
-          if (err) {
-            vilka("ff", u_ptr, u_ans_ptr);
-            return err;
-          }
-          for (i = 0; i < nums_in_ans; ++i) {
-
-            err = cutoa(u_ans_ptr[i], 10, &s_ans);
-            if (err) {
-              free(s_ans);
-              s_ans = NULL;
-              s_ans_cpy = NULL;
-              return err;
-            }
-            memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-            current_ans_index += strlen(s_ans);
-            temp_ans[current_ans_index] = ' ';
-            current_ans_index += 1;
-            free(s_ans);
-            s_ans = NULL;
-            s_ans_cpy = NULL;
-          }
-          current_format_index += 3;
-          _format += 3;
-        } else {
-          temp_ans[current_ans_index] = '%';
-          current_ans_index += 1;
-          current_format_index += 1;
-          _format++;
-        }
-        break;
-
-      case 'C':
-        if (*(_format + 2) == 'v') {
-          num = va_arg(valist, int);
-          base = va_arg(valist, int);
-          if (base < 2 || base > 36) {
-            base = 10;
-          }
-          err = citoa(num, base, &s_ans);
-          if (err) {
-            free(s_ans);
-            s_ans = NULL;
-            s_ans_cpy = NULL;
-            return err;
-          }
-          memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-          current_ans_index += strlen(s_ans);
-          free(s_ans);
-          s_ans = NULL;
-          s_ans_cpy = NULL;
-
-          current_format_index += 3;
-          _format += 3;
-        } else if (*(_format + 2) == 'V') {
-          num = va_arg(valist, int);
-          base = va_arg(valist, int);
-          if (base < 2 || base > 36) {
-            base = 10;
-          }
-          err = citoa(num, base, &s_ans);
-          if (err) {
-            free(s_ans);
-            s_ans = NULL;
-            s_ans_cpy = NULL;
-            return err;
-          }
-          memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-          current_ans_index += strlen(s_ans);
-          free(s_ans);
-          s_ans = NULL;
-          s_ans_cpy = NULL;
-
-          current_format_index += 3;
-          _format += 3;
-        } else {
-          temp_ans[current_ans_index] = '%';
-          current_ans_index += 1;
-          current_format_index += 1;
-          _format++;
-        }
-        break;
-
-      case 't':
-        if (*(_format + 2) == 'o') {
-          str_num = va_arg(valist, char *);
-          base = va_arg(valist, int);
-          err = catoi(str_num, base, &num);
-          if (err) {
-            return err;
-          }
-          err = citoa(num, 10, &s_ans);
-          if (err) {
-            free(s_ans);
-            s_ans = NULL;
-            s_ans_cpy = NULL;
-            return err;
-          }
-          memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-          current_ans_index += strlen(s_ans);
-          free(s_ans);
-          s_ans = NULL;
-          s_ans_cpy = NULL;
-
-          current_format_index += 3;
-          _format += 3;
-        } else {
-          temp_ans[current_format_index] = '%';
-          current_ans_index += 1;
-          current_format_index += 1;
-          _format++;
-        }
-        break;
-
-      case 'T':
-        if (*(_format + 2) == 'O') {
-          str_num = va_arg(valist, char *);
-          base = va_arg(valist, int);
-          err = catoi(str_num, base, &num);
-          if (err) {
-            return err;
-          }
-          err = citoa(num, 10, &s_ans);
-          if (err) {
-            free(s_ans);
-            s_ans = NULL;
-            s_ans_cpy = NULL;
-            return err;
-          }
-          memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-          current_ans_index += strlen(s_ans);
-          free(s_ans);
-          s_ans = NULL;
-          s_ans_cpy = NULL;
-
-          current_format_index += 3;
-          _format += 3;
-        } else {
-          temp_ans[current_ans_index] = '%';
-          current_ans_index += 1;
-          current_format_index += 1;
-          _format++;
-        }
-        break;
-
-      case 'm':
-        switch (*(_format + 2)) {
-        case 'i':
-          num = va_arg(valist, int);
-          uc_ptr = (unsigned char *)&num;
-          for (i = 0; i < sizeof(int); ++i) {
-            err = citoa((*uc_ptr)++, 2, &s_ans);
-            if (err) {
-              free(s_ans);
-              s_ans = NULL;
-              s_ans_cpy = NULL;
-              return err;
-            }
-            memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-            current_ans_index += strlen(s_ans);
-            free(s_ans);
-            s_ans = NULL;
-            s_ans_cpy = NULL;
-
-            temp_ans[current_ans_index] = ' ';
-            current_ans_index += 1;
-          }
-          uc_ptr = NULL;
-          current_format_index += 3;
-          _format += 3;
+          current_format_index += 2;
+          _format += 2;
           break;
 
-        case 'u':
-          unum = va_arg(valist, unsigned int);
-          uc_ptr = (unsigned char *)&unum;
-          for (i = 0; i < sizeof(unsigned int); ++i) {
-            err = citoa((*uc_ptr)++, 2, &s_ans);
-            if (err) {
-              free(s_ans);
-              s_ans = NULL;
-              s_ans_cpy = NULL;
-              return err;
-            }
-            memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-            current_ans_index += strlen(s_ans);
-            free(s_ans);
-            s_ans = NULL;
-            s_ans_cpy = NULL;
-            temp_ans[current_ans_index] = ' ';
-            current_ans_index += 1;
-          }
-          uc_ptr = NULL;
-          current_format_index += 3;
-          _format += 3;
-          break;
-
-        case 'f':
-          float_num = va_arg(valist, double);
-          uc_ptr = (unsigned char *)&float_num;
-          for (i = 0; i < sizeof(float); ++i) {
-            err = citoa((*uc_ptr)++, 2, &s_ans);
-            if (err) {
-              free(s_ans);
-              s_ans = NULL;
-              s_ans_cpy = NULL;
-              return err;
-            }
-            memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
-            current_ans_index += strlen(s_ans);
-            free(s_ans);
-            s_ans = NULL;
-            s_ans_cpy = NULL;
-            temp_ans[current_ans_index] = ' ';
-            current_ans_index += 1;
-          }
-          uc_ptr = NULL;
-          current_format_index += 3;
-          _format += 3;
-          break;
-
-        case 'd':
-          double_num = va_arg(valist, double);
-          uc_ptr = (unsigned char *)&double_num;
-          for (i = 0; i < sizeof(double); ++i) {
-            err = citoa((*uc_ptr)++, 2, &s_ans);
+        case 'l':
+          if (*(_format + 2) == 'f') {
+            err = dec_float_to_str(va_arg(valist, double), &s_ans);
             if (err) {
               free(s_ans);
               s_ans = NULL;
@@ -539,21 +159,399 @@ int __overvprintf(char **formatted_string, char *restrict _format,
             s_ans = NULL;
             s_ans_cpy = NULL;
 
-            temp_ans[current_ans_index] = ' ';
+            current_format_index += 3;
+            _format += 3;
+
+          } else {
+            *(temp_ans + current_ans_index) = '%';
             current_ans_index += 1;
+            current_format_index += 1;
+            _format++;
           }
-          uc_ptr = NULL;
-          current_format_index += 3;
-          _format += 3;
           break;
 
-        default:
-          temp_ans[current_ans_index] = '%';
+        case 'c':
+          temp_ans[current_ans_index] = va_arg(valist, int);
           current_ans_index += 1;
-          current_format_index += 1;
-          _format++;
-        }
-        break;
+          current_format_index += 2;
+          _format += 2;
+          break;
+
+        case 's':
+          s_ans = va_arg(valist, char *);
+          memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+          current_ans_index += strlen(s_ans);
+          s_ans = NULL;
+          s_ans_cpy = NULL;
+
+          current_format_index += 2;
+          _format += 2;
+          break;
+
+        case 'o':
+          err = citoa(va_arg(valist, int), 8, &s_ans);
+          if (err) {
+            free(s_ans);
+            s_ans = NULL;
+            s_ans_cpy = NULL;
+            return err;
+          }
+          memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+          current_ans_index += strlen(s_ans);
+          free(s_ans);
+          s_ans = NULL;
+          s_ans_cpy = NULL;
+
+          current_format_index += 2;
+          _format += 2;
+          break;
+
+        case 'x':
+          err = citoa(va_arg(valist, int), 16, &s_ans);
+          if (err) {
+            free(s_ans);
+            s_ans = NULL;
+            s_ans_cpy = NULL;
+            return err;
+          }
+          s_ans_cpy = s_ans;
+          while (*s_ans_cpy) {
+            *s_ans_cpy = tolower(*s_ans_cpy);
+            s_ans_cpy++;
+          }
+          memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+          current_ans_index += strlen(s_ans);
+          free(s_ans);
+          s_ans = NULL;
+          s_ans_cpy = NULL;
+
+          current_format_index += 2;
+          _format += 2;
+          break;
+
+        case 'X':
+          err = citoa(va_arg(valist, int), 16, &s_ans);
+          if (err) {
+            free(s_ans);
+            s_ans = NULL;
+            s_ans_cpy = NULL;
+            return err;
+          }
+          memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+          current_ans_index += strlen(s_ans);
+          free(s_ans);
+          s_ans = NULL;
+          s_ans_cpy = NULL;
+
+          current_format_index += 2;
+          _format += 2;
+          break;
+
+        case 'b':
+          err = citoa(va_arg(valist, int), 2, &s_ans);
+          if (err) {
+            free(s_ans);
+            s_ans = NULL;
+            s_ans_cpy = NULL;
+            return err;
+          }
+          memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+          current_ans_index += strlen(s_ans);
+          free(s_ans);
+          s_ans = NULL;
+          s_ans_cpy = NULL;
+
+          current_format_index += 2;
+          _format += 2;
+          break;
+
+        // custom flags
+        case 'R':
+          if (*(_format + 2) == 'o') {
+            num = va_arg(valist, int);
+            err = int_to_roman(num, &s_ans);
+            if (err) {
+              free(s_ans);
+              return err;
+            }
+            memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+            current_ans_index += strlen(s_ans);
+            free(s_ans);
+            s_ans = NULL;
+            s_ans_cpy = NULL;
+
+            current_format_index += 3;
+            _format += 3;
+          } else {
+            temp_ans[current_ans_index] = '%';
+            current_ans_index += 1;
+            current_format_index += 1;
+            _format++;
+          }
+          break;
+
+        case 'Z':
+          if (*(_format + 2) == 'r') {
+            unum = va_arg(valist, unsigned int);
+            err = generate_fibonacci_row(unum, &u_ptr, &nums_in_row);
+            if (err) {
+              free(u_ptr);
+              return err;
+            }
+            for (i = 0; i < nums_in_row; ++i) {
+            }
+            err = find_zykendorffs_representation(unum, u_ptr, nums_in_row,
+                                                  &u_ans_ptr, &nums_in_ans);
+            if (err) {
+              vilka("ff", u_ptr, u_ans_ptr);
+              return err;
+            }
+            for (i = 0; i < nums_in_ans; ++i) {
+              err = cutoa(u_ans_ptr[i], 10, &s_ans);
+              if (err) {
+                free(s_ans);
+                s_ans = NULL;
+                s_ans_cpy = NULL;
+                return err;
+              }
+              memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+              current_ans_index += strlen(s_ans);
+              temp_ans[current_ans_index] = ' ';
+              current_ans_index += 1;
+              free(s_ans);
+              s_ans = NULL;
+              s_ans_cpy = NULL;
+            }
+            current_format_index += 3;
+            _format += 3;
+          } else {
+            temp_ans[current_ans_index] = '%';
+            current_ans_index += 1;
+            current_format_index += 1;
+            _format++;
+          }
+          break;
+
+        case 'C':
+          if (*(_format + 2) == 'v') {
+            num = va_arg(valist, int);
+            base = va_arg(valist, int);
+            if (base < 2 || base > 36) {
+              base = 10;
+            }
+            err = citoa(num, base, &s_ans);
+            if (err) {
+              free(s_ans);
+              s_ans = NULL;
+              s_ans_cpy = NULL;
+              return err;
+            }
+            memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+            current_ans_index += strlen(s_ans);
+            free(s_ans);
+            s_ans = NULL;
+            s_ans_cpy = NULL;
+
+            current_format_index += 3;
+            _format += 3;
+          } else if (*(_format + 2) == 'V') {
+            num = va_arg(valist, int);
+            base = va_arg(valist, int);
+            if (base < 2 || base > 36) {
+              base = 10;
+            }
+            err = citoa(num, base, &s_ans);
+            if (err) {
+              free(s_ans);
+              s_ans = NULL;
+              s_ans_cpy = NULL;
+              return err;
+            }
+            memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+            current_ans_index += strlen(s_ans);
+            free(s_ans);
+            s_ans = NULL;
+            s_ans_cpy = NULL;
+
+            current_format_index += 3;
+            _format += 3;
+          } else {
+            temp_ans[current_ans_index] = '%';
+            current_ans_index += 1;
+            current_format_index += 1;
+            _format++;
+          }
+          break;
+
+        case 't':
+          if (*(_format + 2) == 'o') {
+            str_num = va_arg(valist, char *);
+            base = va_arg(valist, int);
+            err = catoi(str_num, base, &num);
+            if (err) {
+              return err;
+            }
+            err = citoa(num, 10, &s_ans);
+            if (err) {
+              free(s_ans);
+              s_ans = NULL;
+              s_ans_cpy = NULL;
+              return err;
+            }
+            memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+            current_ans_index += strlen(s_ans);
+            free(s_ans);
+            s_ans = NULL;
+            s_ans_cpy = NULL;
+
+            current_format_index += 3;
+            _format += 3;
+          } else {
+            temp_ans[current_format_index] = '%';
+            current_ans_index += 1;
+            current_format_index += 1;
+            _format++;
+          }
+          break;
+
+        case 'T':
+          if (*(_format + 2) == 'O') {
+            str_num = va_arg(valist, char *);
+            base = va_arg(valist, int);
+            err = catoi(str_num, base, &num);
+            if (err) {
+              return err;
+            }
+            err = citoa(num, 10, &s_ans);
+            if (err) {
+              free(s_ans);
+              s_ans = NULL;
+              s_ans_cpy = NULL;
+              return err;
+            }
+            memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+            current_ans_index += strlen(s_ans);
+            free(s_ans);
+            s_ans = NULL;
+            s_ans_cpy = NULL;
+
+            current_format_index += 3;
+            _format += 3;
+          } else {
+            temp_ans[current_ans_index] = '%';
+            current_ans_index += 1;
+            current_format_index += 1;
+            _format++;
+          }
+          break;
+
+        case 'm':
+          switch (*(_format + 2)) {
+            case 'i':
+              num = va_arg(valist, int);
+              uc_ptr = (unsigned char *)&num;
+              for (i = 0; i < sizeof(int); ++i) {
+                err = citoa((*uc_ptr)++, 2, &s_ans);
+                if (err) {
+                  free(s_ans);
+                  s_ans = NULL;
+                  s_ans_cpy = NULL;
+                  return err;
+                }
+                memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+                current_ans_index += strlen(s_ans);
+                free(s_ans);
+                s_ans = NULL;
+                s_ans_cpy = NULL;
+
+                temp_ans[current_ans_index] = ' ';
+                current_ans_index += 1;
+              }
+              uc_ptr = NULL;
+              current_format_index += 3;
+              _format += 3;
+              break;
+
+            case 'u':
+              unum = va_arg(valist, unsigned int);
+              uc_ptr = (unsigned char *)&unum;
+              for (i = 0; i < sizeof(unsigned int); ++i) {
+                err = citoa((*uc_ptr)++, 2, &s_ans);
+                if (err) {
+                  free(s_ans);
+                  s_ans = NULL;
+                  s_ans_cpy = NULL;
+                  return err;
+                }
+                memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+                current_ans_index += strlen(s_ans);
+                free(s_ans);
+                s_ans = NULL;
+                s_ans_cpy = NULL;
+                temp_ans[current_ans_index] = ' ';
+                current_ans_index += 1;
+              }
+              uc_ptr = NULL;
+              current_format_index += 3;
+              _format += 3;
+              break;
+
+            case 'f':
+              float_num = va_arg(valist, double);
+              uc_ptr = (unsigned char *)&float_num;
+              for (i = 0; i < sizeof(float); ++i) {
+                err = citoa((*uc_ptr)++, 2, &s_ans);
+                if (err) {
+                  free(s_ans);
+                  s_ans = NULL;
+                  s_ans_cpy = NULL;
+                  return err;
+                }
+                memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+                current_ans_index += strlen(s_ans);
+                free(s_ans);
+                s_ans = NULL;
+                s_ans_cpy = NULL;
+                temp_ans[current_ans_index] = ' ';
+                current_ans_index += 1;
+              }
+              uc_ptr = NULL;
+              current_format_index += 3;
+              _format += 3;
+              break;
+
+            case 'd':
+              double_num = va_arg(valist, double);
+              uc_ptr = (unsigned char *)&double_num;
+              for (i = 0; i < sizeof(double); ++i) {
+                err = citoa((*uc_ptr)++, 2, &s_ans);
+                if (err) {
+                  free(s_ans);
+                  s_ans = NULL;
+                  s_ans_cpy = NULL;
+                  return err;
+                }
+                memcpy(temp_ans + current_ans_index, s_ans, strlen(s_ans));
+                current_ans_index += strlen(s_ans);
+                free(s_ans);
+                s_ans = NULL;
+                s_ans_cpy = NULL;
+
+                temp_ans[current_ans_index] = ' ';
+                current_ans_index += 1;
+              }
+              uc_ptr = NULL;
+              current_format_index += 3;
+              _format += 3;
+              break;
+
+            default:
+              temp_ans[current_ans_index] = '%';
+              current_ans_index += 1;
+              current_format_index += 1;
+              _format++;
+          }
+          break;
       }
     }
 
@@ -641,7 +639,7 @@ int dec_float_to_str(float num, char **ans) {
     return err;
   }
   int_end = log_base(num, 10) + 1;
-  len = int_end + 1 + 6; // 1 for '.', 6 for frac. part
+  len = int_end + 1 + 6;  // 1 for '.', 6 for frac. part
   err = rerealloc((void **)&str_num, len + 1);
   if (err) {
     return err;
@@ -675,7 +673,7 @@ int dec_double_to_str(double num, char **ans) {
     return err;
   }
   int_end = log_base(num, 10) + 1;
-  len = int_end + 1 + 6; // 1 for '.', 6 for frac. part
+  len = int_end + 1 + 6;  // 1 for '.', 6 for frac. part
   err = rerealloc((void **)&str_num, len + 1);
   if (err) {
     return err;
