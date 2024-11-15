@@ -199,6 +199,7 @@ Input int number: ";
       printf("→ Invalid task number. Try again\n");
     }
   }
+  return OK;
 }
 
 int lab_01(int argc, char *argv[]) {
@@ -365,7 +366,6 @@ Input int number: ";
     if (task < 20 && task > 0) {
       clear_screen();
       err = programs[task - 1](argc, argv);
-      err = 5;
       if (err) {
         return err;
       }
