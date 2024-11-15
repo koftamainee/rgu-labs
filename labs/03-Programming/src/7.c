@@ -14,7 +14,7 @@ int find_kaprekar_numbers(Vector *ans, int *answers_count, int numbers_count,
                           int base, ...);
 int is_kaprekar(int *ans, char const *number, int base);
 
-int program_03_7() {
+int program_03_7(int argc, char *argv[]) {
   int err, answers_count, i;
   Vector vec;
 

@@ -23,7 +23,7 @@ int overscanf(char const *restrict _format, ...);
 int overfscanf(FILE *restrict stream, char const *restrict _format, ...);
 int oversscanf(char const *restrict s, char const *restrict _format, ...);
 
-int program_03_10() {
+int program_03_10(int argc, char *argv[]) {
   int err, int_num = 0;
   unsigned int uint_num;
   char str[BUFSIZ], c;
@@ -97,107 +97,107 @@ int __overvscanf(int stream, void *stream_ptr, char const *restrict _format,
   while (current_format_index < format_len) {
     if (*_format == '%') {
       switch (*(_format + 1)) {
-        case 'd':
-          err = __scan_from_stream(stream, stream_ptr, ans);
-          if (err) {
-            return err;
-          }
-          err = catoi(ans, 10, va_arg(valist, int *));
-          if (err) {
-            return err;
-          }
-          _format += 2;
-          format_len += 2;
-          break;
+      case 'd':
+        err = __scan_from_stream(stream, stream_ptr, ans);
+        if (err) {
+          return err;
+        }
+        err = catoi(ans, 10, va_arg(valist, int *));
+        if (err) {
+          return err;
+        }
+        _format += 2;
+        format_len += 2;
+        break;
 
-        case 'u':
-          err = __scan_from_stream(stream, stream_ptr, ans);
-          if (err) {
-            return err;
-          }
-          err = catoi(ans, 10, va_arg(valist, unsigned int *));
-          if (err) {
-            return err;
-          }
-          _format += 2;
-          format_len += 2;
-          break;
+      case 'u':
+        err = __scan_from_stream(stream, stream_ptr, ans);
+        if (err) {
+          return err;
+        }
+        err = catoi(ans, 10, va_arg(valist, unsigned int *));
+        if (err) {
+          return err;
+        }
+        _format += 2;
+        format_len += 2;
+        break;
 
-        case 'f':  // TODO
-          break;
+      case 'f': // TODO
+        break;
 
-        case 'l':  // TODO
-          break;
+      case 'l': // TODO
+        break;
 
-        case 's':
-          err = __scan_from_stream(stream, stream_ptr, ans);
-          if (err) {
-            return err;
-          }
-          strcpy(va_arg(valist, char *), ans);
-          _format += 2;
-          format_len += 2;
-          break;
+      case 's':
+        err = __scan_from_stream(stream, stream_ptr, ans);
+        if (err) {
+          return err;
+        }
+        strcpy(va_arg(valist, char *), ans);
+        _format += 2;
+        format_len += 2;
+        break;
 
-        case 'c':
-          switch (stream) {
-            case STDIN_STREAM:
-              fgetc(stdin);
-              *va_arg(valist, char *) = fgetc(stdin);
-              break;
-            case FILE_STREAM:
-              *va_arg(valist, char *) = fgetc((FILE *)stream_ptr);
-
-              break;
-            case STR_STREAM:
-              *va_arg(valist, char *) = *((char *)stream_ptr);
-              stream_ptr = (char *)stream_ptr + 1;
-              break;
-          }
-          _format += 2;
-          format_len += 2;
+      case 'c':
+        switch (stream) {
+        case STDIN_STREAM:
+          fgetc(stdin);
+          *va_arg(valist, char *) = fgetc(stdin);
           break;
-        case 'o':
-          err = __scan_from_stream(stream, stream_ptr, ans);
-          if (err) {
-            return err;
-          }
-          err = catoi(ans, 8, va_arg(valist, int *));
-          if (err) {
-            return err;
-          }
-          _format += 2;
-          format_len += 2;
-          break;
+        case FILE_STREAM:
+          *va_arg(valist, char *) = fgetc((FILE *)stream_ptr);
 
-        case 'x':
-          err = __scan_from_stream(stream, stream_ptr, ans);
-          if (err) {
-            return err;
-          }
-          err = catoi(ans, 16, va_arg(valist, int *));
-          if (err) {
-            return err;
-          }
-          _format += 2;
-          format_len += 2;
           break;
-
-        case 'X':
-          err = __scan_from_stream(stream, stream_ptr, ans);
-          if (err) {
-            return err;
-          }
-          err = catoi(ans, 16, va_arg(valist, int *));
-          if (err) {
-            return err;
-          }
-          _format += 2;
-          format_len += 2;
+        case STR_STREAM:
+          *va_arg(valist, char *) = *((char *)stream_ptr);
+          stream_ptr = (char *)stream_ptr + 1;
           break;
+        }
+        _format += 2;
+        format_len += 2;
+        break;
+      case 'o':
+        err = __scan_from_stream(stream, stream_ptr, ans);
+        if (err) {
+          return err;
+        }
+        err = catoi(ans, 8, va_arg(valist, int *));
+        if (err) {
+          return err;
+        }
+        _format += 2;
+        format_len += 2;
+        break;
 
-        default:
-          return INVALID_FLAG;
+      case 'x':
+        err = __scan_from_stream(stream, stream_ptr, ans);
+        if (err) {
+          return err;
+        }
+        err = catoi(ans, 16, va_arg(valist, int *));
+        if (err) {
+          return err;
+        }
+        _format += 2;
+        format_len += 2;
+        break;
+
+      case 'X':
+        err = __scan_from_stream(stream, stream_ptr, ans);
+        if (err) {
+          return err;
+        }
+        err = catoi(ans, 16, va_arg(valist, int *));
+        if (err) {
+          return err;
+        }
+        _format += 2;
+        format_len += 2;
+        break;
+
+      default:
+        return INVALID_FLAG;
       }
     } else {
       _format++;
@@ -217,51 +217,51 @@ int __scan_from_stream(int stream, void *stream_ptr, char dest[BUFSIZ]) {
     return DEREFERENCING_NULL_PTR;
   }
   switch (stream) {
-    case STDIN_STREAM:
+  case STDIN_STREAM:
+    c = fgetc(stdin);
+    while ((c == ' ' || c == '\t' || c == '\n') && c != EOF) {
       c = fgetc(stdin);
-      while ((c == ' ' || c == '\t' || c == '\n') && c != EOF) {
-        c = fgetc(stdin);
-      }
-      while (c != '\0' && c != '\n' && c != ' ' && c != '\t') {
-        *dest_cpy++ = c;
-        c = fgetc(stdin);
-      }
-      dest_cpy = 0;
-      fflush(stdin);
-      break;
+    }
+    while (c != '\0' && c != '\n' && c != ' ' && c != '\t') {
+      *dest_cpy++ = c;
+      c = fgetc(stdin);
+    }
+    dest_cpy = 0;
+    fflush(stdin);
+    break;
 
-    case FILE_STREAM:
-      file_stream = (FILE *)stream_ptr;
+  case FILE_STREAM:
+    file_stream = (FILE *)stream_ptr;
+    c = fgetc(file_stream);
+    while ((c == ' ' || c == '\t' || c == '\n') && c != EOF) {
       c = fgetc(file_stream);
-      while ((c == ' ' || c == '\t' || c == '\n') && c != EOF) {
-        c = fgetc(file_stream);
-      }
-      while (c != '\0' && c != '\n' && c != ' ' && c != '\t') {
-        *dest_cpy++ = c;
-        c = fgetc(file_stream);
-      }
-      dest_cpy = 0;
-      fflush(file_stream);
-      break;
+    }
+    while (c != '\0' && c != '\n' && c != ' ' && c != '\t') {
+      *dest_cpy++ = c;
+      c = fgetc(file_stream);
+    }
+    dest_cpy = 0;
+    fflush(file_stream);
+    break;
 
-    case STR_STREAM:
-      p_str_stream = (char **)stream_ptr;
+  case STR_STREAM:
+    p_str_stream = (char **)stream_ptr;
+    c = **p_str_stream;
+    while ((c == ' ' || c == '\t' || c == '\n') && c != EOF) {
       c = **p_str_stream;
-      while ((c == ' ' || c == '\t' || c == '\n') && c != EOF) {
-        c = **p_str_stream;
-        (*p_str_stream)++;
-      }
       (*p_str_stream)++;
-      while (c != '\0' && c != '\n' && c != ' ' && c != '\t') {
-        *dest_cpy++ = c;
-        c = **p_str_stream;
-        (*p_str_stream)++;
-      }
-      dest_cpy = 0;
-      break;
+    }
+    (*p_str_stream)++;
+    while (c != '\0' && c != '\n' && c != ' ' && c != '\t') {
+      *dest_cpy++ = c;
+      c = **p_str_stream;
+      (*p_str_stream)++;
+    }
+    dest_cpy = 0;
+    break;
 
-    default:
-      return INVALID_STREAM_PTR;
+  default:
+    return INVALID_STREAM_PTR;
   }
   return OK;
 }

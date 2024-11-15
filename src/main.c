@@ -1,20 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../libs/errors.h"
 #include "../libs/input.h"
 #include "labs.h"
 
-void lab_00();
-void lab_01();
-void lab_03();
+int lab_00(int argc, char *argv[]);
+int lab_01(int argc, char *argv[]);
+int lab_03(int argc, char *argv[]);
 
-void lab_02();
+int lab_02();
 
 int choose_lab();
 
 int main(int argc, char *argv[]) {
+  int err, c;
   clear_screen();
-  void (*labs[])() = {lab_00, lab_01, lab_02, lab_03};
+  int (*labs[])(int argc, char *argv[]) = {lab_00, lab_01, lab_02, lab_03};
 
   int lab_number;
 
@@ -23,10 +25,55 @@ int main(int argc, char *argv[]) {
     if (lab_number == 0) {
       break;
     }
-    labs[lab_number - 1](argc, argv);
+    err = labs[lab_number - 1](argc, argv);
+    if (err) {
+      clear_screen();
+      printf("Process killed ┌( ͝° ͜ʖ͡°)=ε/̵͇̿̿/’̿’̿ ̿  (╥﹏╥)\n");
+    }
+    switch (err) {
+    case OK:
+      break;
+    case MEMORY_ALLOCATE_ERROR:
+      printf("Memory allocation error :(\n");
+      break;
+    case DEREFERENCING_NULL_PTR:
+      printf("Passed ptr is NULL ._.\n");
+      break;
+    case INDEX_OUT_OF_BOUNDS:
+      printf("Index out of bounds :0\n");
+      break;
+    case OPENING_THE_FILE_ERROR:
+      printf("Error while openning a file -_-\n");
+      break;
+    case INVALID_NUMERIC_BASE:
+      printf("Invalid numeric base :P\n");
+      break;
+    case INVALID_NUM_TO_CHAR_CONVERSION:
+      printf("Invalid num to char conversion °_o");
+      break;
+    case INVALID_CHAR_TO_NUM_CONVERSION:
+      printf("Invalid char to num conversion ・‿・\n");
+      break;
+    case INVALID_FLAG:
+      printf("Invalid flag Ö\n");
+      break;
+    case INVALID_STREAM_PTR:
+      printf("Invalid stream ptr 	☠	☠	☠");
+      break;
+    default:
+      printf("Undefined behavior ಠ_ಠ\n");
+      break;
+    }
+    if (err) {
+      printf("\n→ Press enter to continue...\n");
+      getchar();
+      while ((c = getchar()) != '\n' && c != EOF)
+        ;
+      clear_screen();
+    }
   }
-  printf("Have a good day.\n");
-  return 0;
+  printf("\n☆  Have a good day ☆\n\n");
+  return OK;
 }
 
 int choose_lab() {
@@ -41,21 +88,21 @@ int choose_lab() {
 0. Exit\n\n\
 Enter int number: ";
 
-  printf("Hello. Choose lab:\n");
+  printf("→ Hello. Choose lab:\n");
   while (1) {
     printf("%s", labs);
     if (scanf("%d", &lab) != 1) {
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       clear_screen();
-      printf("Input error. Try again.\n");
+      printf("→ Input error. Try again.\n");
       continue;
     }
     if (lab > -1 && lab < 5 && lab != 3) {
       return lab;
     }
     clear_screen();
-    printf("Invalid lab. Try again.\n");
+    printf("→ Invalid lab. Try again.\n");
   }
 
 #else
@@ -68,26 +115,26 @@ Enter int number: ";
 0. Exit\n\n\
 Enter int number: ";
 
-  printf("Hello. Choose lab:\n");
+  printf("→ Hello. Choose lab:\n");
   while (1) {
     printf("%s", labs);
     if (scanf("%d", &lab) != 1) {
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       clear_screen();
-      printf("Input error. Try again.\n");
+      printf("→ Input error. Try again.\n");
       continue;
     }
     if (lab > -1 && lab < 5) {
       return lab;
     }
     clear_screen();
-    printf("Invalid lab. Try again.\n");
+    printf("→ Invalid lab. Try again.\n");
   }
 #endif
 }
 
-void lab_00() {
+int lab_00(int argc, char *argv[]) {
 
   int (*programs[])() = {
       program_00_1,  program_00_2,  program_00_3,  program_00_4,  program_00_5,
@@ -125,21 +172,21 @@ Input int number: ";
   char c;
   clear_screen();
   while (1) {
-    printf("Choose task:\n");
+    printf("→ Choose task:\n");
     printf("%s", tasks);
 
     if (scanf("%d", &task) != 1) {
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       clear_screen();
-      printf("Input error. Try again.\n");
+      printf("→ Input error. Try again.\n");
       continue;
     }
 
     if (task < 22 && task > 0) {
       clear_screen();
       programs[task - 1]();
-      printf("\nPress enter to continue...\n");
+      printf("\n→ Press enter to continue...\n");
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       getchar();
@@ -149,12 +196,12 @@ Input int number: ";
       break;
     } else {
       clear_screen();
-      printf("Invalid task number. Try again\n");
+      printf("→ Invalid task number. Try again\n");
     }
   }
 }
 
-void lab_01() {
+int lab_01(int argc, char *argv[]) {
   int (*programs[])() = {program_01_1,  program_01_2,    program_01_3,
                          program_01_4,  program_01_5,    program_01_6,
                          program_01_7,  program_01_8,    program_01_9,
@@ -182,21 +229,21 @@ Input int number: ";
   char c;
   clear_screen();
   while (1) {
-    printf("Choose task:\n");
+    printf("→ Choose task:\n");
     printf("%s", tasks);
 
     if (scanf("%d", &task) != 1) {
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       clear_screen();
-      printf("Input error. Try again.\n");
+      printf("→ Input error. Try again.\n");
       continue;
     }
 
     if (task < 14 && task > 0) {
       clear_screen();
       programs[task - 1]();
-      printf("\nPress enter to continue...\n");
+      printf("\n→ Press enter to continue...\n");
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       c = getchar();
@@ -206,12 +253,13 @@ Input int number: ";
       break;
     } else {
       clear_screen();
-      printf("Invalid task number. Try again\n");
+      printf("→ Invalid task number. Try again\n");
     }
   }
+  return OK;
 }
 
-void lab_02() {
+int lab_02() {
 
   char tasks[] = "\
 1. Create a table of powers (0-6) for numbers 1 to 9.\n\
@@ -234,14 +282,14 @@ Input int number: ";
   char command[50];
   clear_screen();
   while (1) {
-    printf("Choose task:\n");
+    printf("→ Choose task:\n");
     printf("%s", tasks);
 
     if (scanf("%d", &task) != 1) {
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       clear_screen();
-      printf("Input error. Try again.\n");
+      printf("→ Input error. Try again.\n");
       continue;
     }
 
@@ -252,7 +300,7 @@ Input int number: ";
                "bash ./scripts/02-Bash_lab/", task, ".sh");
       system(command);
 
-      printf("\nPress enter to continue...\n");
+      printf("\n→ Press enter to continue...\n");
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       c = getchar();
@@ -262,14 +310,15 @@ Input int number: ";
       break;
     } else {
       clear_screen();
-      printf("Invalid task number. Try again\n");
+      printf("→ Invalid task number. Try again\n");
     }
   }
+  return OK;
 }
 
-void lab_03() {
-
-  int (*programs[])() = {
+int lab_03(int argc, char *argv[]) {
+  int err;
+  int (*programs[])(int argc, char *argv[]) = {
       program_03_1,  program_03_2,  program_03_3,  program_03_4,  program_03_5,
       program_03_6,  program_03_7,  program_03_8,  program_03_9,  program_03_10,
       program_03_11, program_03_12, program_03_13, program_03_14, program_03_15,
@@ -302,21 +351,25 @@ Input int number: ";
   char c;
   clear_screen();
   while (1) {
-    printf("Choose task:\n");
+    printf("→ Choose task:\n");
     printf("%s", tasks);
 
     if (scanf("%d", &task) != 1) {
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       clear_screen();
-      printf("Input error. Try again.\n");
+      printf("→ Input error. Try again.\n");
       continue;
     }
 
     if (task < 20 && task > 0) {
       clear_screen();
-      programs[task - 1]();
-      printf("\nPress enter to continue...\n");
+      err = programs[task - 1](argc, argv);
+      err = 5;
+      if (err) {
+        return err;
+      }
+      printf("\n→ Press enter to continue...\n");
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       c = getchar();
@@ -326,7 +379,8 @@ Input int number: ";
       break;
     } else {
       clear_screen();
-      printf("Invalid task number. Try again\n");
+      printf("→ Invalid task number. Try again\n");
     }
   }
+  return OK;
 }
