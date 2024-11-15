@@ -23,7 +23,7 @@ int find_zykendorffs_representation(unsigned int num, unsigned int const *row,
                                     size_t *numbers_in_ans_count);
 int int_to_roman(int num, char **ans);
 
-int program_03_9() {
+int program_03_9(int argc, char *argv[]) {
   FILE *fptr = NULL;
   char buffer[BUFSIZ];
 
@@ -91,7 +91,6 @@ int __overvprintf(char **formatted_string, char *restrict _format,
     }
     if (*_format == '%') {
       switch (*(_format + 1)) {
-
       // default flags
       case 'd':
         err = citoa(va_arg(valist, int), 10, &s_ans);
@@ -308,7 +307,6 @@ int __overvprintf(char **formatted_string, char *restrict _format,
             return err;
           }
           for (i = 0; i < nums_in_ans; ++i) {
-
             err = cutoa(u_ans_ptr[i], 10, &s_ans);
             if (err) {
               free(s_ans);

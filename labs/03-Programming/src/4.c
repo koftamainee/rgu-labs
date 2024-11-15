@@ -9,7 +9,7 @@ int fstrstr(const char *str, ...);
 int _strstr_inner(const char *substr, char const *str, int *index);
 void remove_newline(char *buf);
 
-int program_03_4() {
+int program_03_4(int argc, char *argv[]) {
   int err, i;
   Vector vec;
   char substr[] = "a";

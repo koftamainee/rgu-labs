@@ -10,7 +10,7 @@ int sum_in_base(char **ans, int base, size_t numbers_count, ...);
 int add_two_numbers_in_base(char **ans, int base, char const *num_1,
                             char const *num_2);
 
-int program_03_8() {
+int program_03_8(int argc, char *argv[]) {
   int err;
   char *sum = NULL;
 

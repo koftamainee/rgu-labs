@@ -9,7 +9,7 @@
 
 int calculate_polynomial(double *ans, double x, int power, ...);
 
-int program_03_6() {
+int program_03_6(int argc, char *argv[]) {
   double ans;
   int err, i;
   double x;
