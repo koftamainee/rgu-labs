@@ -4,7 +4,7 @@
 #include "cvector.h"
 
 double log_base(double x, double base);
-int generate_fibonacci_row(unsigned int until, unsigned int **ans, size_t *numbers_in_ans_count);
+int generate_fibonacci_row(unsigned int until, unsigned int **ans,
+                           size_t *numbers_in_ans_count);
 
 #endif
-

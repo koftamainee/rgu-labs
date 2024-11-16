@@ -1,5 +1,3 @@
 #include <stdio.h>
 
-int program_03_17() {
-    return 0;
-}
+int program_03_17(int argc, char *argv[]) { return 0; }

@@ -1,32 +1,34 @@
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
+
+#include "../errors.h"
 
 void vilka(char const *restrict _format, ...) {
-    void *arg;
-    va_list valist;
-    va_start(valist, _format);
-    while (*_format) {
-        arg = va_arg(valist, void*);
-        if (*_format == 'f') {
-            free(arg);
-        } else if (*_format == 'c') {
-            fclose((FILE*)arg);
-        }
-        _format++;
+  void *arg;
+  va_list valist;
+  va_start(valist, _format);
+  while (*_format) {
+    arg = va_arg(valist, void *);
+    if (*_format == 'f') {
+      free(arg);
+    } else if (*_format == 'c') {
+      fclose((FILE *)arg);
     }
-    va_end(valist);
-    return;
+    _format++;
+  }
+  va_end(valist);
+  return;
 }
 
 int rerealloc(void **ptr, size_t size) {
-    void *for_realloc = NULL;
-    int err;
+  void *for_realloc = NULL;
+  int err;
 
-    for_realloc = realloc(*ptr, size);
-    if (for_realloc == NULL) {
-        return 1;
-    }
-    *ptr = for_realloc;
-    return 0;
+  for_realloc = realloc(*ptr, size);
+  if (for_realloc == NULL) {
+    return MEMORY_ALLOCATE_ERROR;
+  }
+  *ptr = for_realloc;
+  return 0;
 }

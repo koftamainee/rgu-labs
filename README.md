@@ -162,4 +162,4 @@ x86_64/rgu-labs.exe # For Windows
 
 # 5. License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [DO WHAT THE F*CK YOU WANT TO PUBLIC LICENSE](LICENSE).
