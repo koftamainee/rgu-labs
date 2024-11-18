@@ -6,9 +6,9 @@ LLDB = lldb
 TOOLCHAIN_LINUX = ../cmake/toolchain_linux.cmake
 TOOLCHAIN_WINDOWS = ../cmake/toolchain_windows.cmake
 
-all: docker
+all: run
 
-.PHONY: clean
+.PHONY: clean run debug
 
 # Override BUILD_TYPE for debug build
 debug: BUILD_TYPE = Debug
