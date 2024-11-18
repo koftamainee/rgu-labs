@@ -12,7 +12,7 @@ int program_03_11(int argc, char *argv[]) {
   String str = string_from("Hello, world!");
   String str2 = string_init();
   String str3 = string_from("");
-  String str4 = string_init();
+  String str4 = string_from("string_cat_c_test");
   if (str == NULL || str2 == NULL || str3 == NULL) {
     return MEMORY_ALLOCATE_ERROR;
   }
@@ -23,6 +23,7 @@ int program_03_11(int argc, char *argv[]) {
       string_free(str);
       string_free(str2);
       string_free(str3);
+      string_free(str4);
       return err;
     }
   }
@@ -32,7 +33,7 @@ int program_03_11(int argc, char *argv[]) {
   string_print(str2);
   printf("\n");
 
-  string_grow(&str, 2);
+  string_grow(&str, 5);
   printf("string after -grow(): ");
   string_print(str);
 
@@ -41,6 +42,7 @@ int program_03_11(int argc, char *argv[]) {
     string_free(str);
     string_free(str2);
     string_free(str3);
+    string_free(str4);
     return err;
   }
   printf("\nstring_cpy_c(): ");
@@ -51,6 +53,7 @@ int program_03_11(int argc, char *argv[]) {
     string_free(str);
     string_free(str2);
     string_free(str3);
+    string_free(str4);
     return err;
   }
   printf("\nstring_cat_c(): ");
@@ -63,6 +66,7 @@ int program_03_11(int argc, char *argv[]) {
     string_free(str);
     string_free(str2);
     string_free(str3);
+    string_free(str4);
     return err;
   }
 
@@ -75,13 +79,37 @@ int program_03_11(int argc, char *argv[]) {
     string_free(str);
     string_free(str2);
     string_free(str3);
+    string_free(str4);
     return err;
   }
 
   string_print(str2);
 
+  printf("\nnow we will compare str and str2 (via string_cmp()): %d\nstr1: ",
+         string_cmp(str, str2));
+  string_print(str);
+  printf("\nstr2: ");
+  string_print(str2);
+
+  printf(
+      "\nnow we will compare str2 and str3 (via string_lex_cmp()): %d\nstr2: ",
+      string_lex_cmp(str2, str3));
+  string_print(str2);
+  printf("\nstr3: ");
+  string_print(str3);
+
+  printf("\nlet's find str4 in str2 (via string_str()): %d\nstr2: ",
+         string_str(str2, str4));
+  string_print(str2);
+  printf("\nstr4: ");
+  string_print(str4);
+  printf("\nnow let's do the same via string_str_c(): %d\nstr2: ",
+         string_str_c(str2, "string_cat_c_test"));
+  string_print(str2);
+
   string_free(str);
   string_free(str2);
   string_free(str3);
+  string_free(str4);
   return 0;
 }

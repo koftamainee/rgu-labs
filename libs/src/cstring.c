@@ -17,7 +17,7 @@ String string_init() {
   return __base_to_string(str_p);
 }
 
-String string_from(char *str) {
+String string_from(const char *str) {
   int length = strlen(str);
   String_metadata *str_p = (String_metadata *)malloc(
       (sizeof(char) * STRING_BASE_CAPACITY) + (sizeof(String_metadata)));
@@ -30,7 +30,7 @@ String string_from(char *str) {
   return __base_to_string(str_p);
 }
 
-void string_free(String str) {
+void string_free(const String str) {
   if (str == NULL) {
     return;
   }
@@ -65,10 +65,42 @@ void string_print(String str) {
   }
 }
 
-int string_cmp(String str1, String str2);
-int string_lex_cmp(String str1, String str2, int(comp)(char, char));
+int string_cmp(String str1, String str2) {
+  size_t len1, len2;
+  int i;
+  len1 = string_len(str1);
+  len2 = string_len(str2);
 
-int string_cpy(String *dest, String *src) {
+  if (len1 != len2) {
+    if (len1 >= len2) {
+      return str1[len2];
+    } else {
+      return -str2[len1];
+    }
+  }
+  for (i = 0; i < len1; ++i) {
+    if (str1[i] != str2[i]) {
+      return str1[i] - str2[i];
+    }
+  }
+  return 0;
+}
+int string_lex_cmp(String str1, String str2) {
+  size_t len1, len2, min;
+  int i;
+  len1 = string_len(str1);
+  len2 = string_len(str2);
+
+  min = (len1 < len2) ? len1 : len2;
+  for (i = 0; i < min; ++i) {
+    if (str1[i] != str2[i]) {
+      return str1[i] - str2[i];
+    }
+  }
+  return 0;
+}
+
+int string_cpy(String *dest, const String *src) {
   int err;
   int length = string_len(*src);
   if (dest == NULL || src == NULL) {
@@ -85,7 +117,7 @@ int string_cpy(String *dest, String *src) {
   return EXIT_SUCCESS;
 }
 
-int string_cpy_c(String *dest, char *src) {
+int string_cpy_c(String *dest, const char *src) {
   int err;
   int length = strlen(src);
   if (dest == NULL || src == NULL) {
@@ -103,7 +135,7 @@ int string_cpy_c(String *dest, char *src) {
   return EXIT_SUCCESS;
 }
 
-int string_cat(String *dest, String *src) {
+int string_cat(String *dest, const String *src) {
   int err;
   int length = string_len(*src) + string_len(*dest);
   if (dest == NULL || src == NULL) {
@@ -120,7 +152,7 @@ int string_cat(String *dest, String *src) {
   return EXIT_SUCCESS;
 }
 
-int string_cat_c(String *dest, char *src) {
+int string_cat_c(String *dest, const char *src) {
   int err;
   int length = strlen(src) + string_len(*dest);
   if (dest == NULL || src == NULL) {
@@ -139,9 +171,53 @@ int string_cat_c(String *dest, char *src) {
   return EXIT_SUCCESS;
 }
 
-int string_str(String needle, String haystack);
+int string_str(String haystack, String needle) {
+  size_t needle_len = string_len(needle);
+  size_t haystack_len = string_len(haystack);
 
-int string_str_c(String needle, char *haystack);
+  if (needle_len > haystack_len) {
+    return -1;
+  }
+
+  for (size_t i = 0; i <= haystack_len - needle_len; ++i) {
+    int found = 1;
+    for (size_t j = 0; j < needle_len; ++j) {
+      if (haystack[i + j] != needle[j]) {
+        found = 0;
+        break;
+      }
+    }
+    if (found) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+int string_str_c(String haystack, const char *needle) {
+  size_t needle_len = strlen(needle);
+  size_t haystack_len = string_len(haystack);
+
+  if (needle_len > haystack_len) {
+    return -1;
+  }
+
+  for (size_t i = 0; i <= haystack_len - needle_len; ++i) {
+    int found = 1;
+    for (size_t j = 0; j < needle_len; ++j) {
+      if (haystack[i + j] != needle[j]) {
+        found = 0;
+        break;
+      }
+    }
+    if (found) {
+      return i;
+    }
+  }
+
+  return -1;
+}
 
 int string_grow(String *str, size_t new_size) {
   if (str == NULL || *str == NULL) {

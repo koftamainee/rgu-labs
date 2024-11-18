@@ -6,7 +6,7 @@ LLDB = lldb
 TOOLCHAIN_LINUX = ../cmake/toolchain_linux.cmake
 TOOLCHAIN_WINDOWS = ../cmake/toolchain_windows.cmake
 
-all: run
+all: docker
 
 .PHONY: clean run debug
 

@@ -20,23 +20,23 @@ typedef struct {
 #define string_cap(str) (str ? __string_to_base(str)->capacity : 0)
 
 String string_init();
-String string_from(char *str);
+String string_from(const char *str);
 
-void string_free(String str);
+void string_free(const String str);
 
 int string_add(String *str, char c);
 
-void string_print(String str);
+void string_print(const String str);
 
-int string_cmp(String str1, String str2);
-int string_lex_cmp(String str1, String str2, int(comp)(char, char));
+int string_cmp(const String str1, const String str2);
+int string_lex_cmp(const String str1, const String str2);
 
-int string_cpy(String *dest, String *src);
-int string_cpy_c(String *dest, char *src);
-int string_cat(String *dest, String *src);
-int string_cat_c(String *dest, char *src);
-int string_str(String needle, String haystack);
-int string_str_c(String needle, char *haystack);
+int string_cpy(String *dest, const String *src);
+int string_cpy_c(String *dest, const char *src);
+int string_cat(String *dest, const String *src);
+int string_cat_c(String *dest, const char *src);
+int string_str(const String haystack, const String needle);
+int string_str_c(const String haystack, const char *needle);
 
 int string_grow(String *str, size_t new_size);
 
