@@ -36,6 +36,7 @@ int string_cpy_c(String *dest, char *src);
 int string_cat(String *dest, String *src);
 int string_cat_c(String *dest, char *src);
 int string_str(String needle, String haystack);
+int string_str_c(String needle, char *haystack);
 
 int string_grow(String *str, size_t new_size);
 

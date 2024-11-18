@@ -141,6 +141,8 @@ int string_cat_c(String *dest, char *src) {
 
 int string_str(String needle, String haystack);
 
+int string_str_c(String needle, char *haystack);
+
 int string_grow(String *str, size_t new_size) {
   if (str == NULL || *str == NULL) {
     return DEREFERENCING_NULL_PTR;
