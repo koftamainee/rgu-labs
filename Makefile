@@ -70,16 +70,16 @@ release:
 
 	@echo "[==>] Stage 4: Create new git release branch..." | tee -a release/build.log
 	git checkout -b release-v$(v) >> release/build.log
-	git add . && git commit -m "Release version ${v}"
 	git push origin release-v$(v) >> release/build.log
+	git checkout main >> release/build.log
 	@echo "[==>] Done." | tee -a release/build.log
 	@echo ""
 
 	@echo "[==>] Stage 5: Creating new docker release" | tee -a release/build.log
 	docker build -t rgu-labs .
 	docker login
-	docker tag rgu-labs koftamainee/rgu-labs:
-	docker push koftamainee/rgu-labs
+	docker tag rgu-labs koftamainee/rgu-labs:$(v)
+	docker push koftamainee/rgu-labs:$(v)
 	@echo "[==>] Done." | tee -a release/build.log
 	@echo ""
 
