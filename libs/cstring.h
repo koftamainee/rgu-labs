@@ -11,10 +11,10 @@ typedef char *String;
 typedef struct {
   size_t length;
   size_t capacity;
-} String_metadata;
+} String_metadata_t;
 
-#define __string_to_base(str) (&((String_metadata *)(str))[-1])
-#define __base_to_string(str) ((char *)&((String_metadata *)(str))[1])
+#define __string_to_base(str) (&((String_metadata_t *)(str))[-1])
+#define __base_to_string(str) ((char *)&((String_metadata_t *)(str))[1])
 
 #define string_len(str) (str ? __string_to_base(str)->length : 0)
 #define string_cap(str) (str ? __string_to_base(str)->capacity : 0)

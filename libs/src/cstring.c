@@ -7,8 +7,8 @@
 #include "../errors.h"
 
 String string_init() {
-  String_metadata *str_p = (String_metadata *)malloc(
-      (sizeof(char) * STRING_BASE_CAPACITY) + (sizeof(String_metadata)));
+  String_metadata_t *str_p = (String_metadata_t *)malloc(
+      (sizeof(char) * STRING_BASE_CAPACITY) + (sizeof(String_metadata_t)));
   if (str_p == NULL) {
     return NULL;
   }
@@ -19,8 +19,8 @@ String string_init() {
 
 String string_from(const char *str) {
   int length = strlen(str);
-  String_metadata *str_p = (String_metadata *)malloc(
-      (sizeof(char) * STRING_BASE_CAPACITY) + (sizeof(String_metadata)));
+  String_metadata_t *str_p = (String_metadata_t *)malloc(
+      (sizeof(char) * STRING_BASE_CAPACITY) + (sizeof(String_metadata_t)));
   if (str_p == NULL) {
     return NULL;
   }
@@ -224,15 +224,15 @@ int string_grow(String *str, size_t new_size) {
     return DEREFERENCING_NULL_PTR;
   }
 
-  String_metadata *for_realloc = NULL;
+  String_metadata_t *for_realloc = NULL;
   size_t current_size = string_len(*str);
 
   if (current_size == new_size) {
     return EXIT_SUCCESS;
   }
-  for_realloc = (String_metadata *)realloc(__string_to_base(*str),
-                                           (new_size * sizeof(char)) +
-                                               sizeof(String_metadata));
+  for_realloc = (String_metadata_t *)realloc(__string_to_base(*str),
+                                             (new_size * sizeof(char)) +
+                                                 sizeof(String_metadata_t));
 
   if (for_realloc == NULL) {
     return MEMORY_ALLOCATE_ERROR;

@@ -2,6 +2,7 @@
 #define MATH_H
 
 #include "cvector.h"
+#include <stdlib.h>
 
 double log_base(double x, double base);
 int generate_fibonacci_row(unsigned int until, unsigned int **ans,
