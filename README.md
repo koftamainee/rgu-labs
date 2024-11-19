@@ -10,6 +10,7 @@ Welcome to the **RGU Labs Project**! This guide will help you set up, build, and
 | 1 | labs/01-Bit_arithmetic | Мокряков А.В. | **ready**  |
 | 2 | labs/02-Bash_lab | Мокряков А.В. | 2/12  |
 | 3 | labs/03-Programming | Ирбитский И.С. | 11/19 |
+| 4 | labs/04-Programming | Ирбитский И.С. | 1/10 |
 
 All other useful function are in **libs/** dir, main code with menu stored in **src/** dir
 
@@ -20,7 +21,9 @@ All other useful function are in **libs/** dir, main code with menu stored in **
 Build project with Docker
 
 ```bash
-docker build -t rgu-labs .
+docker build -t rgu-labs . # Build docker image
+
+docker pull koftamainee/rgu-labs:latest # Or just pull the image from Docker hub
 ```
 Run the application in a container:
 ```bash
