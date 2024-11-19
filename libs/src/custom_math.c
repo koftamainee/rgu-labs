@@ -40,3 +40,23 @@ int generate_fibonacci_row(unsigned int until, unsigned int **ans,
   *numbers_in_ans_count = size;
   return OK;
 }
+
+int generate_fibonacci_row_upto_n(int num_elements, int *fib_sequence,
+                                  int *element_count) {
+  int first = 0, second = 1;
+  *element_count = 0;
+
+  if (num_elements >= 1) {
+    fib_sequence[(*element_count)++] = first;
+  }
+  if (num_elements >= 2) {
+    fib_sequence[(*element_count)++] = second;
+  }
+
+  for (int index = 2; index < num_elements; index++) {
+    int next_value = fib_sequence[index - 1] + fib_sequence[index - 2];
+    fib_sequence[(*element_count)++] = next_value;
+  }
+
+  return OK;
+}
