@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#define INT_VECTOR_INITAL_CAPACITY 16
+#define INT_VECTOR_INITIAL_CAPACITY 16
 #define INT_VECTOR_GROWTH_FACTOR 2
 
 typedef struct {

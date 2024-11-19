@@ -9,27 +9,26 @@ int_vector int_vector_init() {
   int_vec_metadata_t *vec = NULL;
   vec =
       (int_vec_metadata_t *)malloc((sizeof(int_vec_metadata_t)) +
-                                   (INT_VECTOR_INITAL_CAPACITY * sizeof(int)));
+                                   (sizeof(int) * INT_VECTOR_INITIAL_CAPACITY));
   if (vec == NULL) {
     return NULL;
   }
-
-  vec->capacity = INT_VECTOR_INITAL_CAPACITY;
-  vec->size = 0;
-
+  vec->size = INT_VECTOR_INITIAL_CAPACITY;
+  vec->capacity = INT_VECTOR_INITIAL_CAPACITY;
   return __int_vector_base_to_vec(vec);
 }
 
-int_vector int_vector_from(int *src, size_t len) {
+int_vector int_vector_from(int *arr, size_t len) {
   int_vec_metadata_t *vec = NULL;
-  vec = (int_vec_metadata_t *)malloc((sizeof(int_vec_metadata_t)) +
-                                     (len * sizeof(int)));
+  vec =
+      (int_vec_metadata_t *)malloc((sizeof(int_vec_metadata_t)) +
+                                   (sizeof(int) * INT_VECTOR_INITIAL_CAPACITY));
   if (vec == NULL) {
     return NULL;
   }
-  memcpy(__int_vector_base_to_vec(vec), src, len * sizeof(int));
-  vec->capacity = len;
+  memcpy(__int_vector_base_to_vec(vec), arr, len * sizeof(int));
   vec->size = len;
+  vec->capacity = len;
   return __int_vector_base_to_vec(vec);
 }
 
@@ -38,38 +37,105 @@ void int_vector_free(int_vector vec) {
   return;
 }
 
-int int_vector_grow(int_vector *vec, size_t new_size) {
-  if (vec == NULL || *vec == NULL) {
+int int_vector_grow(int_vector *vec_ptr, size_t new_size) {
+  if (vec_ptr == NULL || *vec_ptr == NULL) {
     return DEREFERENCING_NULL_PTR;
   }
-
   int_vec_metadata_t *for_realloc = NULL;
-  size_t current_size = int_vector_cap(vec);
+  size_t current_size = int_vector_size(*vec_ptr);
   if (current_size == new_size) {
-    return EXIT_SUCCESS;
+    return OK;
   }
 
-  for_realloc = (int_vec_metadata_t *)realloc(__int_vector_vec_to_base(*vec),
-                                              (sizeof(int_vec_metadata_t)) +
-                                                  (new_size * sizeof(int)));
+  for_realloc = (int_vec_metadata_t *)realloc(
+      __int_vector_vec_to_base(*vec_ptr),
+      (sizeof(int) * new_size) + (sizeof(int_vec_metadata_t)));
   if (for_realloc == NULL) {
     return MEMORY_ALLOCATE_ERROR;
   }
-
-  *vec = __int_vector_base_to_vec(for_realloc);
 
   for_realloc->capacity = new_size;
   if (new_size < current_size) {
     for_realloc->size = new_size;
   }
 
-  return EXIT_SUCCESS;
+  *vec_ptr = __int_vector_base_to_vec(for_realloc);
+
+  return OK;
+}
+int int_vector_insert(int_vector *vec_ptr, int element,
+                      size_t index_to_insert) {
+  int err;
+  if (vec_ptr == NULL || *vec_ptr == NULL) {
+    return DEREFERENCING_NULL_PTR;
+  }
+
+  if (int_vector_size(*vec_ptr) == int_vector_cap(*vec_ptr)) {
+    err = int_vector_grow(vec_ptr,
+                          int_vector_cap(*vec_ptr) * INT_VECTOR_GROWTH_FACTOR);
+    if (err) {
+      return err;
+    }
+  }
+
+  memcpy((*vec_ptr) + index_to_insert + 1, (*vec_ptr) + index_to_insert,
+         sizeof(int) * (int_vector_size(*vec_ptr) - index_to_insert));
+
+  (*vec_ptr)[index_to_insert] = element;
+
+  __int_vector_vec_to_base(*vec_ptr)->size++;
+
+  return OK;
 }
 
-int int_vector_insert(int_vector *vec, int elem, size_t pos);
+int int_vector_push_back(int_vector *vec_ptr, int element) {
+  int err;
+  size_t index_to_insert;
+  if (vec_ptr == NULL || *vec_ptr == NULL) {
+    return DEREFERENCING_NULL_PTR;
+  }
 
-int int_vector_push_back(int_vector *vec, int elem);
+  if (int_vector_size(*vec_ptr) == int_vector_cap(*vec_ptr)) {
+    err = int_vector_grow(vec_ptr,
+                          int_vector_cap(*vec_ptr) * INT_VECTOR_GROWTH_FACTOR);
+    if (err) {
+      return err;
+    }
+  }
+  index_to_insert = int_vector_size(*vec_ptr);
+  memcpy((*vec_ptr) + index_to_insert + 1, (*vec_ptr) + index_to_insert,
+         sizeof(int) * (int_vector_size(*vec_ptr) - index_to_insert));
 
-int int_vector_pop(int_vector *vec, int *elem, size_t pos);
+  (*vec_ptr)[index_to_insert] = element;
 
-int int_vector_pop_back(int_vector *vec, int *elem);
+  __int_vector_vec_to_base(*vec_ptr)->size++;
+
+  return OK;
+}
+
+int int_vector_pop(int_vector *vec_ptr, int *element, size_t index_to_pop) {
+
+  if (vec_ptr == NULL || *vec_ptr == NULL) {
+    return DEREFERENCING_NULL_PTR;
+  }
+
+  *element = *((*vec_ptr) + index_to_pop);
+
+  memcpy((*vec_ptr) + index_to_pop, (*vec_ptr) + index_to_pop + 1,
+         sizeof(int) * (int_vector_size(*vec_ptr) - index_to_pop));
+
+  __int_vector_vec_to_base(*vec_ptr)->size--;
+
+  return OK;
+}
+
+int int_vector_pop_back(int_vector *vec_ptr, int *element) {
+  if (vec_ptr == NULL || *vec_ptr == NULL) {
+    return DEREFERENCING_NULL_PTR;
+  }
+
+  *element = *((*vec_ptr) + int_vector_size(*vec_ptr) - 1);
+  __int_vector_vec_to_base(*vec_ptr)->size--;
+
+  return OK;
+}
