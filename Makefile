@@ -19,6 +19,12 @@ run: BUILD_TYPE = Debug
 run: build_linux
 	cd $(BUILD_DIR)/x86_64 && ./$(TARGET)
 
+build_linux_with_make:
+	make clean
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR) && cmake -G Unix\ Makefiles -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_LINUX) -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ..
+	cd $(BUILD_DIR) && make
+
 build_linux:
 	mkdir -p $(BUILD_DIR)
 	cd $(BUILD_DIR) && cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_LINUX) -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ..
@@ -76,10 +82,10 @@ release:
 	@echo ""
 
 	@echo "[==>] Stage 5: Creating new docker release" | tee -a release/build.log
-	docker build -t rgu-labs .
-	docker login
-	docker tag rgu-labs koftamainee/rgu-labs:$(v)
-	docker push koftamainee/rgu-labs:$(v)
+	docker build -t rgu-labs . >> release/build.log
+	docker login >> release/build.log
+	docker tag rgu-labs koftamainee/rgu-labs:$(v) >> release/build.log
+	docker push koftamainee/rgu-labs:$(v) >> release/build.log
 	@echo "[==>] Done." | tee -a release/build.log
 	@echo ""
 
