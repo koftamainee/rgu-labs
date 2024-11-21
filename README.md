@@ -23,7 +23,8 @@ Build project with Docker
 ```bash
 docker build -t rgu-labs . # Build docker image
 
-docker pull koftamainee/rgu-labs:latest # Or just pull the image from Docker hub
+docker pull koftamainee/rgu-labs:latest # Or just pull the image from Docker hub 
+# There is latest release from main branch in it
 ```
 Run the application in a container:
 ```bash
