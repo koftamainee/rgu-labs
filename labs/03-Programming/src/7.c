@@ -1,22 +1,155 @@
+/*-------------------- This is EXTREMLY outdated --------------------*/
+/*--------- PLS implement it with new cvector or int_vector ---------*/
+/*
+//
+//
+*/
+
 #include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../../libs/cvector.h"
 #include "../../../libs/errors.h"
 #include "../../../libs/types.h"
 
+/*------------------------------- old cvector ------------------------------- */
+#define ____INITIAL_CAPACITY 16
+#define ____GROWTH_FACTOR 2
+
+typedef struct {
+  size_t size;
+  size_t capacity;
+  int *data;
+} ____Vector;
+
+int ______memory_allocate(____Vector *vec);
+
+int ______cvector_init(____Vector *vec);
+int ______cvector_push_back(____Vector *vec, int elem);
+void ______cvector_free(____Vector *vec);
+int ______cvector_pop(____Vector *vec, int index);
+int ______cvector_pop_front(____Vector *vec);
+int ______cvector_pop_back(____Vector *vec);
+void ______cvector_print(____Vector *vec);
+int ______cvector_insert(____Vector *vec, size_t index, int value);
+/*----------------------------------------------------------------------------*/
+int ______cvector_init(____Vector *vec) {
+  vec->size = 0;
+  vec->capacity = ____INITIAL_CAPACITY;
+  vec->data = (int *)malloc(vec->capacity * sizeof(int));
+  if (vec->data == NULL) {
+    return MEMORY_ALLOCATE_ERROR;
+  }
+  return 0;
+}
+
+int ______memory_allocate(____Vector *vec) {
+  int *for_realloc;
+  for_realloc = (int *)realloc(vec->data, vec->capacity * sizeof(int));
+  if (for_realloc == NULL) {
+    return MEMORY_ALLOCATE_ERROR;
+  }
+  vec->data = for_realloc;
+  return 0;
+}
+
+int ______cvector_push_back(____Vector *vec, int elem) {
+  if (vec->size >= vec->capacity) {
+    vec->capacity *= ____GROWTH_FACTOR;
+    if (______memory_allocate(vec) == 1) {
+      return MEMORY_ALLOCATE_ERROR;
+    }
+  }
+  vec->data[vec->size] = elem;
+  vec->size++;
+  return 0;
+}
+
+int ______cvector_pop(____Vector *vec, int index) {
+  if (index < 0 || index >= vec->size) {
+    return INDEX_OUT_OF_BOUNDS;
+  }
+
+  for (int i = index; i < vec->size - 1; i++) {
+    vec->data[i] = vec->data[i + 1];
+  }
+
+  vec->size--;
+
+  if (vec->size > 0 && vec->size <= vec->capacity / (____GROWTH_FACTOR * 2)) {
+    vec->capacity /= ____GROWTH_FACTOR;
+    ______memory_allocate(vec);
+  }
+
+  return 0;
+}
+
+void ______cvector_free(____Vector *vec) {
+  free(vec->data);
+  vec->data = NULL;
+}
+
+void ______cvector_print(____Vector *vec) {
+  int i;
+  for (i = 0; i < vec->size; ++i) {
+    printf("%d ", vec->data[i]);
+  }
+  printf("\n");
+}
+
+int ______cvector_pop_front(____Vector *vec) {
+  return ______cvector_pop(vec, 0);
+}
+
+int ______cvector_pop_back(____Vector *vec) {
+  return ______cvector_pop(vec, vec->size - 1);
+}
+
+int ______cvector_insert(____Vector *vec, size_t index, int value) {
+  if (index > vec->size) {
+    return INDEX_OUT_OF_BOUNDS;
+  }
+
+  if (vec->size >= vec->capacity) {
+    vec->capacity *= 2;
+    int *new_data = realloc(vec->data, vec->capacity * sizeof(int));
+    if (new_data == NULL) {
+      return MEMORY_ALLOCATE_ERROR;
+    }
+    vec->data = new_data;
+  }
+
+  for (size_t i = vec->size; i > index; i--) {
+    vec->data[i] = vec->data[i - 1];
+  }
+
+  vec->data[index] = value;
+  vec->size++;
+
+  return 0;
+}
+/*----------------------------------------------------------------------------*/
+/*
+//
+//
+//
+//
+//
+//
+//
+*/
+
 #define NUMBER_COUNT 5
 
-int find_kaprekar_numbers(Vector *ans, int *answers_count, int numbers_count,
-                          int base, ...);
+int find_kaprekar_numbers(____Vector *ans, int *answers_count,
+                          int numbers_count, int base, ...);
 int is_kaprekar(int *ans, char const *number, int base);
 
 int program_03_7(int argc, char *argv[]) {
   int err, answers_count, i;
-  Vector vec;
+  ____Vector vec;
 
   int const base = 16;
 
@@ -48,12 +181,12 @@ int program_03_7(int argc, char *argv[]) {
     break;
   }
 
-  cvector_free(&vec);
+  ______cvector_free(&vec);
   return err;
 }
 
-int find_kaprekar_numbers(Vector *ans, int *answers_count, int numbers_count,
-                          int base, ...) {
+int find_kaprekar_numbers(____Vector *ans, int *answers_count,
+                          int numbers_count, int base, ...) {
   int err, i, inner_ans;
   char *str_num = NULL;
   va_list valist;
@@ -65,7 +198,7 @@ int find_kaprekar_numbers(Vector *ans, int *answers_count, int numbers_count,
     return INVALID_NUMERIC_BASE;
   }
 
-  err = cvector_init(ans);
+  err = ______cvector_init(ans);
   if (err) {
     return MEMORY_ALLOCATE_ERROR;
   }
@@ -83,7 +216,7 @@ int find_kaprekar_numbers(Vector *ans, int *answers_count, int numbers_count,
       if (err) {
         return err;
       }
-      err = cvector_push_back(ans, inner_ans);
+      err = ______cvector_push_back(ans, inner_ans);
       if (err) {
         return err;
       }
