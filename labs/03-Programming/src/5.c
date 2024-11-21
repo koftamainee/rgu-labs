@@ -27,9 +27,6 @@ int program_03_5(int argc, char *argv[]) {
   for (i = 0; i < POLYGON_DOTS_COUNT; ++i) {
     polygon[i].x = (rand() % 21 - 10) + (((double)(rand() % 1001)) / 1000);
     polygon[i].y = (rand() % 21 - 10) + (((double)(rand() % 1001)) / 1000);
-
-    // polygon[i].x = i - 1;
-    // polygon[i].y = i + 1;
     printf("Dot %d: x = %.3lf, y = %.3lf\n", i, polygon[i].x, polygon[i].y);
   }
 

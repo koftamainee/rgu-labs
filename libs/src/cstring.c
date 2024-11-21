@@ -60,6 +60,9 @@ int string_add(String *str, char c) {
 
 void string_print(String str) {
   int i;
+  if (string_len(str) == 0) {
+    return;
+  }
   for (i = 0; i < string_len(str); ++i) {
     putc(str[i], stdout);
   }
