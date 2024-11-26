@@ -13,7 +13,7 @@ int_vector int_vector_init() {
   if (vec == NULL) {
     return NULL;
   }
-  vec->size = INT_VECTOR_INITIAL_CAPACITY;
+  vec->size = 0;
   vec->capacity = INT_VECTOR_INITIAL_CAPACITY;
   return __int_vector_base_to_vec(vec);
 }
@@ -51,7 +51,7 @@ int int_vector_grow(int_vector *vec_ptr, size_t new_size) {
       __int_vector_vec_to_base(*vec_ptr),
       (sizeof(int) * new_size) + (sizeof(int_vec_metadata_t)));
   if (for_realloc == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   for_realloc->capacity = new_size;

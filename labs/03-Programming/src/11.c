@@ -51,7 +51,7 @@ int tokenize(const String inital, int (*detector)(int), int accept_empty_lexems,
 
   *lexems = (String *)malloc(sizeof(String) * initial_capacity);
   if (*lexems == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   if (inital == NULL || detector == NULL || lexems == NULL ||
@@ -76,7 +76,7 @@ int tokenize(const String inital, int (*detector)(int), int accept_empty_lexems,
         if (string_len(lexem) > 0) {
           (*lexems)[*lexems_count] = string_init();
           if ((*lexems)[*lexems_count] == NULL) {
-            return MEMORY_ALLOCATE_ERROR;
+            return MEMORY_ALLOCATION_ERROR;
           }
           err = string_cpy(&((*lexems)[*lexems_count]), &lexem);
           if (err) {
@@ -90,7 +90,7 @@ int tokenize(const String inital, int (*detector)(int), int accept_empty_lexems,
         } else {
           (*lexems)[*lexems_count] = string_from("");
           if ((*lexems)[*lexems_count] == NULL) {
-            return MEMORY_ALLOCATE_ERROR;
+            return MEMORY_ALLOCATION_ERROR;
           }
           (*lexems_count)++;
           err = string_grow(&lexem, 0);
@@ -110,7 +110,7 @@ int tokenize(const String inital, int (*detector)(int), int accept_empty_lexems,
   if (string_len(lexem) > 0) {
     (*lexems)[*lexems_count] = string_init();
     if ((*lexems)[*lexems_count] == NULL) {
-      return MEMORY_ALLOCATE_ERROR;
+      return MEMORY_ALLOCATION_ERROR;
     }
     err = string_cpy(&((*lexems)[*lexems_count]), &lexem);
     if (err) {

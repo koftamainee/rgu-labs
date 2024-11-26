@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     switch (err) {
     case OK:
       break;
-    case MEMORY_ALLOCATE_ERROR:
+    case MEMORY_ALLOCATION_ERROR:
       printf("Memory allocation error :(\n");
       break;
     case DEREFERENCING_NULL_PTR:

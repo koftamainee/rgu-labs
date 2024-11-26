@@ -8,7 +8,7 @@ int __matrix_memory_alocate(double ***matrix, int height, int width) {
   int i, j;
   *matrix = (double **)malloc(sizeof(double *) * height);
   if (*matrix == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   for (i = 0; i < height; ++i) {
     (*matrix)[i] = (double *)malloc(sizeof(double) * width);
@@ -17,7 +17,7 @@ int __matrix_memory_alocate(double ***matrix, int height, int width) {
         free((*matrix)[j]);
       }
       free(*matrix);
-      return MEMORY_ALLOCATE_ERROR;
+      return MEMORY_ALLOCATION_ERROR;
     }
   }
   return 0;
@@ -27,7 +27,7 @@ int random_matrix_generate(double ***matrix, int height, int width, int min,
                            int max) {
   int i, j;
   if (__matrix_memory_alocate(matrix, height, width) != 0) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   for (i = 0; i < height; ++i) {
     for (j = 0; j < width; ++j) {
@@ -115,8 +115,8 @@ int determinant(double ***matrix, int size, double *det) {
 
   double **new_matrix;
   if (__matrix_memory_alocate(&new_matrix, size, size) ==
-      MEMORY_ALLOCATE_ERROR) {
-    return MEMORY_ALLOCATE_ERROR;
+      MEMORY_ALLOCATION_ERROR) {
+          return MEMORY_ALLOCATION_ERROR;
   }
   matrixcpy(&new_matrix, matrix, size, size);
 
@@ -163,8 +163,8 @@ int generate_zero_matrix(double ***matrix, int size) {
 int generate_identity_matrix(double ***matrix, int size) {
   int i, j;
 
-  if (__matrix_memory_alocate(matrix, size, size) == MEMORY_ALLOCATE_ERROR) {
-    return MEMORY_ALLOCATE_ERROR;
+  if (__matrix_memory_alocate(matrix, size, size) == MEMORY_ALLOCATION_ERROR) {
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   for (i = 0; i < size; ++i) {
@@ -181,8 +181,8 @@ int inverse_matrix(double ***matrix, double ***inverse, int size) {
   double **temp_matrix;
 
   if (__matrix_memory_alocate(&temp_matrix, size, size) ==
-      MEMORY_ALLOCATE_ERROR) {
-    return MEMORY_ALLOCATE_ERROR;
+      MEMORY_ALLOCATION_ERROR) {
+          return MEMORY_ALLOCATION_ERROR;
   }
 
   matrixcpy(&temp_matrix, matrix, size, size);

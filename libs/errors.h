@@ -2,7 +2,7 @@
 #define ERRORS_H
 
 #define OK (0)
-#define MEMORY_ALLOCATE_ERROR (1)
+#define MEMORY_ALLOCATION_ERROR (1)
 #define DEREFERENCING_NULL_PTR (2)
 #define INDEX_OUT_OF_BOUNDS (3)
 #define OPENING_THE_FILE_ERROR (4)
@@ -11,5 +11,6 @@
 #define INVALID_CHAR_TO_NUM_CONVERSION (7)
 #define INVALID_FLAG (8)
 #define INVALID_STREAM_PTR (9)
+#define INVALID_NUMBER (10)
 
 #endif

@@ -26,7 +26,7 @@ int read_str(char **str) {
   len = strlen(buf);
   *str = (char *)malloc((len + 1) * sizeof(char));
   if (!*str) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   strcpy(*str, buf);

@@ -238,7 +238,7 @@ int string_grow(String *str, size_t new_size) {
                                                  sizeof(String_metadata_t));
 
   if (for_realloc == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   *str = __cstring_base_to_string(for_realloc);

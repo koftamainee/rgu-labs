@@ -56,19 +56,19 @@ int substr(char *to_find, int case_sensitive, char ***results, int ***positions,
 
   (*results) = (char **)malloc(size * sizeof(char *));
   if ((*results) == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   (*positions) = (int **)malloc(size * sizeof(int *));
   if ((*positions) == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   current_ans_size = size;
 
   for (i = 0; i < current_ans_size; i++) {
     (*positions)[i] = (int *)malloc(size * sizeof(int));
     if ((*positions)[i] == NULL) {
-      return MEMORY_ALLOCATE_ERROR;
+      return MEMORY_ALLOCATION_ERROR;
     }
     (*positions)[i][0] = 0;
   }
@@ -84,19 +84,19 @@ int substr(char *to_find, int case_sensitive, char ***results, int ***positions,
     if (current_ans_index >= current_ans_size) {
       err = rerealloc((void **)positions, current_ans_size * 2 * sizeof(int *));
       if (err) {
-        return MEMORY_ALLOCATE_ERROR;
+        return MEMORY_ALLOCATION_ERROR;
       }
       (*positions) = temp_int_ptr_ptr;
 
       err = rerealloc((void **)results, current_ans_size * 2 * sizeof(char *));
       if (err) {
-        return MEMORY_ALLOCATE_ERROR;
+        return MEMORY_ALLOCATION_ERROR;
       }
 
       for (i = current_ans_size; i < current_ans_size * 2; i++) {
         (*positions)[i] = (int *)malloc(size * sizeof(int));
         if ((*positions)[i] == NULL) {
-          return MEMORY_ALLOCATE_ERROR;
+          return MEMORY_ALLOCATION_ERROR;
         }
         (*positions)[i][0] = 0;
       }
@@ -119,7 +119,7 @@ int substr(char *to_find, int case_sensitive, char ***results, int ***positions,
           err = rerealloc((void **)(*positions)[current_ans_index],
                           current_position_str_size * 2 * sizeof(int));
           if (err) {
-            return MEMORY_ALLOCATE_ERROR;
+            return MEMORY_ALLOCATION_ERROR;
             free(*positions[current_ans_index]);
           }
           current_position_str_size *= 2;

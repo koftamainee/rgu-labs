@@ -40,7 +40,7 @@ int ______cvector_init(____Vector *vec) {
   vec->capacity = ____INITIAL_CAPACITY;
   vec->data = (int *)malloc(vec->capacity * sizeof(int));
   if (vec->data == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   return 0;
 }
@@ -49,7 +49,7 @@ int ______memory_allocate(____Vector *vec) {
   int *for_realloc;
   for_realloc = (int *)realloc(vec->data, vec->capacity * sizeof(int));
   if (for_realloc == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   vec->data = for_realloc;
   return 0;
@@ -59,7 +59,7 @@ int ______cvector_push_back(____Vector *vec, int elem) {
   if (vec->size >= vec->capacity) {
     vec->capacity *= ____GROWTH_FACTOR;
     if (______memory_allocate(vec) == 1) {
-      return MEMORY_ALLOCATE_ERROR;
+      return MEMORY_ALLOCATION_ERROR;
     }
   }
   vec->data[vec->size] = elem;
@@ -116,7 +116,7 @@ int ______cvector_insert(____Vector *vec, size_t index, int value) {
     vec->capacity *= 2;
     int *new_data = realloc(vec->data, vec->capacity * sizeof(int));
     if (new_data == NULL) {
-      return MEMORY_ALLOCATE_ERROR;
+      return MEMORY_ALLOCATION_ERROR;
     }
     vec->data = new_data;
   }
@@ -170,7 +170,7 @@ int program_03_7(int argc, char *argv[]) {
   case DEREFERENCING_NULL_PTR:
     printf("Dereferencing NULL ptr\n");
     break;
-  case MEMORY_ALLOCATE_ERROR:
+  case MEMORY_ALLOCATION_ERROR:
     printf("Memory allocation error\n");
     break;
   case INVALID_NUMERIC_BASE:
@@ -200,7 +200,7 @@ int find_kaprekar_numbers(____Vector *ans, int *answers_count,
 
   err = ______cvector_init(ans);
   if (err) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   va_start(valist, base);
