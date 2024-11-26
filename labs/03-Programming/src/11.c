@@ -19,6 +19,10 @@ int program_03_11(int argc, char *argv[]) {
   String *ans;
   err = tokenize(inital, detector_t, 1, &ans, &len);
   if (err) {
+    for (i = 0; i < len; ++i) {
+      string_free(ans[i]);
+    }
+    free(ans);
     return err;
   }
 
