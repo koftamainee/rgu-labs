@@ -14,7 +14,7 @@ int program_04_2(int argc, char *argv[]) {
   String str3 = string_from("");
   String str4 = string_from("string_cat_c_test");
   if (str == NULL || str2 == NULL || str3 == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   for (i = 0; i < 52; i++) {

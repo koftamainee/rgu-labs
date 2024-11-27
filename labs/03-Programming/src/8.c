@@ -24,7 +24,7 @@ int program_03_8(int argc, char *argv[]) {
   case DEREFERENCING_NULL_PTR:
     printf("Dereferencing NULL ptr\n");
     break;
-  case MEMORY_ALLOCATE_ERROR:
+  case MEMORY_ALLOCATION_ERROR:
     printf("Memory allocation error\n");
     break;
   case INVALID_NUMERIC_BASE:
@@ -64,7 +64,7 @@ int sum_in_base(char **ans, int base, size_t numbers_count, ...) {
     *ans = (char *)malloc((strlen(num) + 1) * sizeof(char));
     if (*ans == NULL) {
       va_end(valist);
-      return MEMORY_ALLOCATE_ERROR;
+      return MEMORY_ALLOCATION_ERROR;
     }
     strcpy(*ans, num);
     va_end(valist);
@@ -108,7 +108,7 @@ int add_two_numbers_in_base(char **ans, int base, char const *num_1,
 
   temp_num = (char *)calloc((max_len + 2), sizeof(char));
   if (temp_num == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   temp_num[max_len + 1] = '\0';
 

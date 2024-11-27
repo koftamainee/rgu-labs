@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MEMORY_ALLOCATE_ERROR 1
+#define MEMORY_ALLOCATION_ERROR 1
 #define DEREFERENCING_NULL_PTR 2
 
 // custom errors
@@ -140,7 +140,7 @@ int creverse(const char *str, char **ans) {
   cstrlen(str, &len);
   *ans = (char *)malloc((len + 1) * sizeof(char));
   if (!*ans) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   (*ans)[len] = 0;
   for (i = 0; i < len; ++i) {
@@ -158,7 +158,7 @@ int ctoupper(const char *str, char **ans) {
   printf("%d\n", len);
   *ans = (char *)malloc((len + 1) * sizeof(char));
   if (!*ans) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   (*ans)[len] = 0;
 
@@ -209,7 +209,7 @@ int creorder_string(const char *str, char **ans) {
     free(digits);
     free(letters);
     free(others);
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   cstrcpy(*ans, digits);
@@ -238,7 +238,7 @@ int cstrcat(char **strings, char **ans, int count, int seed) {
 
   *ans = (char *)malloc(total_len + 1);
   if (*ans == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   (*ans)[0] = '\0';
@@ -252,7 +252,7 @@ int cstrcat(char **strings, char **ans, int count, int seed) {
 int create_string_array(int argc, char *argv[], char ***str_arr) {
   *str_arr = (char **)malloc((argc - 3) * sizeof(char *));
   if (*str_arr == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   for (int i = 4; i < argc; ++i) {
@@ -260,7 +260,7 @@ int create_string_array(int argc, char *argv[], char ***str_arr) {
     cstrlen(argv[i], &len);
     (*str_arr)[i - 4] = (char *)malloc((len + 1) * sizeof(char));
     if ((*str_arr)[i - 4] == NULL) {
-      return MEMORY_ALLOCATE_ERROR;
+      return MEMORY_ALLOCATION_ERROR;
     }
     cstrcpy((*str_arr)[i - 4], argv[i]);
   }

@@ -1,16 +1,16 @@
 # Introduction
 
-Welcome to the **RGU Labs Project**! This guide will help you set up, build, and run the RGU Labs from source. 
+Welcome to the **RGU Labs Project**! This guide will help you set up, build, and run the RGU Labs from source.
 
 # Labs state
 
-| № | Path | Who issued | State |
-| :---: | --- | --- | --- |
-| 0 | labs/00-Programming | Ирбитский И.С. | **ready** |
-| 1 | labs/01-Bit_arithmetic | Мокряков А.В. | **ready**  |
-| 2 | labs/02-Bash_lab | Мокряков А.В. | 2/12  |
-| 3 | labs/03-Programming | Ирбитский И.С. | 11/19 |
-| 4 | labs/04-Programming | Ирбитский И.С. | 1/10 |
+|  №  | Path                   | Who issued     | State     |
+| :-: | ---------------------- | -------------- | --------- |
+|  0  | labs/00-Programming    | Ирбитский И.С. | **ready** |
+|  1  | labs/01-Bit_arithmetic | Мокряков А.В.  | **ready** |
+|  2  | labs/02-Bash_lab       | Мокряков А.В.  | 2/12      |
+|  3  | labs/03-Programming    | Ирбитский И.С. | 15/19     |
+|  4  | labs/04-Programming    | Ирбитский И.С. | 1/10      |
 
 All other useful function are in **libs/** dir, main code with menu stored in **src/** dir
 
@@ -24,8 +24,11 @@ Build project with Docker
 docker build -t rgu-labs . # Build docker image
 
 docker pull koftamainee/rgu-labs:latest # Or just pull the image from Docker hub
+# There is latest release from main branch in it
 ```
+
 Run the application in a container:
+
 ```bash
 docker run -it --rm rgu-labs
 ```
@@ -41,7 +44,6 @@ Before you begin, ensure you have the following software installed:
 - **A C Compiler** (GCC or Clang for Linux/macOS, MinGW or Visual Studio for Windows)
 - **Git**
 
-
 # 2. Clone the Repository
 
 To get started, clone the repository to your local machine:
@@ -50,7 +52,6 @@ To get started, clone the repository to your local machine:
 git clone https://github.com/koftamainee/rgu-labs/
 cd rgu-labs
 ```
-
 
 # 3. Build project
 
@@ -86,7 +87,6 @@ set(CMAKE_C_COMPILER x86_64-w64-mingw32-gcc)
 set(CMAKE_CXX_COMPILER x86_64-w64-mingw32-g++)
 ```
 
-
 ## 3.1. Linux Compilation
 
 ### Build with make (recommended)
@@ -95,6 +95,7 @@ set(CMAKE_CXX_COMPILER x86_64-w64-mingw32-g++)
 make build_linux
 cd build
 ```
+
 ### Build manually
 
 #### Create a Build Directory
@@ -126,15 +127,15 @@ For Windows, you can use either MinGW or Visual Studio. Choose the appropriate i
 
 2. Run CMake with Ninja:
 
-    ```bash
-    cmake -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_windows.cmake -DCMAKE_BUILD_TYPE=Release ..
-    ```
+   ```bash
+   cmake -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_windows.cmake -DCMAKE_BUILD_TYPE=Release ..
+   ```
 
 3. Build the project:
 
-    ```bash
-    ninja
-    ```
+   ```bash
+   ninja
+   ```
 
 #### Using Visual Studio
 
@@ -142,17 +143,17 @@ For Windows, you can use either MinGW or Visual Studio. Choose the appropriate i
 
 2. Run CMake with Visual Studio:
 
-    ```bash
-    cmake -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_windows.cmake -DCMAKE_BUILD_TYPE=Release ..
-    ```
+   ```bash
+   cmake -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain_windows.cmake -DCMAKE_BUILD_TYPE=Release ..
+   ```
 
    Replace "2022" with your version of Visual Studio if necessary.
 
 3. Build the project:
 
-    ```bash
-    cmake --build . --config Release
-    ```
+   ```bash
+   cmake --build . --config Release
+   ```
 
 # 4. Run the Project
 
@@ -165,4 +166,4 @@ x86_64/rgu-labs.exe # For Windows
 
 # 5. License
 
-This project is licensed under the [DO WHAT THE F*CK YOU WANT TO PUBLIC LICENSE](LICENSE).
+This project is licensed under the [DO WHAT THE F\*CK YOU WANT TO PUBLIC LICENSE](LICENSE).

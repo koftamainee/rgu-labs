@@ -27,7 +27,7 @@ int rerealloc(void **ptr, size_t size) {
 
   for_realloc = realloc(*ptr, size);
   if (for_realloc == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   *ptr = for_realloc;
   return 0;

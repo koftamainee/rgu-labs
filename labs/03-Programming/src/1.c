@@ -28,7 +28,7 @@ int program_03_1(int argc, char *argv[]) {
   case INVALID_BASE:
     printf("Invalid base.\n");
     return err;
-  case MEMORY_ALLOCATE_ERROR:
+  case MEMORY_ALLOCATION_ERROR:
     printf("Memory allocation error.\n");
     return err;
   }
@@ -50,7 +50,7 @@ int gorner_2p(int src, char **dest, int r) {
   if (src == 0) {
     *dest = (char *)malloc(2 * sizeof(char));
     if (!*dest) {
-      return MEMORY_ALLOCATE_ERROR;
+      return MEMORY_ALLOCATION_ERROR;
     }
     (*dest)[0] = '0';
     (*dest)[1] = '\0';
@@ -65,7 +65,7 @@ int gorner_2p(int src, char **dest, int r) {
 
   *dest = (char *)malloc((len + 1) * sizeof(char));
   if (!*dest) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   ptr = *dest;
 

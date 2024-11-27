@@ -19,7 +19,7 @@ int citoa(int num, int base, char **ans) {
   if (num == 0) {
     *ans = malloc(2 * sizeof(char));
     if (*ans == NULL) {
-      return MEMORY_ALLOCATE_ERROR;
+      return MEMORY_ALLOCATION_ERROR;
     }
     (*ans)[0] = '0';
     (*ans)[1] = '\0';
@@ -34,7 +34,7 @@ int citoa(int num, int base, char **ans) {
   len = log_base(num, base) + 1 - is_negative;
   *ans = malloc((len + 1) * sizeof(char));
   if (*ans == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   char *ptr = *ans;
 
@@ -72,7 +72,7 @@ int cutoa(unsigned int num, int base, char **ans) {
   if (num == 0) {
     *ans = malloc(2 * sizeof(char));
     if (*ans == NULL) {
-      return MEMORY_ALLOCATE_ERROR;
+      return MEMORY_ALLOCATION_ERROR;
     }
     (*ans)[0] = '0';
     (*ans)[1] = '\0';
@@ -82,7 +82,7 @@ int cutoa(unsigned int num, int base, char **ans) {
   len = log_base(num, base) + 1;
   *ans = malloc((len + 1) * sizeof(char));
   if (*ans == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   char *ptr = *ans + len;

@@ -14,7 +14,7 @@
 #define RESULT_PERMUTATIONS_NULL (2)
 #define RESULT_PERMUTATIONS_COUNT_NULL (3)
 #define EQUALITY_COMPARER_NULL (4)
-#define MEMORY_ALLOCATE_ERROR (5)
+#define MEMORY_ALLOCATION_ERROR (5)
 #define EQUAL_ELEMENTS_FOUND (6)
 #define ERROR_OPENING_THE_FILE (7)
 #define CURRENT_PERMUTATION_NULL (8)
@@ -82,7 +82,7 @@ int program_03_16(int argc, char *argv[]) {
   case EQUALITY_COMPARER_NULL:
     printf("Equality comparer ptr is NULL\n");
     break;
-  case MEMORY_ALLOCATE_ERROR:
+  case MEMORY_ALLOCATION_ERROR:
     printf("Memory allocation error\n");
     break;
   case EQUAL_ELEMENTS_FOUND:
@@ -143,10 +143,10 @@ int permutations(int *items, size_t items_count, int ***result_permutations,
 
   // Memory allocation without realloc :-|
   if (!(current_permutation = (int *)malloc(items_count * sizeof(int)))) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   if (!(not_inserted_items = (int *)malloc(items_count * sizeof(int)))) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   // O(n!) memory usage, inital permutation_count == 1
@@ -159,7 +159,7 @@ int permutations(int *items, size_t items_count, int ***result_permutations,
   if (!(target_permutation =
             (int **)malloc(permutation_count * sizeof(int *)))) {
     vilka("ff", current_permutation, not_inserted_items);
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   for (i = 0; i < permutation_count; ++i) {
     // so big so huge
@@ -169,7 +169,7 @@ int permutations(int *items, size_t items_count, int ***result_permutations,
       }
       vilka("fff", target_permutation, not_inserted_items, current_permutation);
 
-      return MEMORY_ALLOCATE_ERROR;
+      return MEMORY_ALLOCATION_ERROR;
     }
   }
 

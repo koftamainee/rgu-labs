@@ -78,7 +78,7 @@ int __overvprintf(char **formatted_string, char *restrict _format,
 
   temp_ans = (char *)malloc(capacity * sizeof(char));
   if (temp_ans == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   while (current_format_index <= format_len) {
@@ -702,7 +702,7 @@ int find_zykendorffs_representation(unsigned int num, unsigned int const *row,
 
   *ans = (unsigned int *)malloc(numbers_in_row_count * sizeof(unsigned int));
   if (*ans == NULL) {
-    return MEMORY_ALLOCATE_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   *numbers_in_ans_count = 0;
