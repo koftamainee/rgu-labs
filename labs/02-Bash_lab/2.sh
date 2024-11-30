@@ -3,21 +3,27 @@
 total_lines=0
 error_file=""
 
-while getopts ":e:" opt; do
+
+while getopts ":e:h" opt; do
     case $opt in
-        e) 
+        e)
             error_file="$OPTARG"
             ;;
-         \?)
-            echo "Wrong flag: -$OPTARG" >&2
+        h)
+            echo "Usage: ./2.sh <filename>"
+            exit 1
+            ;;
+        \?)
+            echo "Unknown option: -$OPTARG" >&2
             exit 1
             ;;
         :)
-            echo "Flag -$OPTARG needed in argument." >&2
+            echo "Option -$OPTARG requires an argument." >&2
             exit 1
             ;;
     esac
 done
+
 
 shift $((OPTIND -1))
 
