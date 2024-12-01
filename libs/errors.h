@@ -12,5 +12,7 @@
 #define INVALID_FLAG (8)
 #define INVALID_STREAM_PTR (9)
 #define INVALID_NUMBER (10)
+#define INVALID_COMBINATION_SIZE (11)
+#define EQUAL_ELEMENTS_FOUND (12)
 
 #endif

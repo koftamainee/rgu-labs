@@ -116,7 +116,7 @@ int determinant(double ***matrix, int size, double *det) {
   double **new_matrix;
   if (__matrix_memory_alocate(&new_matrix, size, size) ==
       MEMORY_ALLOCATION_ERROR) {
-          return MEMORY_ALLOCATION_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
   matrixcpy(&new_matrix, matrix, size, size);
 
@@ -182,7 +182,7 @@ int inverse_matrix(double ***matrix, double ***inverse, int size) {
 
   if (__matrix_memory_alocate(&temp_matrix, size, size) ==
       MEMORY_ALLOCATION_ERROR) {
-          return MEMORY_ALLOCATION_ERROR;
+    return MEMORY_ALLOCATION_ERROR;
   }
 
   matrixcpy(&temp_matrix, matrix, size, size);

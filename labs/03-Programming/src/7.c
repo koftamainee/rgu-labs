@@ -151,9 +151,9 @@ int program_03_7(int argc, char *argv[]) {
   int err, answers_count, i;
   ____Vector vec;
 
-  int const base = 16;
+  int const base = 10;
 
-  err = find_kaprekar_numbers(&vec, &answers_count, 4, base, "1", "52", "F",
+  err = find_kaprekar_numbers(&vec, &answers_count, 4, base, "4879", "52", "F",
                               "AB");
   switch (err) {
   case OK:

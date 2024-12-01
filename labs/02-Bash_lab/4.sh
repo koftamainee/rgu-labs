@@ -1,15 +1,18 @@
 #!/bin/bash
 
-while getopts ":e:h:d:" opt; do
+while getopts ":e:hd:f:" opt; do
     case $opt in
+        f)
+            filename="$OPTARG"
+            ;;
         d)
-            input_file="$OPTARG"
+            input_dir="$OPTARG"
             ;;
         e)
             error_file="$OPTARG"
             ;;
         h)
-            echo "Usage: ./3.sh <filename>"
+            echo "Usage: ./3.sh -d <directory> -f <filename>"
             exit 1
             ;;
         \?)
@@ -23,10 +26,10 @@ while getopts ":e:h:d:" opt; do
     esac
 done
 
-if [[ -d $input_file ]]; then
-    find $input_file | wc -l
+if [[ -d $input_dir ]]; then
+    find $input_dir -type f -name $filename
     else
-        error_message="File $file now found"
+        error_message="dir $input_dir now found"
         if [[ -n $error_file ]]; then
             echo "$error_message" >> "$error_file"
         else
