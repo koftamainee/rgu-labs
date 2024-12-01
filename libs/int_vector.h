@@ -7,8 +7,8 @@
 #define INT_VECTOR_GROWTH_FACTOR 2
 
 typedef struct {
-  size_t size;
-  size_t capacity;
+    size_t size;
+    size_t capacity;
 } int_vec_metadata_t;
 
 typedef int *int_vector;
@@ -20,6 +20,7 @@ typedef int *int_vector;
 #define int_vector_cap(vec) (vec ? __int_vector_vec_to_base(vec)->capacity : 0)
 
 int_vector int_vector_init();
+int_vector int_vector_init_with_cap(size_t cap);
 int_vector int_vector_from(int *src, size_t len);
 
 void int_vector_free(int_vector);
