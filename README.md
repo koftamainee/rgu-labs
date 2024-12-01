@@ -8,7 +8,7 @@ Welcome to the **RGU Labs Project**! This guide will help you set up, build, and
 | :-: | ---------------------- | -------------- | --------- |
 |  0  | labs/00-Programming    | Ирбитский И.С. | **ready** |
 |  1  | labs/01-Bit_arithmetic | Мокряков А.В.  | **ready** |
-|  2  | labs/02-Bash_lab       | Мокряков А.В.  | 10/12     |
+|  2  | labs/02-Bash_lab       | Мокряков А.В.  | **ready** |
 |  3  | labs/03-Programming    | Ирбитский И.С. | **ready** |
 |  4  | labs/04-Programming    | Ирбитский И.С. | 1/10      |
 
