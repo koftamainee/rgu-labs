@@ -400,8 +400,19 @@ int lab_04(int argc, char *argv[]) {
         program_04_6, program_04_7, program_04_8, program_04_9, program_04_10,
     };
 
-    char tasks[] = "TODO\n\n";
-
+    char tasks[] =
+        "1. \n\
+2. Build custom String.\n\
+3. .\n\
+4. .\n\
+5. .\n\
+6. .\n\
+7. .\n\
+8. .\n\
+9. .\n\
+10. .\n\
+0. Back. \n\n\
+Input int number: ";
     int task;
     char c;
     clear_screen();
