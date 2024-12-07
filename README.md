@@ -21,16 +21,16 @@ All other useful function are in **libs/** dir, main code with menu stored in **
 Build project with Docker
 
 ```bash
-docker build -t rgu-labs . # Build docker image
+docker build -t rgu-labs . # Build docker image (if u want latest image from main branch)
 
 docker pull koftamainee/rgu-labs:latest # Or just pull the image from Docker hub
-# There is latest release from main branch in it
+# There is latest stable release
 ```
 
 Run the application in a container:
 
 ```bash
-docker run -it --rm rgu-labs
+docker run -it --rm rgu-labs  # + optional cli flags for several tasks
 ```
 
 # Build the project locally
@@ -42,7 +42,6 @@ Before you begin, ensure you have the following software installed:
 - **CMake** (version 3.10 or higher)
 - **Ninja or Visual Studio** build system
 - **A C Compiler** (GCC or Clang for Linux/macOS, MinGW or Visual Studio for Windows)
-- **Git**
 
 # 2. Clone the Repository
 
