@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../libs/errors.h"
-#include "../libs/input.h"
+#include "../libc/errors.h"
+#include "../libc/input.h"
 #include "labs.h"
 
 int lab_00(int argc, char *argv[]);
@@ -401,16 +401,16 @@ int lab_04(int argc, char *argv[]) {
     };
 
     char tasks[] =
-        "1. \n\
-2. Build custom String.\n\
-3. .\n\
-4. .\n\
-5. .\n\
-6. .\n\
-7. .\n\
-8. .\n\
-9. .\n\
-10. .\n\
+        "1. HR simulator \n\
+2. f*ck (char *), all my homies use String.\n\
+3. Pochta Rossii simulator.\n\
+4. Sessiya simulator.\n\
+5. Sobyanin simulator.\n\
+6. mikrochelik interpritator.\n\
+7. Data Scientist simulator.\n\
+8. Interpritator 2.\n\
+9. Zhalkaya parodiya na preprocessor.\n\
+10. Calculator and table of truth.\n\
 0. Back. \n\n\
 Input int number: ";
     int task;

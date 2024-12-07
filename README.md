@@ -12,7 +12,7 @@ Welcome to the **RGU Labs Project**! This guide will help you set up, build, and
 |  3  | labs/03-Programming    | Ирбитский И.С. | **ready** |
 |  4  | labs/04-Programming    | Ирбитский И.С. | 1/10      |
 
-All other useful function are in **libs/** dir, main code with menu stored in **src/** dir
+All other useful function are in **libc/** dir, main code with menu stored in **src/** dir
 
 # Build Guide
 

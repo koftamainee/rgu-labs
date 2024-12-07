@@ -9,7 +9,7 @@ def generate_salary():
     return round(random.uniform(30000, 120000), 2)
 
 filename = "files/employees.txt"
-count = 100000
+count = 100
 with open(filename, "w") as file:
     for i in range(count):
         id = i

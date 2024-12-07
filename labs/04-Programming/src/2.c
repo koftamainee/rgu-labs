@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "../../../libs/cstring.h"
-#include "../../../libs/errors.h"
+#include "../../../libc/cstring.h"
+#include "../../../libc/errors.h"
 
 int tokenize(char *inital, int (*detector)(int), int accept_empty_lexems,
              char ***lexems, size_t *lexems_count);

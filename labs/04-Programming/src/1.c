@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../../libs/cstring.h"
-#include "../../../libs/errors.h"
-#include "../../../libs/memory.h"
+#include "../../../libc/cstring.h"
+#include "../../../libc/errors.h"
+#include "../../../libc/memory.h"
 
 #define INITIAL_CAPACITY (16)
 #define GROWTH_FACTOR (2)
