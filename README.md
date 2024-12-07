@@ -10,7 +10,7 @@ Welcome to the **RGU Labs Project**! This guide will help you set up, build, and
 |  1  | labs/01-Bit_arithmetic | Мокряков А.В.  | **ready** |
 |  2  | labs/02-Bash_lab       | Мокряков А.В.  | **ready** |
 |  3  | labs/03-Programming    | Ирбитский И.С. | **ready** |
-|  4  | labs/04-Programming    | Ирбитский И.С. | 1/10      |
+|  4  | labs/04-Programming    | Ирбитский И.С. | 2/10      |
 
 All other useful function are in **libs/** dir, main code with menu stored in **src/** dir
 
@@ -42,6 +42,7 @@ Before you begin, ensure you have the following software installed:
 - **CMake** (version 3.10 or higher)
 - **Ninja or Visual Studio** build system
 - **A C Compiler** (GCC or Clang for Linux/macOS, MinGW or Visual Studio for Windows)
+- **make** (optional for linux)
 
 # 2. Clone the Repository
 
