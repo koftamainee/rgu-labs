@@ -71,6 +71,9 @@ int main(int argc, char *argv[]) {
             case EQUAL_ELEMENTS_FOUND:
                 printf("There is equal elements in collectiosn :(\n");
                 break;
+            case ERROR_READING_FROM_STDIN:
+                printf("Error reading from stdin ;(\n");
+                break;
             default:
                 printf("Undefined behavior ಠ_ಠ\n");
                 break;
