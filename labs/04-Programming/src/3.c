@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "../../../libc/cstring.h"
 #include "../../../libc/errors.h"
@@ -39,12 +40,14 @@ typedef struct Post {
 err_t read_string_from_user(String *str);
 err_t read_double_from_user(double *num);
 err_t read_size_t_from_user(size_t *num);
+err_t print_mail(Mail *m);
 
 // Creators
 err_t post_init(Post *p);
 
 // Utils
-err_t post_comparer(const void *a, const void *b);
+int post_comparer(const void *a, const void *b);
+int by_time_comparer(const void *a, const void *b);
 
 // Destructors
 void post_destructor(Post *p);
@@ -380,22 +383,10 @@ err_t obtain_mail_by_id(Post *p) {
     }
     for (i = 0; i < p->mails_count; ++i) {
         if (!string_cmp(s_ans, p->mails[i].id)) {
-            printf("Found Mail with id ");
-            string_print(s_ans);
-            printf("\nWeigth: %lf\nCreation time: ", p->mails[i].weight);
-            string_print(p->mails[i].creation_time);
-            printf("\nDelivery time: ");
-            string_print(p->mails[i].delivery_time);
-            printf("\nRecepient: \nCity: ");
-            string_print(p->mails[i].recipient_adress.city);
-            printf("\nStreet: ");
-            string_print(p->mails[i].recipient_adress.street);
-            printf("\nHouse number: %zu\nBody: ",
-                   p->mails[i].recipient_adress.house_number);
-            string_print(p->mails[i].recipient_adress.body);
-            printf("\nFlat number: %zu\nIndex: ",
-                   p->mails[i].recipient_adress.flat_number);
-            string_print(p->mails[i].recipient_adress.index);
+            err = print_mail(p->mails + i);
+            if (err) {
+                return err;
+            }
             printf("\nPress enter to continue");
             while (c != EOF && (c = getchar()) != '\n');
             string_free(s_ans);
@@ -445,11 +436,85 @@ err_t delete_mail(Post *p) {
     return EXIT_SUCCESS;
 }
 
-err_t get_delivered_mails(Post *p) {}
+err_t get_delivered_mails(Post *p) {
+    err_t err;
+    size_t i;
+    char time_buf[64], c;
+    String local_time = NULL;
+    Mail *sorted;
+    time_t t = time(NULL);
+    strftime(time_buf, sizeof(time_buf), "%Y-%m-%d %H:%M:%S", localtime(&t));
 
-err_t get_not_delivered_mails(Post *p) {}
+    sorted = (Mail *)malloc(sizeof(Mail) * p->mails_count);
+    if (sorted == NULL) {
+        return MEMORY_ALLOCATION_ERROR;
+    }
 
-err_t post_comparer(const void *a, const void *b) {
+    local_time = string_from(time_buf);
+    if (local_time == NULL) {
+        free(sorted);
+        return MEMORY_ALLOCATION_ERROR;
+    }
+
+    memcpy(sorted, p->mails, sizeof(Mail) * p->mails_count);
+    qsort((void *)p->mails, p->mails_count, sizeof(Mail), by_time_comparer);
+    for (i = 0; i < p->mails_count; ++i) {
+        if (string_cmp(local_time, p->mails[i].delivery_time) <= 0) {
+            err = print_mail(p->mails + i);
+            if (err) {
+                return err;
+            }
+        }
+    }
+
+    printf("\nPress enter to continue");
+    while (c != EOF && (c = getchar()) != '\n');
+
+    free(sorted);
+    string_free(local_time);
+    return EXIT_SUCCESS;
+}
+
+err_t get_not_delivered_mails(Post *p) {
+    err_t err;
+    size_t i;
+    char time_buf[64], c;
+    String local_time = NULL;
+    Mail *sorted;
+    time_t t = time(NULL);
+    strftime(time_buf, sizeof(time_buf), "%Y-%m-%d %H:%M:%S", localtime(&t));
+
+    sorted = (Mail *)malloc(sizeof(Mail) * p->mails_count);
+    if (sorted == NULL) {
+        return MEMORY_ALLOCATION_ERROR;
+    }
+
+    local_time = string_from(time_buf);
+    if (local_time == NULL) {
+        free(sorted);
+        return MEMORY_ALLOCATION_ERROR;
+    }
+
+    memcpy(sorted, p->mails, sizeof(Mail) * p->mails_count);
+    qsort((void *)p->mails, p->mails_count, sizeof(Mail), by_time_comparer);
+    for (i = 0; i < p->mails_count; ++i) {
+        if (string_cmp(local_time, p->mails[i].delivery_time) > 0) {
+            err = print_mail(p->mails + i);
+            if (err) {
+                return err;
+            }
+        }
+    }
+
+    printf("\nPress enter to continue");
+    while (c != EOF && (c = getchar()) != '\n');
+
+    free(sorted);
+    string_free(local_time);
+    return EXIT_SUCCESS;
+}
+
+int post_comparer(const void *a, const void *b) {
     int ret;
     Mail *ap = (Mail *)a;
     Mail *bp = (Mail *)b;
@@ -459,4 +524,31 @@ err_t post_comparer(const void *a, const void *b) {
     }
     ret = string_cmp(ap->id, bp->id);
     return ret;
+}
+
+int by_time_comparer(const void *a, const void *b) {
+    Mail *ap = (Mail *)a;
+    Mail *bp = (Mail *)b;
+    return string_cmp(ap->creation_time, bp->creation_time);
+}
+
+err_t print_mail(Mail *m) {
+    if (m == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+    printf("Mail with id ");
+    string_print(m->id);
+    printf("\nWeigth: %lf\nCreation time: ", m->weight);
+    string_print(m->creation_time);
+    printf("\nDelivery time: ");
+    string_print(m->delivery_time);
+    printf("\nRecepient: \nCity: ");
+    string_print(m->recipient_adress.city);
+    printf("\nStreet: ");
+    string_print(m->recipient_adress.street);
+    printf("\nHouse number: %zu\nBody: ", m->recipient_adress.house_number);
+    string_print(m->recipient_adress.body);
+    printf("\nFlat number: %zu\nIndex: ", m->recipient_adress.flat_number);
+    string_print(m->recipient_adress.index);
+    return EXIT_SUCCESS;
 }
