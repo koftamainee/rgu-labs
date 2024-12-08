@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../../libs/errors.h"
-#include "../../../libs/int_vector.h"
+#include "../../../libc/errors.h"
+#include "../../../libc/int_vector.h"
 
 #define SET_LEN (10)
 

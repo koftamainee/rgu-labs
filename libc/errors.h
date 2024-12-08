@@ -1,6 +1,8 @@
 #ifndef ERRORS_H
 #define ERRORS_H
 
+typedef int err_t;
+
 #define OK (0)
 #define MEMORY_ALLOCATION_ERROR (1)
 #define DEREFERENCING_NULL_PTR (2)
@@ -14,5 +16,6 @@
 #define INVALID_NUMBER (10)
 #define INVALID_COMBINATION_SIZE (11)
 #define EQUAL_ELEMENTS_FOUND (12)
+#define ERROR_READING_FROM_STDIN (13)
 
 #endif

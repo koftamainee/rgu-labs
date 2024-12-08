@@ -5,8 +5,8 @@
 #define INITIAL_CAPACITY (16)
 #define GROWTH_FACTOR (2)
 
-#include "../../../libs/errors.h"
-#include "../../../libs/memory.h"
+#include "../../../libc/errors.h"
+#include "../../../libc/memory.h"
 
 typedef int tvalue;
 

@@ -17,7 +17,7 @@ debug: build_linux
 
 run: BUILD_TYPE = Debug
 run: build_linux
-	cd $(BUILD_DIR)/x86_64 && ./$(TARGET)
+	cd $(BUILD_DIR)/x86_64 && ./$(TARGET) $(f)
 
 build_linux_with_make:
 	make clean
@@ -37,7 +37,7 @@ build_windows:
 
 docker: clean
 	docker build -t rgu-labs .
-	docker run -it --rm rgu-labs
+	docker run -it --rm rgu-labs $(f)
 
 release:
 	@rm -rf release

@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../../libs/custom_math.h"
-#include "../../../libs/errors.h"
-#include "../../../libs/int_vector.h"
+#include "../../../libc/custom_math.h"
+#include "../../../libc/errors.h"
+#include "../../../libc/int_vector.h"
 
 int combinations(const int_vector items, int_vector *result_combinations,
                  int (*equality_comparer)(int const *, int const *), size_t k);

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../../libs/errors.h"
+#include "../../../libc/errors.h"
 
 #define SEQUENCE_LENGTH (18)
 

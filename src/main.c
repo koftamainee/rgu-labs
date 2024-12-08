@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../libs/errors.h"
-#include "../libs/input.h"
+#include "../libc/errors.h"
+#include "../libc/input.h"
 #include "labs.h"
 
 int lab_00(int argc, char *argv[]);
@@ -70,6 +70,9 @@ int main(int argc, char *argv[]) {
                 break;
             case EQUAL_ELEMENTS_FOUND:
                 printf("There is equal elements in collectiosn :(\n");
+                break;
+            case ERROR_READING_FROM_STDIN:
+                printf("Error reading from stdin ;(\n");
                 break;
             default:
                 printf("Undefined behavior ಠ_ಠ\n");
@@ -400,8 +403,19 @@ int lab_04(int argc, char *argv[]) {
         program_04_6, program_04_7, program_04_8, program_04_9, program_04_10,
     };
 
-    char tasks[] = "TODO\n\n";
-
+    char tasks[] =
+        "1. HR simulator \n\
+2. f*ck (char *), all my homies use String.\n\
+3. Pochta Rossii simulator.\n\
+4. Sessiya simulator.\n\
+5. Sobyanin simulator.\n\
+6. mikrochelik interpritator.\n\
+7. Data Scientist simulator.\n\
+8. Interpritator 2.\n\
+9. Zhalkaya parodiya na preprocessor.\n\
+10. Calculator and table of truth.\n\
+0. Back. \n\n\
+Input int number: ";
     int task;
     char c;
     clear_screen();

@@ -4,12 +4,12 @@ project(rgu-labs)
 
 set(CMAKE_C_STANDARD 99)
 
-include_directories(libs)
+include_directories(libc)
 
 # Adding all src files
 file(GLOB_RECURSE SRC_FILES
     src/*.c
-    libs/src/*.c
+    libc/src/*.c
     labs/00-Programming/src/*.c
     labs/01-Bit_arithmetic/src/*.c
     labs/03-Programming/src/*.c
