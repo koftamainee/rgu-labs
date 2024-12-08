@@ -12,6 +12,7 @@ Welcome to the **RGU Labs Project**! This guide will help you set up, build, and
 |  3  | labs/03-Programming    | Ирбитский И.С. | **ready** |
 |  4  | labs/04-Programming    | Ирбитский И.С. | 3/10      |
 
+
 All other useful function are in **libc/** dir, main code with menu stored in **src/** dir
 
 # Build Guide
@@ -21,16 +22,16 @@ All other useful function are in **libc/** dir, main code with menu stored in **
 Build project with Docker
 
 ```bash
-docker build -t rgu-labs . # Build docker image
+docker build -t rgu-labs . # Build docker image (if u want latest image from main branch)
 
 docker pull koftamainee/rgu-labs:latest # Or just pull the image from Docker hub
-# There is latest release from main branch in it
+# There is latest stable release
 ```
 
 Run the application in a container:
 
 ```bash
-docker run -it --rm rgu-labs
+docker run -it --rm rgu-labs  # + optional cli flags for several tasks
 ```
 
 # Build the project locally
@@ -42,7 +43,7 @@ Before you begin, ensure you have the following software installed:
 - **CMake** (version 3.10 or higher)
 - **Ninja or Visual Studio** build system
 - **A C Compiler** (GCC or Clang for Linux/macOS, MinGW or Visual Studio for Windows)
-- **Git**
+- **make** (optional for linux)
 
 # 2. Clone the Repository
 
