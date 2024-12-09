@@ -1,6 +1,7 @@
 #ifndef CSTRING_H_
 #define CSTRING_H_
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #define STRING_GROWTH_FACTOR (2)
@@ -9,8 +10,8 @@
 typedef char *String;
 
 typedef struct {
-  size_t length;
-  size_t capacity;
+    size_t length;
+    size_t capacity;
 } String_metadata_t;
 
 #define __cstring_string_to_base(str) (&((String_metadata_t *)(str))[-1])
@@ -27,6 +28,7 @@ void string_free(const String str);
 int string_add(String *str, char c);
 
 void string_print(const String str);
+void string_fprint(FILE *fout, const String str);
 
 int string_cmp(const String str1, const String str2);
 int string_lex_cmp(const String str1, const String str2);

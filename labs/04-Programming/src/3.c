@@ -37,7 +37,6 @@ typedef struct Post {
 } Post;
 
 // CLI utils
-err_t read_string_from_user(String *str);
 err_t read_double_from_user(double *num);
 err_t read_size_t_from_user(size_t *num);
 err_t print_mail(Mail *m);
@@ -79,33 +78,6 @@ int program_04_3(int argc, char *argv[]) {
     }
 
     post_destructor(&p);
-    return EXIT_SUCCESS;
-}
-
-err_t read_string_from_user(String *str) {
-    size_t len = 0;
-    char buf[BUFSIZ];
-
-    if (str == NULL) {
-        return DEREFERENCING_NULL_PTR;
-    }
-
-    if (*str != NULL) {  // potentioal memory leak
-        fprintf(stderr, "WARNING: POTENCIAL MEMORY LEAK\n");
-    }
-
-    if (!fgets(buf, BUFSIZ, stdin)) {
-        return ERROR_READING_FROM_STDIN;
-    }
-    len = strlen(buf);
-    if (len > 0 && buf[len - 1] == '\n') {
-        buf[len - 1] = '\0';  // delete '\n' symbol
-    }
-
-    *str = string_from(buf);  // allocating memory for string
-    if (*str == NULL) {
-        return MEMORY_ALLOCATION_ERROR;
-    }
     return EXIT_SUCCESS;
 }
 

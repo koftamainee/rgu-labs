@@ -11,7 +11,7 @@
 typedef struct {
     size_t id;
     String name;
-    String surname;
+    String last_name;
     double salary;
 } Employee;
 
@@ -51,8 +51,8 @@ int program_04_1(int argc, char *argv[]) {
     for (i = 0; i < len; ++i) {
         printf("Id: %zu, name: ", arr[i].id);
         string_print(arr[i].name);
-        printf(", surname: ");
-        string_print(arr[i].surname);
+        printf(", last_name: ");
+        string_print(arr[i].last_name);
         printf(", salary: %lf$\n", arr[i].salary);
     }
 
@@ -65,7 +65,7 @@ int read_employees_from_file(char *filename, Employee **destination,
     FILE *fin = NULL;
     size_t id_buf, size = 0, capacity = INITIAL_CAPACITY;
     char name_buf[BUFSIZ];
-    char surname_buf[BUFSIZ];
+    char last_name_buf[BUFSIZ];
     double salary_buf;
     int err;
 
@@ -82,7 +82,7 @@ int read_employees_from_file(char *filename, Employee **destination,
         return MEMORY_ALLOCATION_ERROR;
     }
 
-    while (fscanf(fin, "%zu %s %s %lf", &id_buf, name_buf, surname_buf,
+    while (fscanf(fin, "%zu %s %s %lf", &id_buf, name_buf, last_name_buf,
                   &salary_buf) == 4) {
         if (size + 1 > capacity) {
             err = rerealloc((void **)destination,
@@ -95,10 +95,10 @@ int read_employees_from_file(char *filename, Employee **destination,
 
         (*destination)[size].id = id_buf;
         (*destination)[size].name = string_from(name_buf);
-        (*destination)[size].surname = string_from(surname_buf);
+        (*destination)[size].last_name = string_from(last_name_buf);
         (*destination)[size].salary = salary_buf;
         if ((*destination)[size].name == NULL ||
-            (*destination)[size].surname == NULL) {
+            (*destination)[size].last_name == NULL) {
             return MEMORY_ALLOCATION_ERROR;
         }
         size++;
@@ -112,7 +112,6 @@ int read_employees_from_file(char *filename, Employee **destination,
         }
     }
 
-    printf("%zu\n", size);
     *employes_counter = size;
 
     return EXIT_SUCCESS;
@@ -126,7 +125,7 @@ int ascending_comparer(const void *a, const void *b) {
     if (a_ptr->salary != b_ptr->salary) {
         return a_ptr->salary - b_ptr->salary;
     } else {
-        res = string_cmp(a_ptr->surname, b_ptr->surname);
+        res = string_cmp(a_ptr->last_name, b_ptr->last_name);
         if (res) {
             return res;
         } else {
@@ -147,7 +146,7 @@ int descending_comparer(const void *a, const void *b) {
     if (a_ptr->salary != b_ptr->salary) {
         return b_ptr->salary - a_ptr->salary;
     } else {
-        res = string_cmp(b_ptr->surname, a_ptr->surname);
+        res = string_cmp(b_ptr->last_name, a_ptr->last_name);
         if (res) {
             return res;
         } else {
@@ -159,4 +158,20 @@ int descending_comparer(const void *a, const void *b) {
             }
         }
     }
+}
+
+void print_menu() {
+    printf("Program Menu:\n");
+    printf("1. Search student by ID\n");
+    printf("2. Search student by last name\n");
+    printf("3. Search student by first name\n");
+    printf("4. Search student by group\n");
+    printf("5. Sort students by ID\n");
+    printf("6. Sort students by last name\n");
+    printf("7. Sort students by first name\n");
+    printf("8. Sort students by group\n");
+    printf("9. Output student data to trace file by ID\n");
+    printf("10. Output students with above-average grades to trace file\n");
+    printf("0. Exit\n");
+    printf("Choose an option: ");
 }
