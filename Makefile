@@ -76,9 +76,9 @@ release:
 
 	@echo "[==>] Stage 4: Create new git release branch..." | tee -a release/build.log
 	git fetch
-	git checkout stable >> release/build.log
+	git checkout release >> release/build.log
 	git merge master >> release/build.log
-	git push origin stable >> release/build.log
+	git push origin release >> release/build.log
 	git checkout master >> release/build.log
 	@echo "[==>] Done." | tee -a release/build.log
 	@echo ""
