@@ -30,14 +30,14 @@ int program_04_1(int argc, char *argv[]) {
     }
     if (argv[1][0] == '-' || argv[1][0] == '/') {
         if (argv[1][1] == 'a') {
-            err = read_employees_from_file("files/employees.txt", &arr, &len);
+            err = read_employees_from_file("files/test.txt", &arr, &len);
             if (err) {
                 free(arr);
                 return err;
             }
             qsort((void *)arr, len, sizeof(Employee), ascending_comparer);
         } else if (argv[1][1] == 'd') {
-            err = read_employees_from_file("files/employees.txt", &arr, &len);
+            err = read_employees_from_file("files/test.txt", &arr, &len);
             if (err) {
                 free(arr);
                 return err;
@@ -75,6 +75,11 @@ int read_employees_from_file(char *filename, Employee **destination,
     fin = fopen(filename, "r");
     if (fin == NULL) {
         return OPENING_THE_FILE_ERROR;
+    };
+    if (feof(fin)) {
+        fclose(fin);
+        *destination = NULL;
+        return EXIT_SUCCESS;
     }
 
     *(destination) = (Employee *)malloc(sizeof(Employee) * capacity);

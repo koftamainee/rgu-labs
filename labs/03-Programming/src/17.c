@@ -4,7 +4,7 @@
 #include "../../../libc/errors.h"
 #include "../../../libc/int_vector.h"
 
-#define SET_LEN (10)
+#define SET_LEN (4)
 
 int subsets(const int_vector items, size_t *subsets_count,
             int_vector *result_subsets,
@@ -22,7 +22,7 @@ int program_03_17(int argc, char *argv[]) {
     }
 
     for (i = 0; i < SET_LEN; ++i) {
-        err = int_vector_push_back(&items, rand());
+        err = int_vector_push_back(&items, i);
         if (err) {
             int_vector_free(items);
             return MEMORY_ALLOCATION_ERROR;

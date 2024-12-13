@@ -354,6 +354,7 @@ void students_free(Students_data *s) {
         string_free(s->students[i].last_name);
         string_free(s->students[i].name);
         string_free(s->students[i].group);
+        free(s->students[i].grades);
     }
     free(s->students);
 }

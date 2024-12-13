@@ -32,7 +32,6 @@ int program_04_2(int argc, char *argv[]) {
     printf("\nstring_init(): ");
     string_print(str2);
     printf("\n");
-
     string_grow(&str, 5);
     printf("string after -grow(): ");
     string_print(str);

@@ -25,7 +25,7 @@ int program_03_13(int argc, char *argv[]) {
     size_t len = 0, i = 0, j = 0;
     int err = 0;
 
-    err = sums_decomposition(5, &res, &len, 1);
+    err = sums_decomposition(11, &res, &len, 1);
     for (i = 0; i < len; ++i) {
         for (j = 0; j < int_vector_size(res[i]); ++j) {
             printf("%d ", res[i][j]);
