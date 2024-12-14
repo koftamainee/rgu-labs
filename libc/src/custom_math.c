@@ -37,8 +37,6 @@ int generate_fibonacci_row(unsigned int until, unsigned int **ans,
         (*ans)[size] = fib;
         size++;
     }
-    for (i = 0; i < size; ++i) {
-    }
     *numbers_in_ans_count = size;
     return OK;
 }
