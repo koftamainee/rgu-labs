@@ -10,6 +10,7 @@ double log_base(double x, double base) { return log(x) / log(base); }
 int generate_fibonacci_row(unsigned int until, unsigned int **ans,
                            size_t *numbers_in_ans_count) {
     int err, size, capacity;
+    size_t i;
     unsigned int fib_1 = 1, fib_2 = 1, fib = 0;
     if (ans == NULL || numbers_in_ans_count == NULL) {
         return DEREFERENCING_NULL_PTR;
@@ -36,7 +37,7 @@ int generate_fibonacci_row(unsigned int until, unsigned int **ans,
         (*ans)[size] = fib;
         size++;
     }
-    for (int i = 0; i < size; ++i) {
+    for (i = 0; i < size; ++i) {
     }
     *numbers_in_ans_count = size;
     return OK;
