@@ -36,6 +36,9 @@ typedef struct Post {
     size_t __mails_capacity;
 } Post;
 
+// Utils
+size_t time_to_number(String datetime);
+
 // CLI utils
 err_t read_double_from_user(double *num);
 err_t read_size_t_from_user(size_t *num);
@@ -431,7 +434,8 @@ err_t get_delivered_mails(Post *p) {
     memcpy(sorted, p->mails, sizeof(Mail) * p->mails_count);
     qsort((void *)p->mails, p->mails_count, sizeof(Mail), by_time_comparer);
     for (i = 0; i < p->mails_count; ++i) {
-        if (string_cmp(local_time, p->mails[i].delivery_time) <= 0) {
+        if (time_to_number(local_time) <=
+            time_to_number(sorted[i].delivery_time)) {
             err = print_mail(p->mails + i);
             if (err) {
                 return err;
@@ -470,7 +474,8 @@ err_t get_not_delivered_mails(Post *p) {
     memcpy(sorted, p->mails, sizeof(Mail) * p->mails_count);
     qsort((void *)p->mails, p->mails_count, sizeof(Mail), by_time_comparer);
     for (i = 0; i < p->mails_count; ++i) {
-        if (string_cmp(local_time, p->mails[i].delivery_time) > 0) {
+        if (time_to_number(local_time) >
+            time_to_number(sorted[i].delivery_time)) {
             err = print_mail(p->mails + i);
             if (err) {
                 return err;
@@ -523,4 +528,20 @@ err_t print_mail(Mail *m) {
     printf("\nFlat number: %zu\nIndex: ", m->recipient_adress.flat_number);
     string_print(m->recipient_adress.index);
     return EXIT_SUCCESS;
+}
+
+size_t time_to_number(String datetime) {
+    size_t result;
+    int day, month, year, hour, minute, second;
+    sscanf(datetime, "%d:%d:%d %d:%d:%d", &day, &month, &year, &hour, &minute,
+           &second);
+
+    result |= ((size_t)(year - 2000) & 0x7F) << 26;
+    result |= ((size_t)month & 0x0F) << 22;
+    result |= ((size_t)day & 0x1F) << 17;
+    result |= ((size_t)hour & 0x1F) << 12;
+    result |= ((size_t)minute & 0x3F) << 6;
+    result |= (size_t)second & 0x3F;
+
+    return result;
 }
