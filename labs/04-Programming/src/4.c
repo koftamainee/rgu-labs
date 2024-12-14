@@ -7,6 +7,7 @@
 #include "../../../libc/errors.h"
 #include "../../../libc/input.h"
 #include "../../../libc/memory.h"
+#include "../../../libc/utils.h"
 
 #define GRADES_COUNT (5)
 #define INITIAL_CAPACITY (16)
@@ -284,6 +285,12 @@ err_t read_students_from_file(FILE *fin, Students_data *s) {
     char last_name_buf[BUFSIZ];
     char name_buf[BUFSIZ];
     char group_buf[BUFSIZ];
+
+    if (is_file_empty(fin)) {
+        fclose(fin);
+        s->students = NULL;
+        return EXIT_SUCCESS;
+    }
 
     s->students = (Student *)malloc(sizeof(Student) * INITIAL_CAPACITY);
     if (s->students == NULL) {

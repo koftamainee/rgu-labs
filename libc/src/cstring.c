@@ -13,6 +13,7 @@ String string_init() {
         return NULL;
     }
     str_p->length = 0;
+
     str_p->capacity = STRING_BASE_CAPACITY;
     return __cstring_base_to_string(str_p);
 }

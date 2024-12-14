@@ -4,6 +4,7 @@
 #include "../../../libc/cstring.h"
 #include "../../../libc/errors.h"
 #include "../../../libc/memory.h"
+#include "../../../libc/utils.h"
 
 #define INITIAL_CAPACITY (16)
 #define GROWTH_FACTOR (2)
@@ -28,17 +29,19 @@ int program_04_1(int argc, char *argv[]) {
     if (argc != 2) {
         return INVALID_FLAG;
     }
+
     if (argv[1][0] == '-' || argv[1][0] == '/') {
         if (argv[1][1] == 'a') {
-            err = read_employees_from_file("files/test.txt", &arr, &len);
+            err = read_employees_from_file("files/employees.txt", &arr, &len);
             if (err) {
                 free(arr);
                 return err;
             }
             qsort((void *)arr, len, sizeof(Employee), ascending_comparer);
         } else if (argv[1][1] == 'd') {
-            err = read_employees_from_file("files/test.txt", &arr, &len);
+            err = read_employees_from_file("files/employees.txt", &arr, &len);
             if (err) {
+                printf("%zu\n", len);
                 free(arr);
                 return err;
             }
@@ -76,7 +79,7 @@ int read_employees_from_file(char *filename, Employee **destination,
     if (fin == NULL) {
         return OPENING_THE_FILE_ERROR;
     };
-    if (feof(fin)) {
+    if (is_file_empty(fin)) {
         fclose(fin);
         *destination = NULL;
         return EXIT_SUCCESS;
@@ -93,6 +96,9 @@ int read_employees_from_file(char *filename, Employee **destination,
             err = rerealloc((void **)destination,
                             capacity * GROWTH_FACTOR * sizeof(Employee));
             if (err) {
+                fclose(fin);
+                free(*destination);
+                *destination = NULL;
                 return err;
             }
             capacity *= GROWTH_FACTOR;
