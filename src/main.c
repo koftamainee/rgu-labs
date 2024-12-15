@@ -60,16 +60,22 @@ int main(int argc, char *argv[]) {
                 printf("Invalid flag Ö\n");
                 break;
             case INVALID_STREAM_PTR:
-                printf("Invalid stream ptr 	☠	☠	☠");
+                printf(
+                    "Invalid stream ptr 	☠	"
+                    "☠	☠");
                 break;
             case INVALID_NUMBER:
                 printf("INVALID NUMBER///\n");
                 break;
             case INVALID_COMBINATION_SIZE:
-                printf("INVALID COMIBNATION SIZE !!!1!11!11!01)01\n");
+                printf(
+                    "INVALID COMIBNATION SIZE "
+                    "!!!1!11!11!01)01\n");
                 break;
             case EQUAL_ELEMENTS_FOUND:
-                printf("There is equal elements in collectiosn :(\n");
+                printf(
+                    "There is equal elements in collectiosn "
+                    ":(\n");
                 break;
             case ERROR_READING_FROM_STDIN:
                 printf("Error reading from stdin ;(\n");

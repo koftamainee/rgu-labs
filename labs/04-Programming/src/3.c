@@ -25,8 +25,8 @@ typedef struct Mail {
     String id;
     Address recipient_adress;
     double weight;
-    String creation_time;
-    String delivery_time;
+    size_t creation_time;
+    size_t delivery_time;
 } Mail;
 
 typedef struct Post {
@@ -35,6 +35,10 @@ typedef struct Post {
     size_t mails_count;
     size_t __mails_capacity;
 } Post;
+
+// Time utils
+size_t time_to_number(String datetime);
+void print_datetime(size_t encoded);
 
 // CLI utils
 err_t read_double_from_user(double *num);
@@ -146,8 +150,6 @@ void post_destructor(Post *p) {
 void mail_destructor(Mail *m) {
     string_free(m->id);
     address_destructor(&(m->recipient_adress));
-    string_free(m->creation_time);
-    string_free(m->delivery_time);
 }
 
 void address_destructor(Address *a) {
@@ -321,7 +323,8 @@ err_t send_mail(Post *p) {
         string_free(s_ans);
         return err;
     }
-    p->mails[p->mails_count].creation_time = s_ans;
+    p->mails[p->mails_count].creation_time = time_to_number(s_ans);
+    string_free(s_ans);
     s_ans = NULL;
 
     printf("Enter delivery time: ");
@@ -331,7 +334,8 @@ err_t send_mail(Post *p) {
         string_free(s_ans);
         return err;
     }
-    p->mails[p->mails_count].delivery_time = s_ans;
+    p->mails[p->mails_count].delivery_time = time_to_number(s_ans);
+    string_free(s_ans);
     s_ans = NULL;
 
     p->mails_count++;
@@ -431,7 +435,7 @@ err_t get_delivered_mails(Post *p) {
     memcpy(sorted, p->mails, sizeof(Mail) * p->mails_count);
     qsort((void *)p->mails, p->mails_count, sizeof(Mail), by_time_comparer);
     for (i = 0; i < p->mails_count; ++i) {
-        if (string_cmp(local_time, p->mails[i].delivery_time) <= 0) {
+        if (time_to_number(local_time) <= sorted[i].delivery_time) {
             err = print_mail(p->mails + i);
             if (err) {
                 return err;
@@ -470,7 +474,7 @@ err_t get_not_delivered_mails(Post *p) {
     memcpy(sorted, p->mails, sizeof(Mail) * p->mails_count);
     qsort((void *)p->mails, p->mails_count, sizeof(Mail), by_time_comparer);
     for (i = 0; i < p->mails_count; ++i) {
-        if (string_cmp(local_time, p->mails[i].delivery_time) > 0) {
+        if (time_to_number(local_time) > sorted[i].delivery_time) {
             err = print_mail(p->mails + i);
             if (err) {
                 return err;
@@ -501,7 +505,7 @@ int post_comparer(const void *a, const void *b) {
 int by_time_comparer(const void *a, const void *b) {
     Mail *ap = (Mail *)a;
     Mail *bp = (Mail *)b;
-    return string_cmp(ap->creation_time, bp->creation_time);
+    return ap->creation_time - bp->creation_time;
 }
 
 err_t print_mail(Mail *m) {
@@ -511,9 +515,11 @@ err_t print_mail(Mail *m) {
     printf("Mail with id ");
     string_print(m->id);
     printf("\nWeigth: %lf\nCreation time: ", m->weight);
-    string_print(m->creation_time);
+    // string_print(m->creation_time);
+    print_datetime(m->creation_time);
     printf("\nDelivery time: ");
-    string_print(m->delivery_time);
+    // string_print(m->delivery_time);
+    print_datetime(m->delivery_time);
     printf("\nRecepient: \nCity: ");
     string_print(m->recipient_adress.city);
     printf("\nStreet: ");
@@ -523,4 +529,33 @@ err_t print_mail(Mail *m) {
     printf("\nFlat number: %zu\nIndex: ", m->recipient_adress.flat_number);
     string_print(m->recipient_adress.index);
     return EXIT_SUCCESS;
+}
+
+size_t time_to_number(String datetime) {
+    size_t result = 0;
+    int day, month, year, hour, minute, second;
+
+    sscanf(datetime, "%d:%d:%d %d:%d:%d", &day, &month, &year, &hour, &minute,
+           &second);
+
+    result |= ((size_t)(year - 2000) & 0x7F) << 26;  // 7 bits for year
+    result |= ((size_t)month & 0x0F) << 22;          // 4 bits for month
+    result |= ((size_t)day & 0x1F) << 17;            // 5 bits for day
+    result |= ((size_t)hour & 0x1F) << 12;           // 5 bits for hour
+    result |= ((size_t)minute & 0x3F) << 6;          // 6 bits for minute
+    result |= (size_t)second & 0x3F;                 // 6 bits for second
+
+    return result;
+}
+
+void print_datetime(size_t encoded) {
+    unsigned int year = ((encoded >> 26) & 0x7F) + 2000;  // 7 bits for year
+    unsigned int month = (encoded >> 22) & 0x0F;          // 4 bits for month
+    unsigned int day = (encoded >> 17) & 0x1F;            // 5 bits for day
+    unsigned int hour = (encoded >> 12) & 0x1F;           // 5 bits for hour
+    unsigned int minute = (encoded >> 6) & 0x3F;          // 6 bits for minute
+    unsigned int second = encoded & 0x3F;                 // 6 bits for second
+
+    printf("%02u:%02u:%04u %02u:%02u:%02u\n", day, month, year, hour, minute,
+           second);
 }

@@ -32,7 +32,7 @@ int program_03_9(int argc, char *argv[]) {
         "standart flags: hi %d %u %f %lf %c %s %o %x %X %b | custom flags: %Ro "
         "|| %Zr || %Cv %CV || %to %TO || %mi | %mu | %mf | %md\n",
         123, -52, 12.23, 52.52, 'a', "abcdefg", 123, 88, 14, 65, 144, 6566,
-        2731, 16, 2731, 16, "-aab", 16, "-AAB", 16, 55, -3, 82.23, 987.15);
+        2731, 16, 2731, 16, "-aab", 16, "-AAB", 16, 26, 26, 82.23, 987.15);
 
     // Testing overfprintf
     printf("\nTesting overfprintf\n");

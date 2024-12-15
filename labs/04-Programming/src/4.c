@@ -34,6 +34,9 @@ typedef struct Students_data {
     size_t capacity;
 } Students_data;
 
+// Utils
+err_t time_to_number(size_t *number, String date);
+
 // Memory managment
 err_t read_students_from_file(FILE *fin, Students_data *s);
 void students_free(Students_data *s);
