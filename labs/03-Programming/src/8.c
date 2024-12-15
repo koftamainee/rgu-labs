@@ -139,6 +139,7 @@ int add_two_numbers_in_base(char **ans, int base, char const *num_1,
         carry = sum / base;
 
         err = int_to_char(&c, sum % base);
+        printf("%c\n", c);
         temp_num[k--] = c;
         if (err) {
             free(temp_num);
