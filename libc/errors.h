@@ -19,5 +19,8 @@ typedef int err_t;
 #define ERROR_READING_FROM_STDIN (13)
 #define NO_SUCH_ENTRY_IN_COLLECTION (14)
 #define STACK_IS_EMPTY (15)
+#define REPEATING_KEY (16)
+#define KEY_NOT_FOUND (17)
+#define ZERO_MEMORY_ALLOCATION (18)
 
 #endif

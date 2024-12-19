@@ -86,6 +86,17 @@ int main(int argc, char *argv[]) {
             case STACK_IS_EMPTY:
                 printf("stack not overflowed, but empty...\n");
                 break;
+            case REPEATING_KEY:
+                printf("Keys are repeating. Eto pechalno\n");
+                break;
+            case KEY_NOT_FOUND:
+                printf("There is no such key...\n");
+                break;
+            case ZERO_MEMORY_ALLOCATION:
+                printf(
+                    "You are trying to allocate zero-sized chunk of memory. "
+                    "please stop...\n");
+                break;
             default:
                 printf("Undefined behavior ಠ_ಠ\n");
                 break;

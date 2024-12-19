@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+#include "../../../libc/binary_search_tree.h"
 #include "../../../libc/cstring.h"
 #include "../../../libc/u_list.h"
 
@@ -13,35 +14,53 @@ typedef struct Citizen {
     double salary;
 } Citizen;
 
+int keys_comparer(const void *a, const void *b) {
+    return *(int *)a - *(int *)b;
+}
+
+void print_node(const bst_node *t) {
+    printf("key: %d, value: %d\n", *(int *)t->key, *(int *)t->value);
+}
+
 int program_04_5(int argc, char *argv[]) {
-    u_list_node *lp;
+    int i;
+    bst *t;
     err_t err;
-    u_list l;
-    err = u_list_init(&l, sizeof(int), free);
-    if (err) {
-        return err;
-    }
-    int a = 52;
-    err = u_list_insert(&l, 0, &a);
-    if (err) {
-        return err;
-    }
-    err = u_list_insert(&l, 1, &a);
-    if (err) {
-        return err;
-    }
-    err = u_list_insert(&l, 52, &a);
+    int key;
+    int value;
+    err = bst_init(&t, sizeof(int), sizeof(int), free, free, keys_comparer,
+                   swap_with_max_of_left_subtree, in_order, overwrite);
     if (err) {
         return err;
     }
 
-    err = u_list_get_node_by_index(&l, 1, &lp);
-    if (err) {
-        return err;
+    for (i = 0; i < 52; ++i) {
+        value = 1000 - i;
+        err = bst_insert(t, &i, &value);
+        if (err) {
+            bst_free(t);
+            return err;
+        }
     }
-    printf("%d\n%zu\n", *(int *)lp->data, l.size);
+    value = 1488;
+    key = 51;
+    bst_insert(t, &key, &value);
+    bst_set_traversion_strategy(t, post_order);
+    bst_const_traversion(t, print_node);
+    bst_dispose(t, &key);
+    bst_const_traversion(t, print_node);
 
-    u_list_free(&l);
+    for (i = 0; i < 25; ++i) {
+        err = bst_dispose(t, &i);
+        if (err) {
+            bst_free(t);
+            return err;
+        }
+    }
+    printf("\n\n\n");
+    bst_const_traversion(t, print_node);
+
+    bst_free(t);
 
     return EXIT_SUCCESS;
 }
