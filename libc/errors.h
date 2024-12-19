@@ -18,5 +18,6 @@ typedef int err_t;
 #define EQUAL_ELEMENTS_FOUND (12)
 #define ERROR_READING_FROM_STDIN (13)
 #define NO_SUCH_ENTRY_IN_COLLECTION (14)
+#define STACK_IS_EMPTY (15)
 
 #endif

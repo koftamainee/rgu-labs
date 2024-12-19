@@ -83,6 +83,9 @@ int main(int argc, char *argv[]) {
             case NO_SUCH_ENTRY_IN_COLLECTION:
                 printf("No such entery in the collection :I\n");
                 break;
+            case STACK_IS_EMPTY:
+                printf("stack not overflowed, but empty...\n");
+                break;
             default:
                 printf("Undefined behavior ಠ_ಠ\n");
                 break;

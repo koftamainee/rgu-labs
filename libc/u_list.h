@@ -12,6 +12,7 @@ typedef struct u_list_node {
 
 typedef struct u_list {
     u_list_node *first;
+    size_t size;
     size_t elem_size;
     void (*elem_destructor)(void *);
 } u_list;
@@ -31,6 +32,6 @@ err_t u_list_delete_by_value(u_list *l, const void *target,
                              int (*comp)(const void *, const void *));
 
 err_t u_list_const_traversion(u_list *l, void *(callback)(const u_list_node *));
-err_t u_list_traversion(u_list *l, void *(callback)(u_list_node *));
+err_t u_list_traversion(u_list *l, void (*callback)(u_list_node *));
 
 #endif
