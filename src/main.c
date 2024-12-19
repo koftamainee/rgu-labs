@@ -80,6 +80,9 @@ int main(int argc, char *argv[]) {
             case ERROR_READING_FROM_STDIN:
                 printf("Error reading from stdin ;(\n");
                 break;
+            case NO_SUCH_ENTRY_IN_COLLECTION:
+                printf("No such entery in the collection :I\n");
+                break;
             default:
                 printf("Undefined behavior ಠ_ಠ\n");
                 break;
