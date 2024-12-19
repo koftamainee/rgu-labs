@@ -17,5 +17,6 @@ typedef int err_t;
 #define INVALID_COMBINATION_SIZE (11)
 #define EQUAL_ELEMENTS_FOUND (12)
 #define ERROR_READING_FROM_STDIN (13)
+#define NO_SUCH_ENTRY_IN_COLLECTION (14)
 
 #endif
