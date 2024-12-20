@@ -1,7 +1,7 @@
 #include "../stack.h"
 /* NULL pointers are not handling bc u_list functional handle them already */
 
-err_t stack_init(stack *s, size_t elem_size, void (*elem_destructor)(void *)) {
+err_t stack_init(stack **s, size_t elem_size, void (*elem_destructor)(void *)) {
     return u_list_init(s, elem_size, elem_destructor);
 }
 

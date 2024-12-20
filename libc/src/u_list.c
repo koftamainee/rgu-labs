@@ -3,16 +3,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-err_t u_list_init(u_list *l, size_t elem_size,
+err_t u_list_init(u_list **l, size_t elem_size,
                   void (*elem_destructor)(void *)) {
     if (l == NULL || elem_destructor == NULL) {
         return DEREFERENCING_NULL_PTR;
     }
+    *l = (u_list *)malloc(sizeof(u_list));
+    if (*l == NULL) {
+        return MEMORY_ALLOCATION_ERROR;
+    }
 
-    l->first = NULL;
-    l->size = 0;
-    l->elem_destructor = elem_destructor;
-    l->elem_size = elem_size;
+    (*l)->first = NULL;
+    (*l)->last = NULL;
+    (*l)->size = 0;
+    (*l)->elem_destructor = elem_destructor;
+    (*l)->elem_size = elem_size;
 
     return EXIT_SUCCESS;
 }
@@ -29,6 +34,8 @@ void u_list_free(u_list *l) {
         free(item);
         item = next;
     }
+    free(l);
+    return;
 }
 
 err_t u_list_insert(u_list *l, size_t index, const void *data) {
@@ -52,6 +59,9 @@ err_t u_list_insert(u_list *l, size_t index, const void *data) {
         new->next = l->first;
         l->first = new;
         l->size++;
+        if (l->size == 0) {  // first element also last element
+            l->last = l->first;
+        }
         return EXIT_SUCCESS;
     }
     item = l->first->next;
@@ -68,8 +78,9 @@ err_t u_list_insert(u_list *l, size_t index, const void *data) {
     }
     // too big index
     father->next = new;
-    new->next = item;
+    new->next = NULL;
     l->size++;
+    l->last = father->next;
 
     return EXIT_SUCCESS;
 }
@@ -180,7 +191,8 @@ err_t u_list_delete_by_value(u_list *l, const void *target,
 }
 
 err_t u_list_const_traversion(u_list *l,
-                              void *(callback)(const u_list_node *)) {
+                              void (*callback)(const u_list_node *)) {
+    void print_node_ulist(const u_list_node *n);
     u_list_node *item;
     if (l == NULL || callback == NULL) {
         return DEREFERENCING_NULL_PTR;

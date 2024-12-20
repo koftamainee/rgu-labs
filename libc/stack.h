@@ -5,7 +5,7 @@
 typedef u_list stack;
 typedef u_list_node stack_item;
 
-err_t stack_init(stack *s, size_t elem_size, void (*elem_destructor)(void *));
+err_t stack_init(stack **s, size_t elem_size, void (*elem_destructor)(void *));
 void stack_free(stack *s);
 
 err_t stack_push(stack *s, const void *data);
