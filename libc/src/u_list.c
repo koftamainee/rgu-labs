@@ -212,34 +212,36 @@ err_t u_list_delete_by_index(u_list *l, size_t index) {
 err_t u_list_delete_by_value(u_list *l, const void *target,
                              int (*comp)(const void *, const void *)) {
     u_list_node *item, *father;
+
     if (l == NULL) {
         return DEREFERENCING_NULL_PTR;
     }
 
-    if (comp(l->first, target) == 0) {
+    // Check the first element
+    if (l->first != NULL && comp(l->first->data, target) == 0) {
         item = l->first;
-        l->first = NULL;
+        l->first = l->first->next;
         l->elem_destructor(item->data);
         free(item);
         l->size--;
         return EXIT_SUCCESS;
     }
-    item = l->first->next;
-    father = l->first;
-    while (item != NULL) {
-        if (comp(item, target) == 0) {
-            father->next = item->next;
-            l->elem_destructor(item->data);
-            free(item);
+
+    // Check the rest of the list
+    item = l->first;  // Start at the head
+    while (item != NULL && item->next != NULL) {
+        if (comp(item->next->data, target) == 0) {
+            u_list_node *temp = item->next;
+            item->next = item->next->next;
+            l->elem_destructor(temp->data);
+            free(temp);
             l->size--;
             return EXIT_SUCCESS;
         }
-        father = item;
         item = item->next;
     }
-    // too big index
 
-    return INDEX_OUT_OF_BOUNDS;
+    return INDEX_OUT_OF_BOUNDS;  // Target not found
 }
 
 err_t u_list_const_traversion(u_list *l,

@@ -7,11 +7,11 @@
 #include "../errors.h"
 
 void clear_screen() {
-    // #ifdef WIN32
-    //     system("cls");
-    // #else
-    //     system("clear");
-    // #endif
+#ifdef WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
 }
 
 int read_str(char **str) {
