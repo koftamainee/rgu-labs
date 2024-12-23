@@ -645,9 +645,359 @@ err_t read_citizen(u_list *town, undostack *us) {
 }
 
 err_t update_citizen(u_list *town, undostack *us) {
+    double double_placeholder;
+    size_t size_t_placeholder;
+    undo_entry *ue = NULL;
+    int changed = 0;
+    int search_flags[6] = {0, 0, 0, 0, 0, 0};
+    Citizen *current_c;
+    int gender_flag = 0;
+    String s_ans = NULL;
+    char c_ans[BUFSIZ];
+    Citizen *new = NULL;
+    err_t err;
+    char c;
+    int user_input = -1;
+    u_list_node *current = NULL;
     if (town == NULL || us == NULL) {
         return DEREFERENCING_NULL_PTR;
     }
+
+    new = (Citizen *)malloc(sizeof(Citizen));
+    if (new == NULL) {
+        return MEMORY_ALLOCATION_ERROR;
+    }
+    new->last_name = NULL;
+    new->name = NULL;
+    new->surname = NULL;
+
+    fflush(stdin);
+
+    while (c != EOF && (c = getchar()) != '\n');
+    printf("Enter last name: ");
+    err = read_string_from_user(&s_ans);
+    if (err) {
+        citizen_free(new);
+        return err;
+    }
+    new->last_name = s_ans;
+    if (s_ans[0] == '-') {
+        search_flags[0] = 1;
+    }
+    s_ans = NULL;
+
+    printf("Enter name: ");
+    err = read_string_from_user(&s_ans);
+    if (err) {
+        citizen_free(new);
+        return err;
+    }
+    if (s_ans[0] == '-') {
+        search_flags[1] = 1;
+    }
+    new->name = s_ans;
+    s_ans = NULL;
+
+    printf("Enter surname: ");
+    err = read_string_from_user(&s_ans);
+    if (err) {
+        citizen_free(new);
+        return err;
+    }
+    if (s_ans[0] == '-') {
+        search_flags[2] = 1;
+    }
+    new->surname = s_ans;
+    s_ans = NULL;
+
+    printf("Enter birth date: ");
+    scanf("%s", c_ans);
+    if (c_ans[0] == '-') {
+        search_flags[3] = 1;
+        new->age = 0;
+        new->birthday = NULL;
+    } else {
+        search_flags[3] = 0;
+        if (regex_date(c_ans) == 0) {
+            citizen_free(new);
+            return REGEX_FAILED;
+        }
+        err = calculate_age(c_ans, &new->age);
+        if (err) {
+            citizen_free(new);
+            return err;
+        }
+        new->birthday = string_from(c_ans);
+        if (new->birthday == NULL) {
+            citizen_free(new);
+            return MEMORY_ALLOCATION_ERROR;
+        }
+    }
+    fflush(stdin);
+    while (c != EOF && (c = getchar()) != '\n');
+    printf("Enter gender: ");
+    scanf("%c", &c);
+    if (c == '-') {
+        search_flags[4] = 1;
+    } else {
+        search_flags[4] = 0;
+        if (c != 'M' && c != 'W') {
+            citizen_free(new);
+            return INVALID_INPUT_DATA;
+        }
+        new->gender = c == 'M' ? Male : Female;
+    }
+
+    printf("Enter salary: ");
+    scanf("%s", c_ans);
+    if (c_ans[0] == '-') {
+        search_flags[5] = 1;
+    }
+    new->salary = atoi(c_ans);
+
+    current = town->first;
+    while (current != NULL) {
+        current_c = (Citizen *)current->data;
+        if ((search_flags[0] ||
+             string_cmp(current_c->last_name, new->last_name) == 0) &&
+            (search_flags[1] || string_cmp(current_c->name, new->name)) &&
+            (search_flags[2] || string_cmp(current_c->surname, new->surname)) &&
+            (search_flags[3] ||
+             string_cmp(current_c->birthday, new->birthday)) &&
+            (search_flags[4] || current_c->gender - new->gender == 0) &&
+            (search_flags[5] || current_c->salary - new->salary == 0)) {
+            printf("Found: ");
+            string_print(current_c->last_name);
+            printf(" ");
+            string_print(current_c->name);
+            printf("\n");
+            ue = (undo_entry *)malloc(sizeof(undo_entry));
+            if (ue == NULL) {
+                return MEMORY_ALLOCATION_ERROR;
+            }
+            ue->action = update;
+            ue->prev.gender = current_c->gender;
+            ue->prev.salary = current_c->salary;
+            ue->prev.age = current_c->age;
+            ue->prev.birthday = string_init();
+            ue->prev.last_name = string_init();
+            ue->prev.name = string_init();
+            ue->prev.surname = string_init();
+
+            ue->current.gender = current_c->gender;
+            ue->current.salary = current_c->salary;
+            ue->current.age = current_c->age;
+            ue->current.birthday = string_init();
+            ue->current.last_name = string_init();
+            ue->current.name = string_init();
+            ue->current.surname = string_init();
+            if (ue->prev.birthday == NULL || ue->prev.last_name == NULL ||
+                ue->prev.name == NULL || ue->prev.surname == NULL ||
+                ue->current.birthday == NULL || ue->current.last_name == NULL ||
+                ue->current.name == NULL || ue->current.surname == NULL) {
+                undo_entry_free(ue);
+                citizen_free(new);
+                return MEMORY_ALLOCATION_ERROR;
+            }
+            err = string_cpy(&ue->prev.birthday, &current_c->birthday);
+            if (err) {
+                undo_entry_free(ue);
+                citizen_free(new);
+                return err;
+            }
+            err = string_cpy(&ue->prev.last_name, &current_c->last_name);
+            if (err) {
+                undo_entry_free(ue);
+                citizen_free(new);
+                return err;
+            }
+            err = string_cpy(&ue->prev.name, &current_c->name);
+            if (err) {
+                undo_entry_free(ue);
+                citizen_free(new);
+                return err;
+            }
+            err = string_cpy(&ue->prev.surname, &current_c->surname);
+            if (err) {
+                undo_entry_free(ue);
+                citizen_free(new);
+                return err;
+            }
+            err = string_cpy(&ue->current.birthday, &current_c->birthday);
+            if (err) {
+                undo_entry_free(ue);
+                citizen_free(new);
+                return err;
+            }
+            err = string_cpy(&ue->current.last_name, &current_c->last_name);
+            if (err) {
+                undo_entry_free(ue);
+                citizen_free(new);
+                return err;
+            }
+            err = string_cpy(&ue->current.name, &current_c->name);
+            if (err) {
+                undo_entry_free(ue);
+                citizen_free(new);
+                return err;
+            }
+            err = string_cpy(&ue->current.surname, &current_c->surname);
+            if (err) {
+                undo_entry_free(ue);
+                citizen_free(new);
+                return err;
+            }
+
+            while (user_input != 0) {
+                clear_screen();
+                printf(
+                    "What do you want to change?\n"
+                    "1. Last name.\n"
+                    "2. Name.\n"
+                    "3. Surname.\n"
+                    "4.Birthday.\n"
+                    "5.Gender.\n"
+                    "6.Salary.\n"
+                    "0. Next.\n"
+                    "Choose: ");
+                scanf("%d", &user_input);
+
+                switch (user_input) {
+                    case 0:
+                        break;
+
+                    case 1:
+                        printf("Enter new last name: ");
+                        scanf("%s", c_ans);
+                        err = string_cpy_c(&current_c->last_name, c_ans);
+                        if (err) {
+                            undo_entry_free(ue);
+                            citizen_free(new);
+                            return err;
+                        }
+                        err = string_cpy_c(&ue->current.last_name, c_ans);
+                        if (err) {
+                            undo_entry_free(ue);
+                            citizen_free(new);
+                            return err;
+                        }
+                        changed = 1;
+                        break;
+
+                    case 2:
+                        printf("Enter new name: ");
+                        scanf("%s", c_ans);
+                        err = string_cpy_c(&current_c->name, c_ans);
+                        if (err) {
+                            undo_entry_free(ue);
+                            citizen_free(new);
+                            return err;
+                        }
+                        err = string_cpy_c(&ue->current.name, c_ans);
+                        if (err) {
+                            undo_entry_free(ue);
+                            citizen_free(new);
+                            return err;
+                        }
+                        changed = 1;
+                        break;
+
+                    case 3:
+                        printf("Enter new surname: ");
+                        scanf("%s", c_ans);
+                        err = string_cpy_c(&current_c->surname, c_ans);
+                        if (err) {
+                            undo_entry_free(ue);
+                            citizen_free(new);
+                            return err;
+                        }
+                        err = string_cpy_c(&ue->current.surname, c_ans);
+                        if (err) {
+                            undo_entry_free(ue);
+                            citizen_free(new);
+                            return err;
+                        }
+                        changed = 1;
+                        break;
+
+                    case 4:
+                        printf("Enter new birthday: ");
+                        scanf("%s", c_ans);
+                        if (regex_date(c_ans) == 0) {
+                            undo_entry_free(ue);
+                            citizen_free(new);
+                            return REGEX_FAILED;
+                        }
+                        err = calculate_age(c_ans, &size_t_placeholder);
+                        if (err) {
+                            undo_entry_free(ue);
+                            citizen_free(new);
+                            return err;
+                        }
+                        current_c->age = size_t_placeholder;
+                        ue->current.age = size_t_placeholder;
+
+                        err = string_cpy_c(&current_c->birthday, c_ans);
+                        if (err) {
+                            undo_entry_free(ue);
+                            citizen_free(new);
+                            return err;
+                        }
+                        err = string_cpy_c(&ue->current.birthday, c_ans);
+                        if (err) {
+                            undo_entry_free(ue);
+                            citizen_free(new);
+                            return err;
+                        }
+
+                        changed = 1;
+                        break;
+
+                    case 5:
+                        printf("Enter new gender: ");
+                        scanf("%c", &c);
+                        if (c != 'M' || c != 'W') {
+                            undo_entry_free(ue);
+                            citizen_free(new);
+                            return INVALID_INPUT_DATA;
+                        }
+                        current_c->gender = c == 'M' ? Male : Female;
+                        ue->current.gender = c == 'M' ? Male : Female;
+                        changed = 1;
+                        break;
+
+                    case 6:
+                        printf("Enter new salary: ");
+                        scanf("%lf", &double_placeholder);
+                        double_placeholder =
+                            double_placeholder > 0 ? double_placeholder : 0;
+                        current_c->salary = double_placeholder;
+                        ue->current.salary = double_placeholder;
+                        changed = 1;
+                        break;
+                }
+            }
+            user_input = -1;
+            if (changed) {
+                changed = 0;
+                err = stack_push(us->s, ue);
+                if (err) {
+                    undo_entry_free(ue);
+                    citizen_free(new);
+                    return err;
+                }
+                free(ue);
+            } else {
+                undo_entry_free(ue);
+            }
+        }
+        current = current->next;
+    }
+    citizen_free(new);
+
+    printf("\nPress enter to continue");
+    while (c != EOF && (c = getchar()) != '\n');
+    getchar();
 
     return EXIT_SUCCESS;
 }
