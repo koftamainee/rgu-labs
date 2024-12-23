@@ -107,10 +107,11 @@ int string_lex_cmp(String str1, String str2) {
 
 int string_cpy(String *dest, const String *src) {
     int err;
-    int length = string_len(*src);
+    int length;
     if (dest == NULL || src == NULL) {
         return DEREFERENCING_NULL_PTR;
     }
+    length = string_len(*src);
     if (string_cap(*dest) < length) {
         err = string_grow(dest, length);
         if (err) {

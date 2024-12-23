@@ -32,7 +32,7 @@ int program_04_1(int argc, char *argv[]) {
 
     if (argv[1][0] == '-' || argv[1][0] == '/') {
         if (argv[1][1] == 'a') {
-            err = read_employees_from_file("files/employees.txt", &arr, &len);
+            err = read_employees_from_file("files/test.txt", &arr, &len);
             if (err) {
                 free(arr);
                 return err;
@@ -50,13 +50,17 @@ int program_04_1(int argc, char *argv[]) {
     } else {
         return INVALID_FLAG;
     }
-    printf("Sorted:\n");
-    for (i = 0; i < len; ++i) {
-        printf("Id: %zu, name: ", arr[i].id);
-        string_print(arr[i].name);
-        printf(", last_name: ");
-        string_print(arr[i].last_name);
-        printf(", salary: %lf$\n", arr[i].salary);
+    if (len > 0) {
+        printf("Sorted:\n");
+        for (i = 0; i < len; ++i) {
+            printf("Id: %zu, name: ", arr[i].id);
+            string_print(arr[i].name);
+            printf(", last_name: ");
+            string_print(arr[i].last_name);
+            printf(", salary: %lf$\n", arr[i].salary);
+        }
+    } else {
+        printf("Empty file!\n");
     }
 
     free(arr);

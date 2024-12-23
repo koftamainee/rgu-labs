@@ -80,6 +80,29 @@ int main(int argc, char *argv[]) {
             case ERROR_READING_FROM_STDIN:
                 printf("Error reading from stdin ;(\n");
                 break;
+            case NO_SUCH_ENTRY_IN_COLLECTION:
+                printf("No such entery in the collection :I\n");
+                break;
+            case STACK_IS_EMPTY:
+                printf("stack not overflowed, but empty...\n");
+                break;
+            case REPEATING_KEY:
+                printf("Keys are repeating. Eto pechalno\n");
+                break;
+            case KEY_NOT_FOUND:
+                printf("There is no such key...\n");
+                break;
+            case ZERO_MEMORY_ALLOCATION:
+                printf(
+                    "You are trying to allocate zero-sized chunk of memory. "
+                    "please stop...\n");
+                break;
+            case REGEX_FAILED:
+                printf("your wrong data doesnt pass regex :(\n");
+                break;
+            case INVALID_INPUT_DATA:
+                printf("Invalid input data.\n");
+                break;
             default:
                 printf("Undefined behavior ಠ_ಠ\n");
                 break;
