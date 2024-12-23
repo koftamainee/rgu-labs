@@ -23,5 +23,6 @@ typedef int err_t;
 #define KEY_NOT_FOUND (17)
 #define ZERO_MEMORY_ALLOCATION (18)
 #define REGEX_FAILED (19)
+#define INVALID_INPUT_DATA (20)
 
 #endif

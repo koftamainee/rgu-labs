@@ -100,6 +100,9 @@ int main(int argc, char *argv[]) {
             case REGEX_FAILED:
                 printf("your wrong data doesnt pass regex :(\n");
                 break;
+            case INVALID_INPUT_DATA:
+                printf("Invalid input data.\n");
+                break;
             default:
                 printf("Undefined behavior ಠ_ಠ\n");
                 break;

@@ -15,6 +15,7 @@ typedef struct Citizen {
     String last_name;
     String name;
     String surname;
+    String birthday;
     size_t age;
     Gender gender;
     double salary;
@@ -24,7 +25,8 @@ typedef enum undo_action { create, update, delete } undo_action;
 
 typedef struct undo_entry {
     undo_action action;
-    Citizen *c;
+    Citizen prev;
+    Citizen current;
 } undo_entry;
 
 typedef struct undostack {
@@ -50,6 +52,7 @@ err_t undo(u_list *town, undostack *us);
 
 // comparer
 int citizen_age_comparer(const void *a, const void *b);
+int citizen_equality_comparer(const void *a, const void *b);
 
 // memory stuff
 // err_t citizen_init(Citizen **c, char *last_name, char *name, char *surname,
@@ -75,7 +78,7 @@ int program_04_5(int argc, char *argv[]) {
         u_list_free(town);
         return err;
     }
-    err = undostack_init(&us, sizeof(undo_action), undo_entry_free);
+    err = undostack_init(&us, sizeof(undo_entry), undo_entry_free);
     if (err) {
         u_list_free(town);
         return err;
@@ -141,6 +144,14 @@ err_t citizens_deserialize(u_list *town, const char *filename) {
             free(new);
             return MEMORY_ALLOCATION_ERROR;
         }
+
+        if (gender != 'M' && gender != 'W') {
+            string_free(new->last_name);
+            string_free(new->name);
+            string_free(new->surname);
+            free(new);
+            return INVALID_INPUT_DATA;
+        }
         new->gender = gender == 'M' ? Male : Female;
         if (regex_date(datetime) == 0) {
             string_free(new->last_name);
@@ -156,6 +167,14 @@ err_t citizens_deserialize(u_list *town, const char *filename) {
             string_free(new->surname);
             free(new);
             return err;
+        }
+        new->birthday = string_from(datetime);
+        if (new->birthday == NULL) {
+            string_free(new->last_name);
+            string_free(new->name);
+            string_free(new->surname);
+            free(new);
+            return MEMORY_ALLOCATION_ERROR;
         }
         new->salary = salary > 0 ? salary : 0;
         err = u_list_insert_sorted(town, new, citizen_age_comparer);
@@ -184,15 +203,20 @@ void print_citizen(const u_list_node *n) {
     string_print(cp->name);
     printf(" ");
     string_print(cp->surname);
-    printf(" %c, %zu y.o, Salary: %.2lf $\n", cp->gender == Male ? 'M' : 'W',
-           cp->age, cp->salary);
+    printf(" %c ", cp->gender == Male ? 'M' : 'W');
+    string_print(cp->birthday);
+    printf(", %zu y.o, Salary: %.2lf $\n", cp->age, cp->salary);
 }
 
 void citizen_free(void *c) {
+    if (c == NULL) {
+        return;
+    }
     Citizen *cp = (Citizen *)c;
     string_free(cp->last_name);
     string_free(cp->name);
     string_free(cp->surname);
+    string_free(cp->birthday);
     free(cp);
 }
 
@@ -299,6 +323,7 @@ err_t start_citizens_menu(u_list *town, undostack *us) {
 
     while (user_input != 0) {
         clear_screen();
+        fflush(stdin);
         printf(
             "1. Create citizen.\n"
             "2. Read Citizen.\n"
@@ -318,6 +343,7 @@ err_t start_citizens_menu(u_list *town, undostack *us) {
                 if (err) {
                     return err;
                 }
+                break;
             case 2:
                 err = read_citizen(town, us);
                 if (err) {
@@ -360,17 +386,260 @@ err_t start_citizens_menu(u_list *town, undostack *us) {
 }
 
 err_t create_citizen(u_list *town, undostack *us) {
+    undo_entry *ue = NULL;
+    char c;
+    char c_ans[BUFSIZ];
+    Citizen *new = NULL;
+    String s_ans = NULL;
+    err_t err;
     if (town == NULL || us == NULL) {
         return DEREFERENCING_NULL_PTR;
     }
+
+    new = (Citizen *)malloc(sizeof(Citizen));
+    if (new == NULL) {
+        return MEMORY_ALLOCATION_ERROR;
+    }
+    new->last_name = NULL;
+    new->name = NULL;
+    new->surname = NULL;
+
+    fflush(stdin);
+
+    while (c != EOF && (c = getchar()) != '\n');
+    printf("Enter last name: ");
+    err = read_string_from_user(&s_ans);
+    if (err) {
+        citizen_free(new);
+        return err;
+    }
+    new->last_name = s_ans;
+    s_ans = NULL;
+
+    printf("Enter name: ");
+    err = read_string_from_user(&s_ans);
+    if (err) {
+        citizen_free(new);
+        return err;
+    }
+    new->name = s_ans;
+    s_ans = NULL;
+
+    printf("Enter surname: ");
+    err = read_string_from_user(&s_ans);
+    if (err) {
+        citizen_free(new);
+        return err;
+    }
+    new->surname = s_ans;
+    s_ans = NULL;
+
+    printf("Enter birth date: ");
+    scanf("%s", c_ans);
+    if (regex_date(c_ans) == 0) {
+        citizen_free(new);
+        return REGEX_FAILED;
+    }
+    err = calculate_age(c_ans, &new->age);
+    if (err) {
+        citizen_free(new);
+        return err;
+    }
+    new->birthday = string_from(c_ans);
+    if (new->birthday == NULL) {
+        citizen_free(new);
+        return MEMORY_ALLOCATION_ERROR;
+    }
+
+    fflush(stdin);
+    while (c != EOF && (c = getchar()) != '\n');
+    printf("Enter gender: ");
+    scanf("%c", &c);
+    if (c != 'M' && c != 'W') {
+        citizen_free(new);
+        return INVALID_INPUT_DATA;
+    }
+    new->gender = c == 'M' ? Male : Female;
+
+    printf("Enter salary: ");
+    scanf("%lf", &new->salary);
+    new->salary = new->salary > 0 ? new->salary : 0;
+
+    err = u_list_insert_sorted(town, new, citizen_age_comparer);
+    if (err) {
+        citizen_free(new);
+        return err;
+    }
+    if (err) {
+        free(new);
+        return err;
+    }
+
+    ue = (undo_entry *)malloc(sizeof(undo_entry));
+    if (ue == NULL) {
+        free(new);
+        return MEMORY_ALLOCATION_ERROR;
+    }
+    ue->action = create;
+    ue->current.age = new->age;
+    ue->current.salary = new->salary;
+    ue->current.gender = new->gender;
+    ue->prev.last_name = NULL;
+    ue->prev.name = NULL;
+    ue->prev.surname = NULL;
+    ue->prev.birthday = NULL;
+    ue->current.last_name = string_init();
+    ue->current.name = string_init();
+    ue->current.surname = string_init();
+    ue->current.birthday = string_init();
+    if (ue->current.last_name == NULL || ue->current.name == NULL ||
+        ue->current.surname == NULL || ue->current.birthday == NULL) {
+        free(new);
+        return MEMORY_ALLOCATION_ERROR;
+    }
+    string_cpy(&ue->current.last_name, &new->last_name);
+    string_cpy(&ue->current.name, &new->name);
+    string_cpy(&ue->current.surname, &new->surname);
+    string_cpy(&ue->current.birthday, &new->birthday);
+
+    free(new);
+
+    err = u_list_insert(us->s, 0, ue);
+    if (err) {
+        undo_entry_free(ue);
+        return err;
+    }
+    us->total_operation_count += 1;
 
     return EXIT_SUCCESS;
 }
 
 err_t read_citizen(u_list *town, undostack *us) {
+    int search_flags[6] = {0, 0, 0, 0, 0, 0};
+    Citizen *current_c;
+    int gender_flag = 0;
+    String s_ans = NULL;
+    char c_ans[BUFSIZ];
+    Citizen *new = NULL;
+    err_t err;
+    char c;
+    u_list_node *current = NULL;
     if (town == NULL || us == NULL) {
         return DEREFERENCING_NULL_PTR;
     }
+
+    new = (Citizen *)malloc(sizeof(Citizen));
+    if (new == NULL) {
+        return MEMORY_ALLOCATION_ERROR;
+    }
+    new->last_name = NULL;
+    new->name = NULL;
+    new->surname = NULL;
+
+    fflush(stdin);
+
+    while (c != EOF && (c = getchar()) != '\n');
+    printf("Enter last name: ");
+    err = read_string_from_user(&s_ans);
+    if (err) {
+        citizen_free(new);
+        return err;
+    }
+    new->last_name = s_ans;
+    if (s_ans[0] == '-') {
+        search_flags[0] = 1;
+    }
+    s_ans = NULL;
+
+    printf("Enter name: ");
+    err = read_string_from_user(&s_ans);
+    if (err) {
+        citizen_free(new);
+        return err;
+    }
+    if (s_ans[0] == '-') {
+        search_flags[1] = 1;
+    }
+    new->name = s_ans;
+    s_ans = NULL;
+
+    printf("Enter surname: ");
+    err = read_string_from_user(&s_ans);
+    if (err) {
+        citizen_free(new);
+        return err;
+    }
+    if (s_ans[0] == '-') {
+        search_flags[2] = 1;
+    }
+    new->surname = s_ans;
+    s_ans = NULL;
+
+    printf("Enter birth date: ");
+    scanf("%s", c_ans);
+    if (c_ans[0] == '-') {
+        search_flags[3] = 1;
+        new->age = 0;
+        new->birthday = NULL;
+    } else {
+        search_flags[3] = 0;
+        if (regex_date(c_ans) == 0) {
+            citizen_free(new);
+            return REGEX_FAILED;
+        }
+        err = calculate_age(c_ans, &new->age);
+        if (err) {
+            citizen_free(new);
+            return err;
+        }
+        new->birthday = string_from(c_ans);
+        if (new->birthday == NULL) {
+            citizen_free(new);
+            return MEMORY_ALLOCATION_ERROR;
+        }
+    }
+    fflush(stdin);
+    while (c != EOF && (c = getchar()) != '\n');
+    printf("Enter gender: ");
+    scanf("%c", &c);
+    if (c == '-') {
+        search_flags[4] = 1;
+    } else {
+        search_flags[4] = 0;
+        if (c != 'M' && c != 'W') {
+            citizen_free(new);
+            return INVALID_INPUT_DATA;
+        }
+        new->gender = c == 'M' ? Male : Female;
+    }
+
+    printf("Enter salary: ");
+    scanf("%s", c_ans);
+    if (c_ans[0] == '-') {
+        search_flags[5] = 1;
+    }
+    new->salary = atoi(c_ans);
+
+    current = town->first;
+    while (current != NULL) {
+        current_c = (Citizen *)current->data;
+        if ((search_flags[0] ||
+             string_cmp(current_c->last_name, new->last_name) == 0) &&
+            (search_flags[1] || string_cmp(current_c->name, new->name)) &&
+            (search_flags[2] || string_cmp(current_c->surname, new->surname)) &&
+            (search_flags[3] ||
+             string_cmp(current_c->birthday, new->birthday)) &&
+            (search_flags[4] || current_c->gender - new->gender == 0) &&
+            (search_flags[5] || current_c->salary - new->salary == 0)) {
+            print_citizen(current);
+        }
+        current = current->next;
+    }
+    citizen_free(new);
+
+    printf("\nPress enter to continue");
+    while (c != EOF && (c = getchar()) != '\n');
+    getchar();
 
     return EXIT_SUCCESS;
 }
@@ -392,10 +661,37 @@ err_t delete_citizen(u_list *town, undostack *us) {
 }
 
 err_t output_to_file(u_list *town) {
+    u_list_node *current = NULL;
+    Citizen *cp;
+    char c_ans[BUFSIZ];
+    FILE *fout = NULL;
     if (town == NULL) {
         return DEREFERENCING_NULL_PTR;
     }
 
+    printf("Enter file path: ");
+    scanf("%s", c_ans);
+
+    fout = fopen(c_ans, "w");
+    if (fout == NULL) {
+        return OPENING_THE_FILE_ERROR;
+    }
+
+    current = town->first;
+    while (current != NULL) {
+        cp = (Citizen *)current->data;
+        string_fprint(fout, cp->last_name);
+        fprintf(fout, " ");
+        string_fprint(fout, cp->name);
+        fprintf(fout, " ");
+        string_fprint(fout, cp->surname);
+        fprintf(fout, " %c ", cp->gender == Male ? 'M' : 'W');
+        string_fprint(fout, cp->birthday);
+        fprintf(fout, ", %zu y.o, Salary: %.2lf $\n", cp->age, cp->salary);
+        current = current->next;
+    }
+
+    fclose(fout);
     return EXIT_SUCCESS;
 }
 
@@ -418,7 +714,7 @@ err_t undostack_init(undostack **us, size_t element_size,
     }
     (*us)->total_operation_count = 0;
     (*us)->current_operation_count = 0;
-    return stack_init(&((*us)->s), sizeof(undo_action), elem_destructor);
+    return stack_init(&((*us)->s), element_size, elem_destructor);
 }
 void undostack_free(undostack *us) {
     if (us == NULL) {
@@ -432,6 +728,43 @@ void undo_entry_free(void *entry) {
         return;
     }
     undo_entry *entry_p = (undo_entry *)entry;
-    citizen_free(entry_p->c);
+    string_free(entry_p->current.last_name);
+    string_free(entry_p->current.name);
+    string_free(entry_p->current.surname);
+    string_free(entry_p->current.birthday);
+
+    string_free(entry_p->prev.last_name);
+    string_free(entry_p->prev.name);
+    string_free(entry_p->prev.surname);
+    string_free(entry_p->prev.birthday);
+
     free(entry_p);
+}
+
+int citizen_equality_comparer(const void *a, const void *b) {
+    Citizen *ap = (Citizen *)a;
+    Citizen *bp = (Citizen *)b;
+    int ret;
+    ret = string_cmp(ap->last_name, bp->last_name);
+    if (ret) {
+        return ret;
+    }
+    ret = string_cmp(ap->name, bp->name);
+    if (ret) {
+        return ret;
+    }
+    ret = string_cmp(ap->surname, bp->surname);
+    if (ret) {
+        return ret;
+    }
+    ret = ap->gender - bp->gender;
+    if (ret) {
+        return ret;
+    }
+    ret = ap->age - bp->age;
+    if (ret) {
+        return ret;
+    }
+    ret = ap->salary - bp->gender;
+    return ret;
 }
