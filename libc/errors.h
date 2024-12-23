@@ -22,5 +22,6 @@ typedef int err_t;
 #define REPEATING_KEY (16)
 #define KEY_NOT_FOUND (17)
 #define ZERO_MEMORY_ALLOCATION (18)
+#define REGEX_FAILED (19)
 
 #endif

@@ -97,6 +97,9 @@ int main(int argc, char *argv[]) {
                     "You are trying to allocate zero-sized chunk of memory. "
                     "please stop...\n");
                 break;
+            case REGEX_FAILED:
+                printf("your wrong data doesnt pass regex :(\n");
+                break;
             default:
                 printf("Undefined behavior ಠ_ಠ\n");
                 break;

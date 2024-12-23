@@ -19,9 +19,4 @@ err_t stack_top(stack *s, stack_item **ret_item) {
     return EXIT_SUCCESS;
 }
 
-int stack_is_empty(stack *s) {
-    if (s == NULL || s->first == NULL) {
-        return 1;
-    }
-    return 0;
-}
+int stack_is_empty(stack *s) { return s == NULL || s->first == NULL; }

@@ -85,6 +85,58 @@ err_t u_list_insert(u_list *l, size_t index, const void *data) {
     return EXIT_SUCCESS;
 }
 
+err_t u_list_insert_sorted(u_list *l, const void *data,
+                           int (*comp)(const void *, const void *)) {
+    if (l == NULL || data == NULL || comp == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+
+    u_list_node *new = (u_list_node *)malloc(sizeof(u_list_node));
+    if (new == NULL) {
+        return MEMORY_ALLOCATION_ERROR;
+    }
+
+    new->data = malloc(l->elem_size);
+    if (new->data == NULL) {
+        free(new);
+        return MEMORY_ALLOCATION_ERROR;
+    }
+
+    memcpy(new->data, data, l->elem_size);  // deep copy
+
+    // Insert at the beginning if the list is empty or the new data is less
+    if (l->first == NULL || comp(new->data, l->first->data) <= 0) {
+        new->next = l->first;
+        l->first = new;
+        l->size++;
+        if (l->size == 1) {  // first element is also last element
+            l->last = new;
+        }
+        return EXIT_SUCCESS;
+    }
+
+    // Find the correct position to insert the new node
+    u_list_node *item = l->first;
+    u_list_node *father = NULL;
+
+    while (item != NULL && comp(new->data, item->data) > 0) {
+        father = item;
+        item = item->next;
+    }
+
+    // Insert the new node
+    father->next = new;
+    new->next = item;
+    l->size++;
+
+    // Update last node if inserted at the end
+    if (new->next == NULL) {
+        l->last = new;
+    }
+
+    return EXIT_SUCCESS;
+}
+
 err_t u_list_get_node_by_index(u_list *l, size_t index,
                                u_list_node **ret_node) {
     size_t i = 0;
