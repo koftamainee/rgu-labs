@@ -545,7 +545,7 @@ err_t read_citizen(u_list *town, undostack *us) {
     printf("Enter last name: ");
     err = read_string_from_user(&s_ans);
     if (err) {
-        citizen_free(new);
+        free(new);
         return err;
     }
     new->last_name = s_ans;
@@ -557,7 +557,7 @@ err_t read_citizen(u_list *town, undostack *us) {
     printf("Enter name: ");
     err = read_string_from_user(&s_ans);
     if (err) {
-        citizen_free(new);
+        free(new);
         return err;
     }
     if (s_ans[0] == '-') {
@@ -569,7 +569,7 @@ err_t read_citizen(u_list *town, undostack *us) {
     printf("Enter surname: ");
     err = read_string_from_user(&s_ans);
     if (err) {
-        citizen_free(new);
+        free(new);
         return err;
     }
     if (s_ans[0] == '-') {
@@ -587,12 +587,12 @@ err_t read_citizen(u_list *town, undostack *us) {
     } else {
         search_flags[3] = 0;
         if (regex_date(c_ans) == 0) {
-            citizen_free(new);
+            free(new);
             return REGEX_FAILED;
         }
         err = calculate_age(c_ans, &new->age);
         if (err) {
-            citizen_free(new);
+            free(new);
             return err;
         }
         new->birthday = string_from(c_ans);
@@ -610,7 +610,7 @@ err_t read_citizen(u_list *town, undostack *us) {
     } else {
         search_flags[4] = 0;
         if (c != 'M' && c != 'W') {
-            citizen_free(new);
+            free(new);
             return INVALID_INPUT_DATA;
         }
         new->gender = c == 'M' ? Male : Female;
@@ -638,7 +638,7 @@ err_t read_citizen(u_list *town, undostack *us) {
         }
         current = current->next;
     }
-    citizen_free(new);
+    free(new);
 
     printf("\nPress enter to continue");
     while (c != EOF && (c = getchar()) != '\n');
@@ -680,7 +680,7 @@ err_t update_citizen(u_list *town, undostack *us) {
     printf("Enter last name: ");
     err = read_string_from_user(&s_ans);
     if (err) {
-        citizen_free(new);
+        free(new);
         return err;
     }
     new->last_name = s_ans;
@@ -692,7 +692,7 @@ err_t update_citizen(u_list *town, undostack *us) {
     printf("Enter name: ");
     err = read_string_from_user(&s_ans);
     if (err) {
-        citizen_free(new);
+        free(new);
         return err;
     }
     if (s_ans[0] == '-') {
@@ -704,7 +704,7 @@ err_t update_citizen(u_list *town, undostack *us) {
     printf("Enter surname: ");
     err = read_string_from_user(&s_ans);
     if (err) {
-        citizen_free(new);
+        free(new);
         return err;
     }
     if (s_ans[0] == '-') {
@@ -722,17 +722,17 @@ err_t update_citizen(u_list *town, undostack *us) {
     } else {
         search_flags[3] = 0;
         if (regex_date(c_ans) == 0) {
-            citizen_free(new);
+            free(new);
             return REGEX_FAILED;
         }
         err = calculate_age(c_ans, &new->age);
         if (err) {
-            citizen_free(new);
+            free(new);
             return err;
         }
         new->birthday = string_from(c_ans);
         if (new->birthday == NULL) {
-            citizen_free(new);
+            free(new);
             return MEMORY_ALLOCATION_ERROR;
         }
     }
@@ -745,7 +745,7 @@ err_t update_citizen(u_list *town, undostack *us) {
     } else {
         search_flags[4] = 0;
         if (c != 'M' && c != 'W') {
-            citizen_free(new);
+            free(new);
             return INVALID_INPUT_DATA;
         }
         new->gender = c == 'M' ? Male : Female;

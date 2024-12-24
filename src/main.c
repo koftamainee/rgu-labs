@@ -106,6 +106,9 @@ int main(int argc, char *argv[]) {
             case INVALID_CLI_ARGUMENT:
                 printf("Invalid CLI argument((\n");
                 break;
+            case ZERO_DIVISION:
+                printf("Division by zero.\n");
+                break;
             default:
                 printf("Undefined behavior ಠ_ಠ\n");
                 break;

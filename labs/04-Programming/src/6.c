@@ -214,10 +214,140 @@ err_t poly_mult(const poly *a, const poly *b, poly *result) {
 
     return EXIT_SUCCESS;
 }
+
 err_t poly_div(const poly *a, const poly *b, poly *result) {
+    err_t err;
+    u_list_node *current_1, *current_2, *result_node;
+    poly_term *term_1, *term_2, *result_term;
+
+    if (a == NULL || b == NULL || result == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+
+    current_1 = a->first;
+    current_2 = b->first;
+
+    if (current_2 != NULL) {
+        term_2 = (poly_term *)current_2->data;
+        if (term_2->coef == 0) {
+            return ZERO_DIVISION;
+        }
+    }
+
+    while (current_1 != NULL) {
+        term_1 = (poly_term *)current_1->data;
+
+        if (term_1->coef == 0 && term_1->exp == 0) {
+            break;
+        }
+
+        if (current_2 != NULL) {
+            term_2 = (poly_term *)current_2->data;
+            if (term_1->exp < term_2->exp) {
+                return INVALID_INPUT_DATA;
+            }
+        }
+        current_1 = current_1->next;
+    }
+
+    current_1 = a->first;
+    while (current_1 != NULL) {
+        term_1 = (poly_term *)current_1->data;
+
+        if (current_2 != NULL) {
+            term_2 = (poly_term *)current_2->data;
+
+            if (term_2->coef == 0) {
+                return ZERO_DIVISION;
+            }
+
+            if (term_1->exp >= term_2->exp) {
+                result_term = (poly_term *)malloc(sizeof(poly_term));
+                if (result_term == NULL) {
+                    return MEMORY_ALLOCATION_ERROR;
+                }
+
+                result_term->coef = term_1->coef / term_2->coef;
+                result_term->exp = term_1->exp - term_2->exp;
+
+                err = u_list_insert(result, result->size, result_term);
+                if (err) {
+                    free(result_term);
+                    return err;
+                }
+            }
+        }
+
+        current_1 = current_1->next;
+    }
+
     return EXIT_SUCCESS;
 }
+
 err_t poly_mod(const poly *a, const poly *b, poly *result) {
+    err_t err;
+    u_list_node *current_1, *current_2;
+    poly_term *term_1, *term_2, *result_term;
+
+    if (a == NULL || b == NULL || result == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+
+    current_1 = a->first;
+    current_2 = b->first;
+
+    if (current_2 != NULL) {
+        term_2 = (poly_term *)current_2->data;
+        if (term_2->coef == 0) {
+            return ZERO_DIVISION;
+        }
+    }
+
+    while (current_1 != NULL) {
+        term_1 = (poly_term *)current_1->data;
+
+        if (current_2 != NULL) {
+            term_2 = (poly_term *)current_2->data;
+            if (term_1->exp < term_2->exp) {
+                return INVALID_INPUT_DATA;
+            }
+        }
+        current_1 = current_1->next;
+    }
+
+    result->first = NULL;
+    result->size = 0;
+
+    current_1 = a->first;
+    while (current_1 != NULL) {
+        term_1 = (poly_term *)current_1->data;
+
+        while (current_2 != NULL &&
+               term_1->exp >= ((poly_term *)current_2->data)->exp) {
+            term_2 = (poly_term *)current_2->data;
+
+            if (term_1->exp >= term_2->exp) {
+                result_term = (poly_term *)malloc(sizeof(poly_term));
+                if (result_term == NULL) {
+                    return MEMORY_ALLOCATION_ERROR;
+                }
+
+                result_term->coef = term_1->coef - term_2->coef;
+                result_term->exp = term_1->exp - term_2->exp;
+
+                err = u_list_insert(result, result->size, result_term);
+                if (err) {
+                    free(result_term);
+                    return err;
+                }
+            }
+
+            current_2 = current_2->next;
+        }
+
+        current_1 = current_1->next;
+    }
+
     return EXIT_SUCCESS;
 }
 
@@ -261,8 +391,8 @@ err_t poly_comp(const poly *a, const poly *b, poly *result) {
         return DEREFERENCING_NULL_PTR;
     }
 
-    result->first =
-        NULL;  // WARNING: if result it not free'd this is potential memory leak
+    result->first = NULL;  // WARNING: if result it not free'd this is
+                           // potential memory leak
 
     current = a->first;
     while (current != NULL) {
@@ -637,7 +767,6 @@ err_t parse_instruction(char *instruction, poly *current_sum, int *in_comment) {
         poly_free(poly1);
         return INVALID_INPUT_DATA;
     }
-
     err = do_stuff_with_polys(poly1, poly2, current_sum, o, 0);
     if (err) {
         poly_free(poly1);
@@ -672,7 +801,6 @@ err_t do_stuff_with_polys(poly *poly1, poly *poly2, poly *current_sum,
             return err;
         }
     }
-
     switch (op) {
         case Add:
             err = poly_add(poly1, poly2, current_sum);
