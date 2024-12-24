@@ -244,7 +244,7 @@ err_t u_list_delete_by_value(u_list *l, const void *target,
     return INDEX_OUT_OF_BOUNDS;  // Target not found
 }
 
-err_t u_list_const_traversion(u_list *l,
+err_t u_list_const_traversion(const u_list *l,
                               void (*callback)(const u_list_node *)) {
     void print_node_ulist(const u_list_node *n);
     u_list_node *item;
@@ -271,6 +271,71 @@ err_t u_list_traversion(u_list *l, void (*callback)(u_list_node *)) {
     while (item != NULL) {
         callback(item);
         item = item->next;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+void swap_nodes_data(u_list_node *a, u_list_node *b) {
+    void *temp = a->data;
+    a->data = b->data;
+    b->data = temp;
+}
+
+static u_list_node *u_list_split(u_list_node *head) {
+    if (!head || !head->next) return head;
+
+    u_list_node *slow = head;
+    u_list_node *fast = head->next;
+
+    // Move `slow` one step and `fast` two steps at a time
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    u_list_node *mid = slow->next;
+    slow->next = NULL;  // Split the list into two halves
+    return mid;
+}
+
+static u_list_node *u_list_merge(u_list_node *left, u_list_node *right,
+                                 int (*comp)(const void *, const void *)) {
+    if (!left) return right;
+    if (!right) return left;
+
+    if (comp(left->data, right->data) <= 0) {
+        left->next = u_list_merge(left->next, right, comp);
+        return left;
+    } else {
+        right->next = u_list_merge(left, right->next, comp);
+        return right;
+    }
+}
+
+u_list_node *u_list_merge_sort(u_list_node *head,
+                               int (*comp)(const void *, const void *)) {
+    if (!head || !head->next) return head;
+    u_list_node *mid = u_list_split(head);
+
+    u_list_node *left = u_list_merge_sort(head, comp);
+    u_list_node *right = u_list_merge_sort(mid, comp);
+
+    return u_list_merge(left, right, comp);
+}
+
+err_t u_list_sort(u_list *l, int (*comp)(const void *, const void *)) {
+    if (l == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+
+    l->first = u_list_merge_sort(l->first, comp);
+
+    u_list_node *temp = l->first;
+    l->size = 0;
+    while (temp) {
+        l->size++;
+        temp = temp->next;
     }
 
     return EXIT_SUCCESS;

@@ -103,6 +103,9 @@ int main(int argc, char *argv[]) {
             case INVALID_INPUT_DATA:
                 printf("Invalid input data.\n");
                 break;
+            case INVALID_CLI_ARGUMENT:
+                printf("Invalid CLI argument((\n");
+                break;
             default:
                 printf("Undefined behavior ಠ_ಠ\n");
                 break;

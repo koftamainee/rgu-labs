@@ -24,5 +24,6 @@ typedef int err_t;
 #define ZERO_MEMORY_ALLOCATION (18)
 #define REGEX_FAILED (19)
 #define INVALID_INPUT_DATA (20)
+#define INVALID_CLI_ARGUMENT (21)
 
 #endif
