@@ -18,13 +18,14 @@ err_t bst_init(bst **t, size_t key_size, size_t value_size,
                bst_disposal_strategy disposal_strategy,
                bst_traversion_strategy traversion_strategy,
                bst_collision_strategy collision_strategy) {
-    if (t == NULL || *t == NULL || key_destructor == NULL ||
-        value_destructor == NULL) {
+    if (t == NULL ||
+        keys_comparer ==
+            NULL) {  // keys_destructor and value destructor may be NULL
         return DEREFERENCING_NULL_PTR;
     }
-    if (key_size == 0 || value_size == 0) {
-        return ZERO_MEMORY_ALLOCATION;
-    }
+    // if (key_size == 0 || value_size == 0) {
+    //     return ZERO_MEMORY_ALLOCATION;
+    // }
 
     *t = (bst *)malloc(sizeof(bst));
     if (*t == NULL) {
@@ -49,6 +50,7 @@ void bst_free(bst *t) {
         return;
     }
     __bst_free_inner(t, t->root);
+    free(t);
     return;
 }
 
@@ -58,8 +60,14 @@ void __bst_free_inner(bst *t, bst_node *n) {
     }
     __bst_free_inner(t, n->left_subtree);
     __bst_free_inner(t, n->right_subtree);
-    t->key_destructor(n->key);
-    t->value_destructor(n->value);
+    if (t->value_destructor != NULL) {
+        t->value_destructor(n->value);
+    }
+
+    if (t->key_destructor != NULL) {
+        t->key_destructor(n->key);
+    }
+    free(n);
     return;
 }
 
@@ -93,7 +101,7 @@ err_t bst_set_collision_strategy(bst *t,
 err_t bst_insert(bst *t, void *key, void *value) {
     int comparer_result;
     bst_node **iterator = NULL;
-    if (t == NULL || key == NULL || value == NULL) {
+    if (t == NULL) {
         return DEREFERENCING_NULL_PTR;
     }
 
@@ -123,23 +131,27 @@ err_t bst_insert(bst *t, void *key, void *value) {
     }
     (*iterator)->left_subtree = NULL;
     (*iterator)->right_subtree = NULL;
-    (*iterator)->value = malloc(t->value_size);
-    if ((*iterator)->value == NULL) {
-        free(*iterator);
-        *iterator = NULL;
-        return MEMORY_ALLOCATION_ERROR;
+    if (t->value_size != 0) {
+        (*iterator)->value = malloc(t->value_size);
+        if ((*iterator)->value == NULL) {
+            free(*iterator);
+            *iterator = NULL;
+            return MEMORY_ALLOCATION_ERROR;
+        }
+        memcpy((*iterator)->value, value, t->value_size);
     }
-    memcpy((*iterator)->value, value, t->value_size);
 
-    (*iterator)->key = malloc(t->key_size);
-    if ((*iterator)->key == NULL) {
-        t->value_destructor((*iterator)->value);
-        (*iterator)->value = NULL;
-        free(*iterator);
-        *iterator = NULL;
-        return MEMORY_ALLOCATION_ERROR;
+    if (t->key_size != 0) {
+        (*iterator)->key = malloc(t->key_size);
+        if ((*iterator)->key == NULL) {
+            t->value_destructor((*iterator)->value);
+            (*iterator)->value = NULL;
+            free(*iterator);
+            *iterator = NULL;
+            return MEMORY_ALLOCATION_ERROR;
+        }
+        memcpy((*iterator)->key, key, t->key_size);
     }
-    memcpy((*iterator)->key, key, t->key_size);
 
     return EXIT_SUCCESS;
 }
@@ -164,6 +176,7 @@ err_t bst_obtain(const bst *t, void *key, bst_node **target) {
 
     return KEY_NOT_FOUND;
 }
+
 err_t bst_dispose(bst *t, void *key) {
     int comparer_result = 0;
     bst_node **iterator = NULL, **for_swap, *temp_node;
@@ -175,38 +188,62 @@ err_t bst_dispose(bst *t, void *key) {
     while (*iterator != NULL) {
         comparer_result = t->keys_comparer(key, (*iterator)->key);
         if (comparer_result == 0) {  // element found, 3 cases
+
             if ((*iterator)->left_subtree != NULL &&
                 (*iterator)->right_subtree != NULL) {
                 for_swap = t->disposal_strategy == swap_with_max_of_left_subtree
                                ? &(*iterator)->left_subtree
                                : &(*iterator)->right_subtree;
                 while ((t->disposal_strategy == swap_with_max_of_left_subtree
-                            ? &(*for_swap)->right_subtree
-                            : &(*for_swap)->left_subtree) !=
+                            ? (*for_swap)->right_subtree
+                            : (*for_swap)->left_subtree) !=
                        NULL) {  // go to left subtree and then go maximum to
                                 // right (or vica versa)
+
                     for_swap =
                         t->disposal_strategy == swap_with_max_of_left_subtree
-                            ? &(*iterator)->right_subtree
-                            : &(*iterator)->left_subtree;
+                            ? &(*for_swap)->right_subtree
+                            : &(*for_swap)->left_subtree;
                 }
-                swap((*iterator)->value, (*for_swap)->value, sizeof(void *));
-                swap((*iterator)->key, (*for_swap)->key, sizeof(void *));
+                if (t->value_size > 0) {
+                    swap((*iterator)->value, (*for_swap)->value,
+                         sizeof(void *));
+                }
 
+                if (t->key_size > 0) {
+                    swap((*iterator)->key, (*for_swap)->key, sizeof(void *));
+                }
+
+                if (t->value_destructor != NULL) {
+                    t->value_destructor((*for_swap)->value);
+                }
+                if (t->key_destructor != NULL) {
+                    t->key_destructor((*for_swap)->key);
+                }
+                free(*for_swap);
+                *for_swap = NULL;
                 return EXIT_SUCCESS;
             }
             if ((*iterator)->left_subtree == NULL &&
                 (*iterator)->right_subtree == NULL) {
-                t->value_destructor((*iterator)->value);
-                t->key_destructor((*iterator)->key);
+                if (t->value_destructor != NULL) {
+                    t->value_destructor((*iterator)->value);
+                }
+                if (t->key_destructor != NULL) {
+                    t->key_destructor((*iterator)->key);
+                }
                 free(*iterator);
                 *iterator = NULL;
             } else {  // one of the subtrees is not NULL
                 temp_node = (*iterator)->right_subtree == NULL
                                 ? (*iterator)->left_subtree
                                 : (*iterator)->right_subtree;
-                t->value_destructor((*iterator)->value);
-                t->key_destructor((*iterator)->key);
+                if (t->value_destructor != NULL) {
+                    t->value_destructor((*iterator)->value);
+                }
+                if (t->key_destructor != NULL) {
+                    t->key_destructor((*iterator)->key);
+                }
                 free(*iterator);
                 *iterator = temp_node;
             }

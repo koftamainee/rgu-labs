@@ -221,7 +221,7 @@ void citizen_free(void *c) {
 }
 
 int citizen_age_comparer(const void *a, const void *b) {
-    return ((Citizen *)a)->age - ((Citizen *)b)->age;
+    return ((const Citizen *)a)->age - ((const Citizen *)b)->age;
 }
 
 int regex_date(const char *date) {

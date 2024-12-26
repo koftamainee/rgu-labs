@@ -72,6 +72,7 @@ void string_print(String str) {
 
 int string_cmp(String str1, String str2) {
     size_t len1, len2;
+    // printf("STRING.H compare: %s %s\n", str1, str2);
     int i;
     len1 = string_len(str1);
     len2 = string_len(str2);

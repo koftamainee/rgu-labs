@@ -33,3 +33,46 @@ err_t swap(void *first, void *second, size_t len) {
 
     return EXIT_SUCCESS;
 }
+
+err_t binary_search_inner(void const *values, void const *value_to_find,
+                          size_t value_size, size_t left_bound_inclusive,
+                          size_t right_bound_exclusive,
+                          int (*comparer)(void const *, void const *),
+                          void **result_placement) {
+    size_t mediant_index;
+    int comparison_result;
+
+    if (left_bound_inclusive >= right_bound_exclusive) {
+        return NO_SUCH_ENTRY_IN_COLLECTION;
+    }
+
+    mediant_index = (left_bound_inclusive + right_bound_exclusive) >> 1;
+    comparison_result = comparer(
+        value_to_find, (unsigned char *)values + (mediant_index * value_size));
+
+    if (comparison_result == 0) {
+        *result_placement = (void *)values + mediant_index;
+        return EXIT_SUCCESS;
+    } else if (comparison_result < 0) {
+        right_bound_exclusive = mediant_index;
+    } else {
+        left_bound_inclusive = mediant_index + 1;
+    }
+
+    return binary_search_inner(values, value_to_find, value_size,
+                               left_bound_inclusive, right_bound_exclusive,
+                               comparer, result_placement);
+}
+
+err_t binary_search(void const *values, void const *value_to_find, size_t count,
+                    size_t value_size,
+                    int (*comparer)(void const *, void const *),
+                    void **result_placement) {
+    if (values == NULL || value_to_find == NULL || comparer == NULL ||
+        result_placement == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+
+    return binary_search_inner(values, value_to_find, value_size, 0, count,
+                               comparer, result_placement);
+}
