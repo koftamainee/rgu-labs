@@ -74,4 +74,6 @@ err_t bst_dispose(bst *t, void *key);
 err_t bst_const_traversion(const bst *t, void (*callback)(const bst_node *));
 err_t bst_traversion(bst *t, void (*callback)(bst_node *));
 
+err_t bst_get_depth(bst *t, size_t *depth);
+
 #endif

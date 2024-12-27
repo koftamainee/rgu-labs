@@ -1,8 +1,8 @@
 import random
 import string
 
-def generate_random_word(length=5):
-    return ''.join(random.choices(string.ascii_lowercase, k=length))
+def generate_random_word():
+    return ''.join(random.choices(string.ascii_lowercase, k=random.randint(1,10)))
 
 def generate_csv(n, m, filename='random_words.csv'):
     
@@ -15,6 +15,6 @@ def generate_csv(n, m, filename='random_words.csv'):
             file.write(word)
             file.write(',')
 
-n = 1000
-m = 52
+n = 100000
+m = 100
 generate_csv(n, m, "files/word_count.txt")

@@ -329,3 +329,24 @@ void __bst_traversion_inner(bst *t, bst_node *n, void (*callback)(bst_node *)) {
 
     return;
 }
+
+void __bst_get_depth_inner(bst_node *t, size_t *depth, size_t current_depth) {
+    if (t == NULL) {
+        if (current_depth > *depth) {
+            *depth = current_depth;
+        }
+        return;
+    }
+    __bst_get_depth_inner(t->left_subtree, depth, current_depth + 1);
+    __bst_get_depth_inner(t->right_subtree, depth, current_depth + 1);
+}
+
+err_t bst_get_depth(bst *t, size_t *depth) {
+    if (t == NULL || depth == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+    *depth = 0;
+    __bst_get_depth_inner(t->root, depth, 0);
+
+    return EXIT_SUCCESS;
+}
