@@ -1,6 +1,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../../../libc/binary_search_tree.h"
 #include "../../../libc/cstring.h"
@@ -20,7 +21,7 @@ void print_word(const u_list_node *word_node) {
     printf(": %zu\n", item->count);
 }
 
-err_t start_menu_word_count(word_count_bst *t);
+err_t start_menu_word_count(word_count_bst **t);
 
 err_t find_shortest_word(word_count_bst *t, String *word);
 err_t find_longest_word(word_count_bst *t, String *word);
@@ -29,13 +30,29 @@ err_t find_depth_of_trees(word_count_bst *t, size_t *depth_1, size_t depth_2);
 
 int program_04_7(int argc, char *argv[]) {
     err_t err = 0;
-    word_count_bst *t;
+    word_count_bst *t = NULL;
     u_list *words = NULL;
+    size_t i;
+    char filename[BUFSIZ];
+
+    if (argc < 3) {
+        return INVALID_FLAG;
+    }
+
     int_vector separators = int_vector_init();
+
     if (separators == NULL) {
         return MEMORY_ALLOCATION_ERROR;
     }
-    int_vector_push_back(&separators, ',');
+    strcpy(filename, argv[1]);
+
+    for (i = 2; i < argc; ++i) {
+        err = int_vector_push_back(&separators, argv[i][0]);
+        if (err) {
+            int_vector_free(separators);
+            return err;
+        }
+    }
 
     err = u_list_init(&words, sizeof(String), free);
     if (err) {
@@ -49,12 +66,12 @@ int program_04_7(int argc, char *argv[]) {
         return err;
     }
 
-    err = read_lexems_from_file("files/word_count.txt", t, separators);
+    err = read_lexems_from_file(filename, t, separators);
     if (err) {
         return err;
     }
 
-    err = start_menu_word_count(t);
+    err = start_menu_word_count(&t);
     if (err) {
         word_count_bst_free(t);
         u_list_free(words);
@@ -65,6 +82,11 @@ int program_04_7(int argc, char *argv[]) {
     //
     word_count_bst_free(t);
     u_list_free(words);
+    int_vector_free(separators);
+
+    t = NULL;
+    words = NULL;
+    separators = NULL;
 
     return EXIT_SUCCESS;
 }
@@ -88,8 +110,8 @@ err_t read_lexems_from_file(const char *filename, word_count_bst *tree,
         return OPENING_THE_FILE_ERROR;
     }
 
-    qsort(separators, int_vector_size(separators), sizeof(int),
-          int_comparer);  // for bsearch
+    // qsort(separators, int_vector_size(separators), sizeof(int),
+    //       int_comparer);  // for bsearch
 
     temp_str = string_init();
     if (temp_str == NULL) {
@@ -137,6 +159,8 @@ err_t read_lexems_from_file(const char *filename, word_count_bst *tree,
     }
     string_free(temp_str);
 
+    fclose(fin);
+
     return EXIT_SUCCESS;
 }
 
@@ -156,8 +180,10 @@ int is_symbol_good_for_string(const char c, const int_vector separators) {
     return NO_SUCH_ENTRY_IN_COLLECTION;
 }
 
-err_t start_menu_word_count(word_count_bst *t) {
-    int c;
+err_t start_menu_word_count(word_count_bst **tree) {
+    word_count_bst *t = *tree;
+    char filename[BUFSIZ];
+    int c = -1;
     err_t err;
     size_t user_ans;
     String s_ans = NULL;
@@ -191,12 +217,16 @@ err_t start_menu_word_count(word_count_bst *t) {
                 }
 
                 err = word_count_bst_check_word_count(t, s_ans, &user_ans);
-                if (err) {
+                if (err != EXIT_SUCCESS && err != KEY_NOT_FOUND) {
                     string_free(s_ans);
                     return err;
                 }
                 string_free(s_ans);
-                printf("Count: %zu\n", user_ans);
+                if (err == KEY_NOT_FOUND) {
+                    printf("Word not found :(\n");
+                } else {
+                    printf("Count: %zu\n", user_ans);
+                }
                 printf("\nPress enter to continue");
                 while (c != EOF && (c = getchar()) != '\n');
                 getchar();
@@ -214,10 +244,14 @@ err_t start_menu_word_count(word_count_bst *t) {
                     u_list_free(words);
                     return err;
                 }
-                err = u_list_const_traversion(words, print_word);
-                if (err) {
-                    u_list_free(words);
-                    return err;
+                if (words->size == 0) {
+                    printf("Empty tree.\n");
+                } else {
+                    err = u_list_const_traversion(words, print_word);
+                    if (err) {
+                        u_list_free(words);
+                        return err;
+                    }
                 }
                 u_list_free(words);
 
@@ -231,9 +265,13 @@ err_t start_menu_word_count(word_count_bst *t) {
                 if (err) {
                     return err;
                 }
-                printf("Longest word: ");
-                string_print(s_ans);
-                printf("\n");
+                if (string_len(s_ans) == 0) {
+                    printf("Tree is empty.\n");
+                } else {
+                    printf("Longest word: ");
+                    string_print(s_ans);
+                    printf("\n");
+                }
                 printf("\nPress enter to continue");
                 while (c != EOF && (c = getchar()) != '\n');
                 getchar();
@@ -244,9 +282,13 @@ err_t start_menu_word_count(word_count_bst *t) {
                 if (err) {
                     return err;
                 }
-                printf("Shortest word: ");
-                string_print(s_ans);
-                printf("\n");
+                if (string_len(s_ans) == 0) {
+                    printf("Tree is empty.\n");
+                } else {
+                    printf("Shortest word: ");
+                    string_print(s_ans);
+                    printf("\n");
+                }
                 printf("\nPress enter to continue");
                 while (c != EOF && (c = getchar()) != '\n');
                 getchar();
@@ -269,12 +311,32 @@ err_t start_menu_word_count(word_count_bst *t) {
                 break;
 
             case 6:
+                printf("Enter file: ");
+                scanf("%s", filename);
+                err = word_count_bst_serialize(t, filename);
+                if (err) {
+                    return err;
+                }
                 printf("\nPress enter to continue");
                 while (c != EOF && (c = getchar()) != '\n');
                 getchar();
                 break;
 
             case 7:
+                printf("Enter file: ");
+                scanf("%s", filename);
+                word_count_bst_free(t);
+                t = NULL;
+                err = word_count_bst_init(tree);
+                if (err) {
+                    return err;
+                }
+                t = *tree;
+                err = word_count_bst_deserialize(t, filename);
+                if (err) {
+                    return err;
+                }
+
                 printf("\nPress enter to continue");
                 while (c != EOF && (c = getchar()) != '\n');
                 getchar();
@@ -297,6 +359,9 @@ err_t find_shortest_word(word_count_bst *t, String *word) {
     }
 
     bst_node *current = t->with_word_comparer->root;
+    if (current == NULL) {
+        return EXIT_SUCCESS;
+    }
 
     while (current->left_subtree != NULL) {
         current = current->left_subtree;
@@ -312,6 +377,9 @@ err_t find_longest_word(word_count_bst *t, String *word) {
     }
 
     bst_node *current = t->with_word_comparer->root;
+    if (current == NULL) {
+        return EXIT_SUCCESS;
+    }
 
     while (current->right_subtree != NULL) {
         current = current->right_subtree;

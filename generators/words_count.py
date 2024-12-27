@@ -15,6 +15,6 @@ def generate_csv(n, m, filename='random_words.csv'):
             file.write(word)
             file.write(',')
 
-n = 100000
-m = 100
+n = 1000
+m = 10
 generate_csv(n, m, "files/word_count.txt")

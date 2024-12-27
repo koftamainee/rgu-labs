@@ -234,19 +234,20 @@ err_t bst_dispose(bst *t, void *key) {
                 }
                 free(*iterator);
                 *iterator = NULL;
-            } else {  // one of the subtrees is not NULL
-                temp_node = (*iterator)->right_subtree == NULL
-                                ? (*iterator)->left_subtree
-                                : (*iterator)->right_subtree;
-                if (t->value_destructor != NULL) {
-                    t->value_destructor((*iterator)->value);
-                }
-                if (t->key_destructor != NULL) {
-                    t->key_destructor((*iterator)->key);
-                }
-                free(*iterator);
-                *iterator = temp_node;
+                return EXIT_SUCCESS;
             }
+            // one of the subtrees is not NULL
+            temp_node = (*iterator)->right_subtree == NULL
+                            ? (*iterator)->left_subtree
+                            : (*iterator)->right_subtree;
+            if (t->value_destructor != NULL) {
+                t->value_destructor((*iterator)->value);
+            }
+            if (t->key_destructor != NULL) {
+                t->key_destructor((*iterator)->key);
+            }
+            free(*iterator);
+            *iterator = temp_node;
 
             return EXIT_SUCCESS;
         }

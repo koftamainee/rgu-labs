@@ -31,4 +31,7 @@ err_t word_count_bst_find_n_frequent_words(word_count_bst *t, size_t n,
 
 void word_count_bst_free(word_count_bst *t);
 
+err_t word_count_bst_serialize(word_count_bst *t, char *filename);
+err_t word_count_bst_deserialize(word_count_bst *t, char *filename);
+
 #endif

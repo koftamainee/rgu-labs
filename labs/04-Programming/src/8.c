@@ -21,8 +21,13 @@ int program_04_8(int argc, char *argv[]) {
         printf("%d\n", key);
         bst_insert(t, &key, &value);
     }
-    int key = 2;
-    bst_dispose(t, &key);
+    int key = 3;
+    for (int i = 0; i < 10; ++i) {
+        int key = i;
+        bst_dispose(t, &key);
+    }
+
+    bst_free(t);
 
     return EXIT_SUCCESS;
 }
