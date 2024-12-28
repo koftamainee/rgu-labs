@@ -76,3 +76,54 @@ err_t binary_search(void const *values, void const *value_to_find, size_t count,
     return binary_search_inner(values, value_to_find, value_size, 0, count,
                                comparer, result_placement);
 }
+
+err_t remove_comments_from_line(char **line, int *in_comment,
+                                int comment_enter_symbol,
+                                int comment_exit_symbol) {
+    if (line == NULL || *line == NULL || in_comment == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+
+    char *read_ptr = *line;
+    char *write_ptr = *line;
+
+    while (*read_ptr) {
+        if (*read_ptr == comment_enter_symbol && !*in_comment) {
+            *in_comment = 1;  // Entering comment
+        }
+        if (*read_ptr == comment_exit_symbol && *in_comment) {
+            *in_comment = 0;  // Exiting comment
+            read_ptr++;       // Skip closing bracket
+            continue;
+        }
+
+        if (!*in_comment) {
+            *write_ptr = *read_ptr;  // Copy non-comment characters
+            write_ptr++;
+        }
+        read_ptr++;
+    }
+
+    *write_ptr = '\0';  // Null-terminate the string
+    return EXIT_SUCCESS;
+}
+
+err_t remove_spaces_from_line(char *line) {
+    if (line == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+
+    char *write_ptr = line;
+
+    while (*line) {
+        if (*line != ' ') {
+            *write_ptr = *line;
+            write_ptr++;
+        }
+        line++;
+    }
+
+    *write_ptr = '\0';
+
+    return EXIT_SUCCESS;
+}

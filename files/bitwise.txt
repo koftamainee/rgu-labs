@@ -1,0 +1,46 @@
+read(a, 10); % Input value for a in decimal system
+read(B, 2);  % Input value for B in binary system
+
+C := a + B;  % Disjunction
+write(C,10); % Output C in decimal system
+
+D := a & B;  % Conjunction
+write(D,2);  % Output D in binary system
+
+E := a -> B; % Implication
+write(E, 10); % Output E in decimal system
+
+F := B <- a; % Reverse implication
+write(F,2);  % Output F in binary system
+
+G := C ~ D;  % Equivalence
+write(G, 10); % Output G in decimal system
+
+H := C <> D; % Modulo-2 addition
+write(H,2);  % Output H in binary system
+
+I := G +> H; % Coimplication
+write(I, 10); % Output I in decimal system
+
+J := H ? I;  % Sheffer stroke
+write(J,2);  % Output J in binary system
+
+K := I ! J;  % Pierce arrow
+write(K, 10); % Output K in decimal system
+
+L := \a;      % Negation of a
+write(L,10); % Output L in decimal system
+
+% Multiline comment starts here:
+{ 
+    This is a multiline comment
+    that should be ignored by the interpreter.
+    It spans multiple lines.
+}
+
+read(n, 16);  % Input value for n in hexadecimal system
+write(n,2);  % Output n in binary system
+
+% End of the program
+write(K, 10); % Final output
+

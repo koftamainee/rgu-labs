@@ -1,0 +1,11 @@
+#include "../pathetic_hashtable.h"
+
+err_t p_hash_init(p_hash **t) {
+    if (t == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+}
+void p_hash_free(p_hash *t);
+
+err_t p_hash_get(p_hash *t, int key, int *value_holder);
+err_t p_hash_set(p_hash *t, int key, int new_value);
