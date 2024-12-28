@@ -21,7 +21,7 @@ run: build_linux
 
 valgrind: BUILD_TYPE = Debug
 valgrind: build_linux
-	valgrind  --leak-check=full --show-leak-kinds=all ./$(BUILD_DIR)/x86_64/$(TARGET) $(f)
+	cd $(BUILD_DIR)/x86_64 && valgrind  --leak-check=full --show-leak-kinds=all ./$(TARGET) $(f)
 
 build_linux_with_make:
 	make clean
