@@ -1,0 +1,25 @@
+[2024-12-28 15:37:46] Get from user value of a variable in 10 counting system: 10
+[2024-12-28 15:37:47] Get from user value of B variable in 2 counting system: 10
+[2024-12-28 15:37:47] Executed + operation to between a and B variables (10 + 2 = 10). Result placed into C: 10
+[2024-12-28 15:37:47] Printed value of C variable in 10 counting system: 10
+[2024-12-28 15:37:47] Executed & operation to between a and B variables (10 & 2 = 2). Result placed into D: 2
+[2024-12-28 15:37:47] Printed value of D variable in 2 counting system: 10
+[2024-12-28 15:37:47] Executed -> operation to between a and B variables (10 -> 2 = -9). Result placed into E: -9
+[2024-12-28 15:37:47] Printed value of E variable in 10 counting system: -9
+[2024-12-28 15:37:47] Executed <- operation to between B and a variables (2 <- 10 = -9). Result placed into F: -9
+[2024-12-28 15:37:47] Printed value of F variable in 2 counting system: -1001
+[2024-12-28 15:37:47] Executed ~ operation to between C and D variables (10 ~ 2 = -11). Result placed into G: -11
+[2024-12-28 15:37:47] Printed value of G variable in 10 counting system: -11
+[2024-12-28 15:37:47] Executed <> operation to between C and D variables (10 <> 2 = -9). Result placed into H: -9
+[2024-12-28 15:37:47] Printed value of H variable in 2 counting system: -1001
+[2024-12-28 15:37:47] Executed +> operation to between G and H variables (-11 +> -9 = 8). Result placed into I: 8
+[2024-12-28 15:37:47] Printed value of I variable in 10 counting system: 8
+[2024-12-28 15:37:47] Executed ? operation to between H and I variables (-9 ? 8 = -1). Result placed into J: -1
+[2024-12-28 15:37:47] Printed value of J variable in 2 counting system: -1
+[2024-12-28 15:37:47] Executed ! operation to between I and J variables (8 ! -1 = -9). Result placed into K: -9
+[2024-12-28 15:37:47] Printed value of K variable in 10 counting system: -9
+[2024-12-28 15:37:47] Executed \ operation on a variable (\10 = -11). Result placed into L: -11
+[2024-12-28 15:37:47] Printed value of L variable in 10 counting system: -11
+[2024-12-28 15:37:57] Get from user value of n variable in 16 counting system: 0
+[2024-12-28 15:37:57] Printed value of N variable in 2 counting system: 0
+[2024-12-28 15:37:57] Printed value of K variable in 10 counting system: -9

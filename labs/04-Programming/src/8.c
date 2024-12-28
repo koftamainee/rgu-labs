@@ -367,7 +367,7 @@ err_t read_bitwise_op(char *base, int *to_read, int variable_name, FILE *fout) {
     }
 
     trace(fout, "Get from user value of %c variable in %d counting system: %s",
-          variable_name, base_num, user_ans);
+          toupper(variable_name), base_num, user_ans);
 
     return EXIT_SUCCESS;
 }
@@ -447,8 +447,8 @@ err_t parse_bitwise_operation(char *instruction, FILE *fout,
         trace(fout,
               "Executed \\ operation on %c variable (\\%d = %d). Result placed "
               "into %c: %d",
-              first_variable_name, first_variable_value, res,
-              result_variable_name, res);
+              toupper(first_variable_name), first_variable_value, res,
+              toupper(result_variable_name), res);
 
         return EXIT_SUCCESS;
     }
@@ -508,8 +508,9 @@ err_t parse_bitwise_operation(char *instruction, FILE *fout,
     trace(fout,
           "Executed %s operation to between %c and %c variables (%d %s %d = "
           "%d). Result placed into %c: %d",
-          op, first_variable_name, second_variable_name, first_variable_value,
-          op, second_variable_value, res, result_variable_name, res);
+          op, toupper(first_variable_name), toupper(second_variable_name),
+          first_variable_value, op, second_variable_value, res,
+          toupper(result_variable_name), res);
 
     return EXIT_SUCCESS;
 }
