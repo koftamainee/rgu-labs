@@ -18,6 +18,8 @@ typedef struct {
     size_t capacity;
     size_t key_size;
     size_t value_size;
+    size_t max_chain_length;
+    size_t min_chain_length;
     int (*keys_comparer)(const void *, const void *);
     size_t (*hash)(const void *key, size_t key_size, size_t capacity);
     void (*bucket_destructor)(void *);
@@ -35,7 +37,10 @@ err_t hash_table_get(hash_table *ht, const void *key, void **value_placeholder);
 err_t hash_table_dispose(hash_table *ht, const void *key);
 
 err_t hash_table_resize(hash_table *ht, int size_modifier);
+
 err_t hash_table_get_load_factor(hash_table *ht,
                                  double *load_factor_placeholder);
+err_t hash_table_get_chain_length_factor(
+    hash_table *ht, double *chain_length_factor_placeholder);
 
 #endif  // HASH_TABLE_H_

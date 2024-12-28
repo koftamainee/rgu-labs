@@ -44,6 +44,8 @@ err_t hash_table_init(
     }
 
     table->size = 0;
+    table->min_chain_length = 0;
+    table->max_chain_length = 0;
     table->capacity = HASHSIZE;
     table->key_size = key_size;
     table->value_size = value_size;
@@ -82,7 +84,7 @@ err_t hash_table_set(hash_table *ht, const void *key, const void *value) {
     hash_table_bucket search;
     u_list_node *node = NULL;
     err_t err = 0;
-    double load_factor = 0;
+    double load_factor = 0, chain_length_factor = 0;
 
     search.key = (void *)key;
 
@@ -117,11 +119,19 @@ err_t hash_table_set(hash_table *ht, const void *key, const void *value) {
 
     ht->size++;
 
+    if (bucket->size > ht->max_chain_length) {
+        ht->max_chain_length = bucket->size;
+    }
+
     err = hash_table_get_load_factor(ht, &load_factor);
     if (err) {
         return err;
     }
-    if (load_factor > 0.75) {
+    err = hash_table_get_chain_length_factor(ht, &chain_length_factor);
+    if (err) {
+        return err;
+    }
+    if (load_factor > 0.75 || chain_length_factor >= 2.0) {
         err = hash_table_resize(ht, HASH_TABLE_GROWTH_FACTOR);
         if (err) {
             return err;
@@ -179,23 +189,26 @@ err_t hash_table_dispose(hash_table *ht, const void *key) {
 
     if (bucket->size == 1) {
         err = u_list_delete_by_index(bucket, 0);
-        if (err) {
+        if (err != EXIT_SUCCESS || err != NO_SUCH_ENTRY_IN_COLLECTION) {
             return err;
         }
-        return EXIT_SUCCESS;
+        if (err == NO_SUCH_ENTRY_IN_COLLECTION) {
+            return KEY_NOT_FOUND;
+        }
+    } else {
+        err = u_list_delete_by_value(bucket, &search, ht->keys_comparer);
+        if (err != EXIT_SUCCESS || err != NO_SUCH_ENTRY_IN_COLLECTION) {
+            return err;
+        }
+        if (err == NO_SUCH_ENTRY_IN_COLLECTION) {
+            return KEY_NOT_FOUND;
+        }
     }
 
-    err = u_list_get_node_by_value(bucket, &search, ht->keys_comparer, &node);
-    if (err != EXIT_SUCCESS && err != NO_SUCH_ENTRY_IN_COLLECTION) {
-        return err;
-    }
-    if (err == NO_SUCH_ENTRY_IN_COLLECTION) {
-        return KEY_NOT_FOUND;
-    }
+    ht->size--;
 
-    err = u_list_delete_by_value(bucket, &search, ht->keys_comparer);
-    if (err) {
-        return err;
+    if (bucket->size < ht->min_chain_length) {
+        ht->min_chain_length = bucket->size;
     }
 
     err = hash_table_get_load_factor(ht, &load_factor);
@@ -203,7 +216,7 @@ err_t hash_table_dispose(hash_table *ht, const void *key) {
         return err;
     }
     if (load_factor < 0.25) {
-        err = hash_table_resize(ht, HASH_TABLE_GROWTH_FACTOR);
+        err = hash_table_resize(ht, -HASH_TABLE_GROWTH_FACTOR);
         if (err) {
             return err;
         }
@@ -280,6 +293,22 @@ err_t hash_table_get_load_factor(hash_table *ht,
     }
 
     *load_factor_placeholder = (double)ht->size / (double)ht->capacity;
+
+    return EXIT_SUCCESS;
+}
+
+err_t hash_table_get_chain_length_factor(
+    hash_table *ht, double *chain_length_factor_placeholder) {
+    if (ht == NULL || chain_length_factor_placeholder == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+
+    if (ht->min_chain_length == 0) {
+        *chain_length_factor_placeholder = 1;
+        return EXIT_SUCCESS;
+    }
+    *chain_length_factor_placeholder =
+        (double)ht->max_chain_length / (double)ht->min_chain_length;
 
     return EXIT_SUCCESS;
 }
