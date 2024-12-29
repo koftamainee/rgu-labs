@@ -39,6 +39,7 @@ int string_cat(String *dest, const String *src);
 int string_cat_c(String *dest, const char *src);
 int string_str(const String haystack, const String needle);
 int string_str_c(const String haystack, const char *needle);
+int string_c_str(const char *haystack, const String needle);
 
 int string_grow(String *str, size_t new_size);
 
