@@ -282,7 +282,7 @@ err_t add_new_define_from_line(char *define_line, hash_table *defines,
         return err;
     }
 
-    err = u_list_insert(define_keys, 0, &key);
+    err = u_list_insert_sorted(define_keys, &key, string_comparer_defines);
     if (err) {
         return err;
     }
@@ -334,5 +334,5 @@ err_t replace_macroses_in_line(char *line, FILE *fout, hash_table *defines,
 int string_comparer_defines(const void *a, const void *b) {
     String s1 = *(String *)a;
     String s2 = *(String *)b;
-    return -string_cmp(s1, s2);
+    return -(string_cmp(s1, s2));
 }

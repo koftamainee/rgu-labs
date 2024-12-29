@@ -219,7 +219,7 @@ err_t u_list_delete_by_index(u_list *l, size_t index) {
 
     if (index == 0) {
         item = l->first;
-        l->first = NULL;
+        l->first = item->next;
         l->elem_destructor(item->data);
         free(item);
         l->size--;

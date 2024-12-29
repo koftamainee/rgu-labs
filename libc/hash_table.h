@@ -1,6 +1,7 @@
 #ifndef HASH_TABLE_H_
 #define HASH_TABLE_H_
 
+#include "cstring.h"
 #include "u_list.h"
 
 #define HASHSIZE (128)
@@ -42,5 +43,10 @@ err_t hash_table_get_load_factor(hash_table *ht,
                                  double *load_factor_placeholder);
 err_t hash_table_get_chain_length_factor(
     hash_table *ht, double *chain_length_factor_placeholder);
+
+/* --------------- EXAMPLE FUNCTIONS --------------- */
+size_t djb2_hash(const void *key, size_t key_size, size_t capacity);
+size_t murmur_hash(const void *key, size_t key_size, size_t capacity);
+size_t sha256_hash(const void *key, size_t key_size, size_t capacity);
 
 #endif  // HASH_TABLE_H_
