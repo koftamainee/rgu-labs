@@ -273,6 +273,8 @@ err_t program_04_4(int argc, char *argv[]) {
     }
 
     students_free(&s);
+    fclose(options.input_file);
+    fclose(options.output_file);
     return EXIT_SUCCESS;
 }
 

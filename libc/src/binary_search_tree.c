@@ -100,7 +100,7 @@ err_t bst_set_collision_strategy(bst *t,
 
 err_t bst_insert(bst *t, void *key, void *value) {
     int comparer_result;
-    bst_node **iterator = NULL;
+    bst_node **iterator = NULL, *left_tree, *right_tree;
     if (t == NULL) {
         return DEREFERENCING_NULL_PTR;
     }
@@ -113,9 +113,44 @@ err_t bst_insert(bst *t, void *key, void *value) {
                 decline) {  // strategy to decline attempt to overwrite the key
                 return REPEATING_KEY;
             } else {  // strategy == overwrite
-                memcpy((*iterator)->value, value,
-                       t->value_size);  // do not free and allocate memory bc
-                                        // elements have equal size
+                if (t->value_destructor != NULL) {
+                    t->value_destructor((*iterator)->value);
+                }
+                if (t->key_destructor != NULL) {
+                    t->key_destructor((*iterator)->key);
+                }
+                left_tree = (*iterator)->left_subtree;
+                right_tree = (*iterator)->right_subtree;
+                free(*iterator);
+
+                *iterator = (bst_node *)malloc(sizeof(bst_node));
+                if (*iterator == NULL) {
+                    return MEMORY_ALLOCATION_ERROR;
+                }
+                (*iterator)->left_subtree = left_tree;
+                (*iterator)->right_subtree = right_tree;
+                if (t->value_size != 0) {
+                    (*iterator)->value = malloc(t->value_size);
+                    if ((*iterator)->value == NULL) {
+                        free(*iterator);
+                        *iterator = NULL;
+                        return MEMORY_ALLOCATION_ERROR;
+                    }
+                    memcpy((*iterator)->value, value, t->value_size);
+                }
+
+                if (t->key_size != 0) {
+                    (*iterator)->key = malloc(t->key_size);
+                    if ((*iterator)->key == NULL) {
+                        t->value_destructor((*iterator)->value);
+                        (*iterator)->value = NULL;
+                        free(*iterator);
+                        *iterator = NULL;
+                        return MEMORY_ALLOCATION_ERROR;
+                    }
+                    memcpy((*iterator)->key, key, t->key_size);
+                }
+
                 return EXIT_SUCCESS;
             }
         }

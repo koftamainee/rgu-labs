@@ -638,6 +638,10 @@ err_t read_citizen(u_list *town, undostack *us) {
         }
         current = current->next;
     }
+    string_free(new->birthday);
+    string_free(new->surname);
+    string_free(new->name);
+    string_free(new->last_name);
     free(new);
 
     printf("\nPress enter to continue");
