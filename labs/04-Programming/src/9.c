@@ -282,7 +282,7 @@ err_t add_new_define_from_line(char *define_line, hash_table *defines,
         return err;
     }
 
-    err = u_list_insert_sorted(define_keys, &key, string_comparer_defines);
+    err = u_list_insert(define_keys, 0, &key);
     if (err) {
         return err;
     }
