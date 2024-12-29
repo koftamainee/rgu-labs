@@ -141,6 +141,7 @@ err_t post_init(Post *p) {
 void post_destructor(Post *p) {
     size_t i = 0;
     address_destructor(p->post_office_address);
+    free(p->post_office_address);
     for (i = 0; i < p->mails_count; ++i) {
         mail_destructor(p->mails + i);
     }

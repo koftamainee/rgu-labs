@@ -5,6 +5,7 @@
 
 #include "../../../libc/cstring.h"
 #include "../../../libc/u_list.h"
+#include "../../../libc/utils.h"
 
 typedef struct {
     int coef;
@@ -46,7 +47,6 @@ err_t poly_sub_term(poly *poly, int coef, int exp);
 
 err_t start_execution(const char *filename);
 err_t parse_instruction(char *instruction, poly *current_sum, int *in_comment);
-err_t remove_comments_from_line(char **line, int *in_comment);
 err_t do_stuff_with_polys(poly *poly1, poly *poly2, poly *current_sum,
                           operation op, int for_eval);
 
@@ -610,11 +610,14 @@ err_t parse_instruction(char *instruction, poly *current_sum, int *in_comment) {
     String poly_str = NULL;
     poly *poly1 = NULL, *poly2 = NULL;
 
-    if (instruction == NULL || current_sum == NULL) {
+    if (instruction == NULL || current_sum == NULL || in_comment == NULL) {
         return DEREFERENCING_NULL_PTR;
     }
 
-    err = remove_comments_from_line(&instruction, in_comment);
+    err = remove_comments_from_line(&instruction, in_comment, '[', ']');
+    if (err) {
+        return err;
+    }
 
     while (*instruction == ' ' || *instruction == '\t') {
         instruction++;
@@ -864,34 +867,5 @@ err_t do_stuff_with_polys(poly *poly1, poly *poly2, poly *current_sum,
             break;
     }
 
-    return EXIT_SUCCESS;
-}
-
-err_t remove_comments_from_line(char **line, int *in_comment) {
-    if (line == NULL || *line == NULL || in_comment == NULL) {
-        return DEREFERENCING_NULL_PTR;
-    }
-
-    char *read_ptr = *line;
-    char *write_ptr = *line;
-
-    while (*read_ptr) {
-        if (*read_ptr == '[' && !*in_comment) {
-            *in_comment = 1;  // Entering comment
-        }
-        if (*read_ptr == ']' && *in_comment) {
-            *in_comment = 0;  // Exiting comment
-            read_ptr++;       // Skip closing bracket
-            continue;
-        }
-
-        if (!*in_comment) {
-            *write_ptr = *read_ptr;  // Copy non-comment characters
-            write_ptr++;
-        }
-        read_ptr++;
-    }
-
-    *write_ptr = '\0';  // Null-terminate the string
     return EXIT_SUCCESS;
 }

@@ -63,6 +63,10 @@ int program_04_1(int argc, char *argv[]) {
         printf("Empty file!\n");
     }
 
+    for (i = 0; i < len; ++i) {
+        string_free(arr[i].last_name);
+        string_free(arr[i].name);
+    }
     free(arr);
     return EXIT_SUCCESS;
 }

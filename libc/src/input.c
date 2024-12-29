@@ -78,10 +78,6 @@ err_t read_string_from_user(String *str) {
         return DEREFERENCING_NULL_PTR;
     }
 
-    if (*str != NULL) {  // potentioal memory leak
-        fprintf(stderr, "WARNING: POTENCIAL MEMORY LEAK\n");
-    }
-
     if (!fgets(buf, BUFSIZ, stdin)) {
         return ERROR_READING_FROM_STDIN;
     }

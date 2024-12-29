@@ -72,6 +72,7 @@ void string_print(String str) {
 
 int string_cmp(String str1, String str2) {
     size_t len1, len2;
+    // printf("STRING.H compare: %s %s\n", str1, str2);
     int i;
     len1 = string_len(str1);
     len2 = string_len(str2);
@@ -204,6 +205,30 @@ int string_str(String haystack, String needle) {
 int string_str_c(String haystack, const char *needle) {
     size_t needle_len = strlen(needle);
     size_t haystack_len = string_len(haystack);
+
+    if (needle_len > haystack_len) {
+        return -1;
+    }
+
+    for (size_t i = 0; i <= haystack_len - needle_len; ++i) {
+        int found = 1;
+        for (size_t j = 0; j < needle_len; ++j) {
+            if (haystack[i + j] != needle[j]) {
+                found = 0;
+                break;
+            }
+        }
+        if (found) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+int string_c_str(const char *haystack, const String needle) {
+    size_t needle_len = string_len(needle);
+    size_t haystack_len = strlen(haystack);
 
     if (needle_len > haystack_len) {
         return -1;

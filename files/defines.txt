@@ -1,0 +1,21 @@
+#define GREETING Hello
+#define TARGET world
+#define AUTHOR kofta
+#define ANSWER 42
+#define TOOL (program)
+#define LANGUAGE C
+#define PURPOSE (fun and learning)
+#define CHALLENGE (hard but rewarding)
+#define MOTTO (Keep it simple)
+
+This is a test file for macro replacements.
+GREETING, TARGET! This text was written by AUTHOR.
+The ultimate answer is ANSWER, but only if you understand the question.
+Without macro replacement, this text is meaningless.
+
+Using a TOOL like this demonstrates the power of LANGUAGE for PURPOSE.
+Creating this TOOL was CHALLENGE, but the result is worth it.
+AUTHOR believes in the MOTTO and strives to follow it every day.
+
+In the TARGET of programming, GREETING and motivation are key.
+Remember, ANSWER might be simple, but finding it is not always so!

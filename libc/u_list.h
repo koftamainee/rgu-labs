@@ -23,6 +23,7 @@ err_t u_list_init(u_list **l, size_t elem_size,
 void u_list_free(u_list *l);
 
 err_t u_list_insert(u_list *l, size_t index, const void *data);
+err_t u_list_push_back(u_list *l, const void *data);
 err_t u_list_insert_sorted(u_list *l, const void *data,
                            int (*comp)(const void *, const void *));
 

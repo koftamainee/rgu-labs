@@ -1,5 +1,6 @@
 #include "../u_list.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -81,6 +82,38 @@ err_t u_list_insert(u_list *l, size_t index, const void *data) {
     new->next = NULL;
     l->size++;
     l->last = father->next;
+
+    return EXIT_SUCCESS;
+}
+
+err_t u_list_push_back(u_list *l, const void *data) {
+    if (l == NULL || data == NULL) {
+        return DEREFERENCING_NULL_PTR;
+    }
+
+    u_list_node *new_node = (u_list_node *)malloc(sizeof(u_list_node));
+    if (new_node == NULL) {
+        return MEMORY_ALLOCATION_ERROR;
+    }
+
+    new_node->data = malloc(l->elem_size);
+    if (new_node->data == NULL) {
+        free(new_node);
+        return MEMORY_ALLOCATION_ERROR;
+    }
+
+    memcpy(new_node->data, data, l->elem_size);
+    new_node->next = NULL;
+
+    if (l->last == NULL) {
+        l->first = new_node;
+        l->last = new_node;
+    } else {
+        l->last->next = new_node;
+        l->last = new_node;
+    }
+
+    l->size++;
 
     return EXIT_SUCCESS;
 }
@@ -186,7 +219,7 @@ err_t u_list_delete_by_index(u_list *l, size_t index) {
 
     if (index == 0) {
         item = l->first;
-        l->first = NULL;
+        l->first = item->next;
         l->elem_destructor(item->data);
         free(item);
         l->size--;

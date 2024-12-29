@@ -19,6 +19,10 @@ run: BUILD_TYPE = Debug
 run: build_linux
 	cd $(BUILD_DIR)/x86_64 && ./$(TARGET) $(f)
 
+valgrind: BUILD_TYPE = Debug
+valgrind: build_linux
+	cd $(BUILD_DIR)/x86_64 && valgrind  --leak-check=full --show-leak-kinds=all ./$(TARGET) $(f)
+
 build_linux_with_make:
 	make clean
 	mkdir -p $(BUILD_DIR)

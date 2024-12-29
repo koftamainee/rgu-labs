@@ -435,7 +435,7 @@ int lab_04(int argc, char *argv[]) {
     int err;
     int (*programs[])(int argc, char *argv[]) = {
         program_04_1, program_04_2, program_04_3, program_04_4, program_04_5,
-        program_04_6, program_04_7, program_04_8, program_04_9, program_04_10,
+        program_04_6, program_04_7, program_04_8, program_04_9,
     };
 
     char tasks[] =
@@ -448,7 +448,6 @@ int lab_04(int argc, char *argv[]) {
 7. Data Scientist simulator.\n\
 8. Interpritator 2.\n\
 9. Zhalkaya parodiya na preprocessor.\n\
-10. Calculator and table of truth.\n\
 0. Back. \n\n\
 Input int number: ";
     int task;
@@ -465,7 +464,7 @@ Input int number: ";
             continue;
         }
 
-        if (task < 11 && task > 0) {
+        if (task < 10 && task > 0) {
             clear_screen();
             err = programs[task - 1](argc, argv);
             if (err) {

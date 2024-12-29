@@ -8,7 +8,7 @@
 #define ARRAY_SIZE 10
 
 int comp(const void *a, const void *b);
-int binary_search(int *array, int target);
+int int_binary_search(int *array, int target);
 
 int program_00_5() {
     int search_number, res;
@@ -26,7 +26,7 @@ int program_00_5() {
     printf("Sorted array: ");
     print_array(arr, ARRAY_SIZE);
     read_number(&search_number);
-    res = binary_search(arr, search_number);
+    res = int_binary_search(arr, search_number);
 
     if (res == -1) {
         printf("%d not in the array\n", search_number);
@@ -38,7 +38,7 @@ int program_00_5() {
     return 0;
 }
 
-int binary_search(int *array, int target) {
+int int_binary_search(int *array, int target) {
     int mid;
     int left = 0;
     int right = ARRAY_SIZE - 1;
