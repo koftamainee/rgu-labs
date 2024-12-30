@@ -1,3 +1,4 @@
+o
 #define GREETING Hello
 #define TARGET world
 #define AUTHOR kofta

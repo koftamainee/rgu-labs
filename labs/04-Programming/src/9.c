@@ -151,6 +151,7 @@ err_t parse_lines_from_file_macro(FILE *fin, FILE *fout, hash_table *defines) {
     char line[BUFSIZ], *define_ptr;
     size_t len = 0;
     u_list *define_lines = NULL;
+    int defined = 0;
 
     err = u_list_init(&define_lines, sizeof(String *), free);
     if (err) {
@@ -166,12 +167,18 @@ err_t parse_lines_from_file_macro(FILE *fin, FILE *fout, hash_table *defines) {
         if (define_ptr == NULL) {
             break;
         }
+        defined = 1;
         err = add_new_define_from_line(define_ptr, defines, define_lines);
         if (err) {
             u_list_free(define_lines);
             return err;
         }
     }
+
+    if (!defined) {
+        fprintf(fout, "%s\n", line);  // if no macros in file
+    }
+
     while (fgets(line, BUFSIZ, fin)) {
         err = replace_macroses_in_line(line, fout, defines, define_lines);
         if (err) {

@@ -7,7 +7,7 @@
 #define ALPHABET_SIZE 26  // A..Z
 
 typedef struct {
-    int data[26];
+    int data[ALPHABET_SIZE];
     int (*hash)(int c);
 } pathetic_hashtable, p_hash;
 
