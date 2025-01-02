@@ -13,6 +13,7 @@ Welcome to the **RGU Labs Project**! This guide will help you set up, build, and
 |  4  | labs/04-Programming    | Ирбитский И.С. | **ready** |
 
 All other useful function are in **libc/** dir, main code with menu stored in **src/** dir
+### For 10 and 11 tasks from 3 lab check [formula-analyzer](https://github.com/koftamainee/formula-analyzer) and [fuse](https://github.com/koftamainee/fuse)
 
 # Build Guide
 
