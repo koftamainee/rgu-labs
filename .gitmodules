@@ -1,0 +1,6 @@
+[submodule "term_1/labs"]
+	path = term_1/labs
+	url = git@github.com:koftamainee/rgu-labs-term1.git
+[submodule "term_2"]
+	path = term_2
+	url = git@github.com:koftamainee/rgu-labs-term2.git
