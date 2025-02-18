@@ -1,12 +1,12 @@
 [submodule "term_1/labs"]
 	path = term_1/labs
 	url = git@github.com:koftamainee/rgu-labs-term1.git
-[submodule "term_2"]
-	path = term_2
-	url = git@github.com:koftamainee/rgu-labs-term2.git
 [submodule "term_1/fuse"]
 	path = term_1/fuse
 	url = git@github.com:koftamainee/fuse.git
 [submodule "term_1/formula_analyzer"]
 	path = term_1/formula_analyzer
 	url = git@github.com:koftamainee/formula-analyzer.git
+[submodule "term_2/DSA"]
+	path = term_2/DSA
+	url = git@github.com:koftamainee/rgu-labs-term2-DSA.git
