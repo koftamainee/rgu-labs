@@ -10,3 +10,27 @@
 [submodule "term_2/DSA/lab1"]
 	path = term_2/DSA/lab1
 	url = git@github.com:koftamainee/rgu-labs-term2-DSA-lab1.git
+[submodule "term_2/DSA/big_math"]
+	path = term_2/DSA/big_math
+	url = git@github.com:koftamainee/rgu-labs-term2-DSA-big-math.git
+[submodule "term_2/DSA/mp_os"]
+	path = term_2/DSA/mp_os
+	url = git@github.com:koftamainee/mp_os.git
+[submodule "term_2/DSA/linal-sdk"]
+	path = term_2/DSA/linal-sdk
+	url = git@github.com:koftamainee/linal-sdk.git
+[submodule "term_2/DSA/lab3/elevator-control-system"]
+	path = term_2/DSA/lab3/elevator-control-system
+	url = git@github.com:koftamainee/elevator-control-system.git
+[submodule "term_2/DSA/lab3/hospital-simulation"]
+	path = term_2/DSA/lab3/hospital-simulation
+	url = git@github.com:koftamainee/hospital-simulation.git
+[submodule "term_2/DSA/lab3/infection-spread-simulation"]
+	path = term_2/DSA/lab3/infection-spread-simulation
+	url = git@github.com:koftamainee/infection-spread-simulation.git
+[submodule "term_2/DSA/lab3/RPG-equip-generator"]
+	path = term_2/DSA/lab3/RPG-equip-generator
+	url = git@github.com:koftamainee/RPG-equip-generator.git
+[submodule "term_2/OS/lab1"]
+	path = term_2/OS/lab1
+	url = git@github.com:koftamainee/rgu-labs-term2-OS.git
